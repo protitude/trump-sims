@@ -39,7 +39,7 @@ const AIDE_GAP = 44;
 /** Radians a second round the golf course. */
 const CART_SPIN = 2;
 /** Seconds of affirmations before the lights go out. */
-const BEDTIME_SECONDS = 8;
+const BEDTIME_SECONDS = 15;
 /** Seconds of standing about before he finds something to do by himself. */
 const IDLE_AFTER = 30;
 /** How long an activity takes to watch, by its cost in time blocks. */

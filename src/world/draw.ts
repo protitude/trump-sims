@@ -1067,7 +1067,7 @@ const CROWD_SHIRTS = ['#b3282d', '#3b4f8f', '#e9e2d0', '#56627a'];
 
 /** Bedtime: a short settle, then one affirmation after another. */
 const AFFIRM_START = 0.2;
-const AFFIRM_EVERY = 1.75;
+const AFFIRM_EVERY = 3.5;
 
 /** A speech balloon with wrapped text, its tail pointing down at (x, y). */
 function speech(c: Ctx, text: string, x: number, y: number, alpha: number): void {
@@ -1429,7 +1429,7 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
         const alpha = clamp01(Math.min(age / 0.2, (AFFIRM_EVERY - age) / 0.25));
         speech(c, lines[n], aide.x + 6, aide.y - 92, alpha);
         // Each one lands.
-        emojiAt(c, '💛', hx + 16 + Math.sin(age * 5) * 4, hy - 12 - age * 22, 12, 1 - age / AFFIRM_EVERY);
+        emojiAt(c, '💛', hx + 16 + Math.sin(age * 5) * 4, hy - 12 - age * 11, 12, 1 - age / AFFIRM_EVERY);
       }
       if (n >= lines.length) for (let j = 0; j < 3; j++) risingText(c, 'Z', hx + 18 + j * 8, hy - 8, (t + j * 0.5) % 1.5, 1.5, 12 + j * 4, '#ffffff');
       break;
