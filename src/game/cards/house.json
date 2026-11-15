@@ -1,0 +1,854 @@
+[
+ {
+  "id": "house-ncpc-hearing",
+  "kind": "briefing",
+  "title": "Planning Commission Hearing",
+  "text": "A federal planning commission has scheduled a hearing on your ballroom. Forty slides on setbacks, sightlines and stormwater. None have a chandelier.",
+  "cost": 2,
+  "options": [
+   {
+    "label": "Sit through all forty slides",
+    "effects": {
+     "stability": 9,
+     "ego": -3
+    },
+    "result": "The design was reviewed. Slide 31 was about drainage. You now know about drainage."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The ballroom plans went unreviewed. The commission has sent a strongly worded calendar invite."
+  },
+  "inspiredBy": "The planning commission took up the ballroom design in the autumn of 2025, after demolition began."
+ },
+ {
+  "id": "house-hpa-tour-brief",
+  "kind": "briefing",
+  "title": "Historical Association Briefing",
+  "text": "The White House Historical Association explains, with binders, which rooms are historic and why they were not supposed to vanish.",
+  "cost": 2,
+  "options": [
+   {
+    "label": "Read the binders",
+    "effects": {
+     "stability": 9,
+     "ego": -3
+    },
+    "result": "You learned the East Wing had a history. It was mostly offices. Nobody enjoyed this."
+   }
+  ],
+  "ignore": {
+   "stability": -3,
+   "text": "The binder was left on a radiator. The association is drafting a longer binder."
+  },
+  "inspiredBy": "Historians and the White House Historical Association objected to the East Wing demolition in October 2025."
+ },
+ {
+  "id": "house-arch-traffic",
+  "kind": "briefing",
+  "title": "Memorial Circle Traffic Study",
+  "text": "Engineers brief you on how a 250-foot arch affects traffic at Memorial Circle. They have a lot of arrows.",
+  "cost": 2,
+  "options": [
+   {
+    "label": "Study the arrows",
+    "effects": {
+     "stability": 9,
+     "ego": -3
+    },
+    "result": "Westbound lanes will narrow. The arch will not honk, but everyone else will."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "Commuters learned about the arch from a detour sign. They had notes."
+  },
+  "inspiredBy": "Federal planning documents in 2026 described traffic changes around the proposed arch at Memorial Circle."
+ },
+ {
+  "id": "house-ballroom-cost",
+  "kind": "briefing",
+  "title": "Cost Overrun Review",
+  "text": "A contractor walks you through a ballroom budget that grew from a number to a larger number. Spreadsheets have colour-coded tabs.",
+  "cost": 2,
+  "options": [
+   {
+    "label": "Review every tab",
+    "effects": {
+     "stability": 9,
+     "ego": -3
+    },
+    "result": "The tabs were red. The total was a mystery. You approved a footnote."
+   }
+  ],
+  "ignore": {
+   "stability": -5,
+   "text": "Nobody reviewed the budget. It reviewed itself and grew."
+  },
+  "inspiredBy": "Reported ballroom cost estimates rose through late 2025 and 2026, well beyond early figures."
+ },
+ {
+  "id": "house-kc-renovation",
+  "kind": "briefing",
+  "title": "Kennedy Center Facilities Review",
+  "text": "A facilities manager presents the Kennedy Center boiler, roof and elevator schedule. The boiler has no opinion on your name.",
+  "cost": 2,
+  "options": [
+   {
+    "label": "Learn the boiler schedule",
+    "effects": {
+     "stability": 9,
+     "ego": -3
+    },
+    "result": "The roof leaks in six places. None are the sign. This is a minor mercy."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The roof held a meeting of its own and leaked on a rehearsal."
+  },
+  "inspiredBy": "The Kennedy Center board and administration discussed renovation and renaming through late 2025 and 2026."
+ },
+ {
+  "id": "house-bunker-security",
+  "kind": "briefing",
+  "title": "Secret Service Construction Briefing",
+  "text": "Security staff explain what must go under, around and inside a large new White House building. It is a lot of concrete and no gold.",
+  "cost": 2,
+  "options": [
+   {
+    "label": "Accept the concrete",
+    "effects": {
+     "stability": 9,
+     "ego": -3
+    },
+    "result": "Security is satisfied. The basement is secret, which is the best kind of basement."
+   }
+  ],
+  "ignore": {
+   "stability": -6,
+   "text": "The security plan was skipped. The building will be constructed on optimism."
+  },
+  "inspiredBy": "Reports in 2025 said the ballroom project included extensive security and underground work."
+ },
+ {
+  "id": "house-east-wing-permit",
+  "kind": "decision",
+  "title": "A Demolition Permit Question",
+  "text": "A contractor asks if the wall in front of him needs a permit before it is removed. Several walls are already gone.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "File the review first",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "Reviews are paperwork. Gone is gone. The contractor files it after, and so does your pride."
+   },
+   {
+    "label": "Tell him to swing away",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The wall fell with great ceremony. The paperwork arrived at its own funeral."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The wall stayed up until a deadline passed. The contractor napped on a pallet."
+  },
+  "inspiredBy": "The East Wing was demolished in October 2025, with review questions following afterward."
+ },
+ {
+  "id": "house-fine-arts-seat",
+  "kind": "decision",
+  "title": "Fine Arts Commission Vacancies",
+  "text": "The Commission of Fine Arts needs members who will read the designs. Your list has people who just like gold.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Appoint actual architects",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "The new members ask about proportion. A chandelier is shown a chair."
+   },
+   {
+    "label": "Appoint your favourite fans",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "Approval arrived in nine minutes. A cornice cried a little."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The commission lacked a quorum. A fountain went unreviewed and rejoiced."
+  },
+  "inspiredBy": "The Commission of Fine Arts was reshaped in 2025 after members were dismissed."
+ },
+ {
+  "id": "house-trust-lawsuit",
+  "kind": "decision",
+  "title": "A Preservation Lawsuit",
+  "text": "Preservationists have sued over the ballroom and want a judge to review the process. Your lawyers want to settle the schedule.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Cooperate with the court",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "You attended the hearing. A judge asked about process. Process answered, sort of."
+   },
+   {
+    "label": "Tell the court it is a beautiful ballroom",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The court noted it was beautiful and also a lawsuit. These are different things."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The deadline passed. The lawsuit grew a second exhibit of photographs."
+  },
+  "inspiredBy": "The National Trust for Historic Preservation sued over the ballroom project in late 2025."
+ },
+ {
+  "id": "house-donor-list",
+  "kind": "decision",
+  "title": "The Donor List",
+  "text": "Ethics staff ask for a list of who is paying for the ballroom. The donors prefer to appear in a large golden acknowledgement.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Publish the donor list",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "The list was published. Several companies suddenly love transparency, in a small font."
+   },
+   {
+    "label": "Put donors on a gold plaque",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The plaque is huge. Ethics staff counted the names and then counted other things."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The list stayed secret. A conspiracy theorist emailed a spreadsheet of yachts."
+  },
+  "inspiredBy": "Corporate and individual donors to the ballroom were disclosed in part in October 2025."
+ },
+ {
+  "id": "house-arch-sightline",
+  "kind": "decision",
+  "title": "A Question About Sightlines",
+  "text": "Veterans say a 250-foot arch would block the view between Arlington House and the Lincoln Memorial. They have a diagram.",
+  "cost": 2,
+  "options": [
+   {
+    "label": "Commission a sightline study",
+    "effects": {
+     "stability": 9,
+     "ego": -4
+    },
+    "result": "The study says the view is a view. It recommends not building in the middle of it."
+   },
+   {
+    "label": "Declare the arch the new view",
+    "effects": {
+     "ego": 6,
+     "stability": -6
+    },
+    "result": "The arch is now the view. The Lincoln Memorial looks away."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The veterans filed in court. The arch has a new, damp diagram."
+  },
+  "inspiredBy": "Vietnam veterans sued in early 2026 to block the proposed Memorial Circle arch over sightlines."
+ },
+ {
+  "id": "house-nea-funds",
+  "kind": "decision",
+  "title": "Humanities Funding Request",
+  "text": "A grant officer asks if humanities money should fund an arch or the usual libraries, archives and museums.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Fund the archives",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "Three archives got money. One is a librarian who has never seen gold paint."
+   },
+   {
+    "label": "Fund the arch",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The arch got fifteen million. A poet received a very kind thank-you note."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The grant officer waited. The archives got a bake sale."
+  },
+  "inspiredBy": "A 2026 NEH spending plan reportedly set aside about $15 million for the arch project."
+ },
+ {
+  "id": "house-ethics-form",
+  "kind": "decision",
+  "title": "The Ethics Form",
+  "text": "An ethics lawyer has a gift disclosure form for a very large aircraft. The form has a box labelled foreign government.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Fill the form out properly",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "You filled it. The box was checked. A lawyer smiled for the first time this year."
+   },
+   {
+    "label": "Write great plane in the box",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The form was returned with notes. The notes are mostly in red."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The form sat unfilled. An aircraft awaits in a hangar, quietly judged."
+  },
+  "inspiredBy": "The Qatari jet offered in May 2025 drew Emoluments Clause questions and disclosure demands."
+ },
+ {
+  "id": "house-ethics-office",
+  "kind": "decision",
+  "title": "The Ethics Office Vacancy",
+  "text": "The government ethics office needs a director who will review your gifts. Candidates are boring and frightening.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Appoint a qualified reviewer",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "The reviewer asked for receipts. Everyone remembered what receipts are."
+   },
+   {
+    "label": "Appoint a loyal friend",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The new director found no issue. The old director found a cardboard box."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The ethics post stayed vacant. Conflicts of interest enjoyed the open desk."
+  },
+  "inspiredBy": "The head of the Office of Government Ethics was removed in early 2025."
+ },
+ {
+  "id": "house-portrait-banner",
+  "kind": "decision",
+  "title": "The Giant Banner",
+  "text": "Staff ask whether a huge portrait banner can hang on a federal building. Facilities staff ask who pays for the ladder.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Keep the facade clean",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "The facade is a facade again. A flag is back and quietly jubilant."
+   },
+   {
+    "label": "Order a banner five storeys tall",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "You are now the tallest thing on Constitution Avenue. Pigeons complain."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "No banner, no response. A department head has rolled up a hallway carpet."
+  },
+  "inspiredBy": "Large presidential portrait banners appeared on federal buildings in 2025."
+ },
+ {
+  "id": "house-gold-oval",
+  "kind": "decision",
+  "title": "Oval Office Gold Order",
+  "text": "A decorator asks whether the Oval Office has enough gold. The curator, standing by the wall, appears to be dying inside.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Keep the room historic",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "The room is fine. The decorator is grieving in the hall, among the swatches."
+   },
+   {
+    "label": "Add a gold cherub and more gold",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The room now looks like a very rich dentist found a time machine."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "Nobody decided. The room slowly gained gold anyway, per the law of drift."
+  },
+  "inspiredBy": "The Oval Office gained extensive gold ornamentation in 2025."
+ },
+ {
+  "id": "house-rose-patio",
+  "kind": "decision",
+  "title": "Rose Garden Paving Plan",
+  "text": "The grounds crew wants to know whether the Rose Garden may remain a garden. A paver salesman is already in the room.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Keep the roses",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "The roses stay. The grounds crew cries a little, then waters them."
+   },
+   {
+    "label": "Pave it for parties",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The garden is now a patio. The roses are a rumour and a table decoration."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The roses waited. A salesman stood in the beds, with a sample tile."
+  },
+  "inspiredBy": "The Rose Garden was converted to a paved patio in 2025."
+ },
+ {
+  "id": "house-who-pays",
+  "kind": "press",
+  "title": "Who Is Paying?",
+  "text": "A reporter asks who is funding the ballroom, and whether they received anything in return. Several donors are suddenly in the hall.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Give the full answer",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "A donor list, a number, a date. The press room is startled by a complete sentence."
+   },
+   {
+    "label": "Say it is all very generous",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "Everyone is generous. The reporter writes down generous. And a question mark."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The question hung in the room. A donor took the hint and also left."
+  },
+  "inspiredBy": "Reporters pressed the administration over ballroom donors in October 2025."
+ },
+ {
+  "id": "house-east-wing-question",
+  "kind": "press",
+  "title": "The East Wing Question",
+  "text": "A reporter asks why the East Wing was demolished when you said it would not be touched. The answer you gave was a photograph of a hole.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Acknowledge the change",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "You said plans changed. This is the most truthful thing a demolition has ever produced."
+   },
+   {
+    "label": "Say it was always the plan",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "There was a plan. There was also a hole. The two did not meet."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "You skipped it. The reporter described the hole for six minutes."
+  },
+  "inspiredBy": "Trump had said the ballroom would not touch the East Wing, then it was demolished in October 2025."
+ },
+ {
+  "id": "house-kc-name",
+  "kind": "press",
+  "title": "Kennedy Center Name Question",
+  "text": "A reporter asks who approved adding your name to the Kennedy Center, and whether Congress has any say. The statute is on a lectern.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Say Congress decides",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "You cited the statute. The statute looked flattered and also nervous."
+   },
+   {
+    "label": "Say the board loves you",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The board loved you in a unanimous voice. The statute filed a motion."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The reporter turned to a page of law. It was long."
+  },
+  "inspiredBy": "The Kennedy Center board voted in December 2025 to add the president's name, despite a statute naming it for another president."
+ },
+ {
+  "id": "house-coin-face",
+  "kind": "press",
+  "title": "The Coin Question",
+  "text": "A reporter asks whether a commemorative coin with a living president on it is allowed. A numismatist is hiding under the table.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Say you will check the law",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "You checked. The law says living people do not go on coins. You went quiet."
+   },
+   {
+    "label": "Say the coin is already minted",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The coin is a handsome coin. Legal says it is the first of a series called Trouble."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The question lingered. A coin collector fainted into a velvet tray."
+  },
+  "inspiredBy": "A 2026 semiquincentennial coin design featuring the sitting president drew legal and ethical scrutiny."
+ },
+ {
+  "id": "house-arch-height",
+  "kind": "press",
+  "title": "The Arch Height Question",
+  "text": "A reporter asks if the arch is taller than the Arc de Triomphe. You have a numerical answer and a large ego.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Cite the official height",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "The height is official. The reporter asked a follow-up about the angel. A pause fell."
+   },
+   {
+    "label": "Say it is the biggest arch ever",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "It is the biggest arch ever, in a sense your architect said not to say."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The reporter measured the room instead, with a tape."
+  },
+  "inspiredBy": "Renderings unveiled in April 2026 showed a roughly 250-foot arch topped with a statue."
+ },
+ {
+  "id": "house-gold-card",
+  "kind": "press",
+  "title": "The Merchandise Question",
+  "text": "A reporter asks whether selling products with your name while in office is a conflict. A hat vendor is waving at the cameras.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Promise a careful review",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "The review is careful. The hats are available wherever hats are sold."
+   },
+   {
+    "label": "Say the hats are patriotic",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The hats are patriotic. The reporter is wearing one. The reporter is troubled by that."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The question hung. The hat vendor took a bow."
+  },
+  "inspiredBy": "Trump-branded merchandise and licensing deals continued during his second term in 2025."
+ },
+ {
+  "id": "house-tour-group",
+  "kind": "press",
+  "title": "Tour Group Complaint",
+  "text": "A tour group arrives to find the East Wing gone and the gift shop entrance a building site. The group has a guide and a grievance.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Apologise and reroute them",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "The tour was rerouted. A child asked where the wing went. Nobody had a good answer."
+   },
+   {
+    "label": "Wave and sign their hats",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "They loved it, and also did not see the wing. The guide is looking for a new job."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The tour group waited at a fence. The fence was very patient."
+  },
+  "inspiredBy": "Public tours and the East Wing visitor entrance were disrupted by the 2025 demolition and construction."
+ },
+ {
+  "id": "house-architect",
+  "kind": "call",
+  "title": "The Architect Calls",
+  "text": "The ballroom architect has a question about whether the load-bearing walls can be removed. They are load-bearing.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Ask her to keep them",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "She kept them. A civil engineer wept with joy, a lone figure in the dust."
+   },
+   {
+    "label": "Say gravity is negotiable",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "Gravity declined to comment. The architect moved the call to a more stable room."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The architect waited. The walls waited. The walls are better at it."
+  },
+  "inspiredBy": "Architects and engineers worked on the ballroom design amid shifting plans in 2025 and 2026."
+ },
+ {
+  "id": "house-preservation-chair",
+  "kind": "call",
+  "title": "Preservation Board Chair",
+  "text": "The chair of a preservation board wants a public hearing before you rename a historic building. She has a gavel and a deep calm.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Agree to the hearing",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "You agreed. She banged the gavel once and it was the nicest sound you heard all week."
+   },
+   {
+    "label": "Rename it by Friday",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "It was renamed by Friday. A plaque went up. A lawsuit went up faster."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The chair held the hearing anyway. The empty chair was thoroughly examined."
+  },
+  "inspiredBy": "Preservation officials questioned renaming and construction moves in Washington throughout 2025 and 2026."
+ },
+ {
+  "id": "house-donor-call",
+  "kind": "call",
+  "title": "A Donor Phones In",
+  "text": "A large donor has an idea for naming the ballroom after himself, or perhaps you. He wants it in writing.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Say naming goes through ethics",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "He was disappointed. The ethics office was elated and did a small dance."
+   },
+   {
+    "label": "Name it after him, or you",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The two of you spent an hour on naming. The ballroom is still a hole."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The donor left a voicemail. It was long, and mostly about plaques."
+  },
+  "inspiredBy": "Donors to the ballroom were reported in 2025 to include major corporations and wealthy individuals."
+ },
+ {
+  "id": "house-contractor",
+  "kind": "call",
+  "title": "The Contractor Calls",
+  "text": "The contractor says the gold plating will not fit the budget or the wall. She would like a decision about either.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Choose the cheaper finish",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "She chose paint. The wall is happy and the budget is moderately sedated."
+   },
+   {
+    "label": "Insist on the gold plating",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The gold is going on. The budget is going elsewhere, to the lawn, to weep."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The contractor kept going. The finish is a surprise to everyone."
+  },
+  "inspiredBy": "Gold finishes and heavy decor were added to White House rooms through 2025."
+ },
+ {
+  "id": "house-kennedy-artist",
+  "kind": "call",
+  "title": "An Artist Cancels",
+  "text": "A Kennedy Center performer calls to say she is cancelling because of the new name. She is polite and very firm.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Thank her and move on",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "You took it politely. Another performer was booked. The house is still full."
+   },
+   {
+    "label": "Tell her she is fired",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "She cannot be fired from a show she cancelled. The headline wrote itself."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The performer left a voicemail. The orchestra took a vote."
+  },
+  "inspiredBy": "Several artists cancelled Kennedy Center appearances after the board added the president's name in late 2025."
+ },
+ {
+  "id": "house-navy-ship",
+  "kind": "call",
+  "title": "The Naval Shipyard Calls",
+  "text": "A shipyard manager asks whether ships should be named after the president or a more traditional hero. He has a drawing.",
+  "cost": 1,
+  "options": [
+   {
+    "label": "Pick the traditional name",
+    "effects": {
+     "stability": 5,
+     "ego": -3
+    },
+    "result": "The ship will be named for a hero. A lot of sailors quietly saluted."
+   },
+   {
+    "label": "Name it after yourself",
+    "effects": {
+     "ego": 5,
+     "stability": -5
+    },
+    "result": "The ship is yours. It has gold trim. It is also not yet built."
+   }
+  ],
+  "ignore": {
+   "stability": -4,
+   "text": "The shipyard waited. The ship is nameless and slightly offended."
+  },
+  "inspiredBy": "The administration floated large new warships under a \"Trump-class\" label in late 2025."
+ }
+]

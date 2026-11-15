@@ -1,0 +1,846 @@
+[
+  {
+    "id": "law-refund-ledger",
+    "kind": "briefing",
+    "title": "The Refund Ledger",
+    "text": "Treasury lawyers walk you through how to repay importers after the Supreme Court said the emergency tariffs were not allowed. The ledger has many pages and no victories.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Sit through every page",
+        "effects": {
+          "stability": 9,
+          "ego": -4
+        },
+        "result": "Refund process drafted. You asked twice whether 'refund' could be called 'a bonus.' It could not."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "Importers filed suit. The ledger is now an exhibit, still unread."
+    },
+    "inspiredBy": "The Supreme Court struck down the IEEPA tariffs in February 2026, leaving open the question of refunds."
+  },
+  {
+    "id": "law-autopen-forensics",
+    "kind": "briefing",
+    "title": "Signature Forensics",
+    "text": "A specialist presents slides on whether a predecessor's pardons were signed by a machine. Slide 41 compares loops on the letter T.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Examine the loops",
+        "effects": {
+          "stability": 8,
+          "ego": -3
+        },
+        "result": "Findings inconclusive. Legal experts add that the machine was never the issue. You ask for a bigger pen."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The review stalled. The machine, reached for comment, said nothing."
+    },
+    "inspiredBy": "In June 2025 the president ordered a probe into a predecessor's alleged autopen use and the validity of his pardons."
+  },
+  {
+    "id": "law-review-act",
+    "kind": "briefing",
+    "title": "Congressional Review Act Primer",
+    "text": "A counsel explains how Congress can cancel old regulations with a simple majority and a tight deadline. There is a flowchart. There is a second flowchart.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Follow the flowcharts",
+        "effects": {
+          "stability": 8,
+          "ego": -5
+        },
+        "result": "Several rules were erased legally. The ceremony for this was a memo."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The deadline lapsed. The old rules live on, unbothered."
+    },
+    "inspiredBy": "In 2025 Republicans used the Congressional Review Act to overturn rules, including California vehicle waivers."
+  },
+  {
+    "id": "law-byrd-bath",
+    "kind": "briefing",
+    "title": "Byrd Bath",
+    "text": "The Senate parliamentarian reviews your giant bill line by line. Several favorite provisions are ruled extraneous. No one will say 'big' or 'beautiful'.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Listen to the rulings",
+        "effects": {
+          "stability": 10,
+          "ego": -5
+        },
+        "result": "Eleven provisions struck. The bill survives, slightly shorter and somewhat less beautiful."
+      }
+    ],
+    "ignore": {
+      "stability": -7,
+      "text": "Unreviewed, the bill was ruled out of order from start to finish."
+    },
+    "inspiredBy": "The Senate parliamentarian struck provisions from the 2025 tax and spending bill under the Byrd rule."
+  },
+  {
+    "id": "law-ballot-order-brief",
+    "kind": "briefing",
+    "title": "Injunction Reading Hour",
+    "text": "A deputy summarizes the ruling that halted your order on mail voting. The word 'exceeded' appears nineteen times.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Hear the whole ruling",
+        "effects": {
+          "stability": 8,
+          "ego": -4
+        },
+        "result": "Lawyers will appeal. The deputy now keeps a tally of 'exceeded' for the next hearing."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The order stayed blocked. Nobody told the ballot printers."
+    },
+    "inspiredBy": "In June 2026 a federal judge blocked major parts of the president's executive order restricting voting by mail."
+  },
+  {
+    "id": "law-shutdown-status",
+    "kind": "briefing",
+    "title": "Partial Shutdown Status",
+    "text": "The budget office briefs you on one department that has closed while the rest stays open. A flowchart shows which lights are on.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Review the map",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "Negotiators have been assigned. The flowchart is mostly red. You request more gold."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The department stayed closed. Its out-of-office message is now an official statement."
+    },
+    "inspiredBy": "A partial Homeland Security shutdown was under debate around the February 2026 State of the Union."
+  },
+  {
+    "id": "law-courts-calendar",
+    "kind": "briefing",
+    "title": "Emergency Docket Overview",
+    "text": "The Solicitor General's office summarizes forty-one pending emergency applications. Each has a different acronym and a different deadline.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Sit for the full overview",
+        "effects": {
+          "stability": 9,
+          "ego": -4
+        },
+        "result": "Applications prioritized. You tried to name the docket after yourself and were told it has a name."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "Three deadlines passed. A clerk filed one on a napkin."
+    },
+    "inspiredBy": "The administration filed a wave of emergency applications at the Supreme Court throughout 2025."
+  },
+  {
+    "id": "law-signing-ceremony",
+    "kind": "decision",
+    "title": "Fourth of July Signing",
+    "text": "The giant spending bill reaches your desk on the holiday. The Speaker offers a ceremonial gavel and a flyover is on standby. Reading time is not scheduled.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Sign quietly, read it later",
+        "effects": {
+          "stability": 8,
+          "ego": -4
+        },
+        "result": "Signed with no jets. The gavel sits in a drawer, untouched, as intended."
+      },
+      {
+        "label": "Full ceremony with flyover",
+        "effects": {
+          "ego": 7,
+          "stability": -6
+        },
+        "result": "Bombers, a gavel and a speech about promises kept. Several clauses still unread by anyone."
+      }
+    ],
+    "ignore": {
+      "stability": -7,
+      "text": "The deadline slipped. The flyover circled for an hour, then went home."
+    },
+    "inspiredBy": "The president signed the One Big Beautiful Bill Act at a July 4, 2025 White House ceremony with a flyover."
+  },
+  {
+    "id": "law-pardon-batch",
+    "kind": "decision",
+    "title": "Clemency Batch",
+    "text": "A list of thirty names awaits your approval, some with friends in high places. The pardon office has written 'vetted' above the list in pencil.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Run each case through review",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "Twenty-two names remain. The pencil note is now ink."
+      },
+      {
+        "label": "Announce them all by post",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "Posted with no names attached. The internet is now reading the rest as a mystery novel."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The list sat in a tray. Several would-be pardonees moved on to other hobbies."
+    },
+    "inspiredBy": "Large batches of pardons and commutations were announced in 2025 and again in September 2026."
+  },
+  {
+    "id": "law-eo-signing",
+    "kind": "decision",
+    "title": "Oval Office Signing",
+    "text": "Sixteen executive orders are laid out for the cameras. A staffer notes you have only skimmed the first one. A reporter holds up a clipboard.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Read the orders first",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "You found a typo on page three. Counsel is now thrilled with you, which is its own problem."
+      },
+      {
+        "label": "Hold each one up for the cameras",
+        "effects": {
+          "ego": 5,
+          "stability": -4
+        },
+        "result": "The signing took an hour. Three orders were upside down. All were signed with bigger flourishes."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The pens dried out. The orders were signed by next Tuesday."
+    },
+    "inspiredBy": "The president signed dozens of executive orders in televised Oval Office sessions in 2025."
+  },
+  {
+    "id": "law-filibuster-demand",
+    "kind": "decision",
+    "title": "Nuke The Filibuster",
+    "text": "You can post a demand that the Senate end the filibuster, or you can quietly count votes. The Senate has ninety-nine opinions on this.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Count the votes",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "There are not enough votes. This is shared with you gently, with a binder."
+      },
+      {
+        "label": "Post it in capital letters",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The post was liked widely. The Senate leader said the rule will remain, then adjourned for lunch."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The shutdown dragged on. The filibuster remained smug."
+    },
+    "inspiredBy": "In late 2025 the president urged Senate Republicans to end the filibuster during the longest government shutdown."
+  },
+  {
+    "id": "law-prop50-map",
+    "kind": "decision",
+    "title": "The Map Wars",
+    "text": "A mid-decade redistricting fight escalates. Your allies offer a new map that adds seats, and the other party is drawing a mirror map in reply.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Press for fair-map talks",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "Talks held. Both sides agreed the map was unfair, but only about the other one."
+      },
+      {
+        "label": "Demand more seats everywhere",
+        "effects": {
+          "ego": 6,
+          "stability": -7
+        },
+        "result": "States redraw. Constituents can no longer find their own districts, or the maps."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "Two maps went to the courts. Judges are now holding them upside down."
+    },
+    "inspiredBy": "Mid-decade redistricting battles in Texas and California escalated in the second half of 2025."
+  },
+  {
+    "id": "law-tariff-plan-b",
+    "kind": "decision",
+    "title": "Plan B For Tariffs",
+    "text": "With the emergency tariffs struck down, an adviser offers a narrower, lawful route. The alternative statute is boring and has footnotes.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Use the narrow statute",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The new tariffs are legal and small. You call them 'stronger,' and nobody knows in what sense."
+      },
+      {
+        "label": "Reimpose them under a new name",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "The tariffs return in a gold-trimmed disguise. Lawyers have already printed the next complaint."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "No plan was chosen. Importers adopted a wait-and-see approach that cost billions."
+    },
+    "inspiredBy": "After the February 2026 Supreme Court ruling, the president promised stronger alternatives to the struck-down tariffs."
+  },
+  {
+    "id": "law-veto-pen",
+    "kind": "decision",
+    "title": "A Small Veto",
+    "text": "A water project bill passed with support from both parties. A member of Congress you dislike sponsored it. The pen is right there.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Sign the bill",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "Water will flow. The sponsor sent a polite thank-you card you refused to open."
+      },
+      {
+        "label": "Veto it out of spite",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "Vetoed. Congress is discussing an override. The water is still waiting for its permit."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The bill became law without your signature. It is somehow still your fault."
+    },
+    "inspiredBy": "In December 2025 the president vetoed a Colorado water project bill and another measure favored by sponsors in both parties."
+  },
+  {
+    "id": "law-judge-layoffs",
+    "kind": "decision",
+    "title": "A Judge Says No",
+    "text": "A federal judge has blocked a plan to cut staff across agencies. Your lawyers recommend an appeal. Your thumbs recommend a post.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Appeal through the courts",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "The appeal is filed. The judge reads it on a weekend and says 'noted.'"
+      },
+      {
+        "label": "Denounce the judge online",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The post was read by many. The Chief Justice issued a mild statement about judges that was read by few."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The order stayed in place. Staffers held a quiet party in the break room."
+    },
+    "inspiredBy": "In 2025 federal judges repeatedly blocked mass federal layoffs, and the president criticized judges publicly."
+  },
+  {
+    "id": "law-third-term-hats",
+    "kind": "decision",
+    "title": "Four More Years, Again",
+    "text": "A merchandise vendor presents a hat for 2028. Constitutional lawyers cite a certain amendment. The vendor says the hats are already sewn.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Decline the hats",
+        "effects": {
+          "stability": 4,
+          "ego": -5
+        },
+        "result": "The hats were donated to a golf pro shop. The amendment breathes a sigh of relief."
+      },
+      {
+        "label": "Order a thousand hats",
+        "effects": {
+          "ego": 5,
+          "stability": -4
+        },
+        "result": "The hats sold out. Scholars have published four papers titled 'It Says Two.'"
+      }
+    ],
+    "ignore": {
+      "stability": -2,
+      "text": "The vendor made his own call. The hats are now collector items and a constitutional question."
+    },
+    "inspiredBy": "In 2025 the president and allies floated a third term despite the 22nd Amendment, and 'Trump 2028' hats appeared."
+  },
+  {
+    "id": "law-department-of-war",
+    "kind": "decision",
+    "title": "Rename The Department",
+    "text": "An order would rename the Department of Defense to 'Department of War'. Congress has not been consulted. A new sign is already in the shop.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Send it to Congress",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "A committee will study the sign. The sign is in a hallway, wrapped in plastic."
+      },
+      {
+        "label": "Sign the order, hang the sign",
+        "effects": {
+          "ego": 6,
+          "stability": -5
+        },
+        "result": "The sign is up. The statute still says 'Defense,' and so does the stationery."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The sign was hung without an order. The building is confused about itself."
+    },
+    "inspiredBy": "In September 2025 the president signed an order allowing 'Department of War' as a secondary name for the Defense Department."
+  },
+  {
+    "id": "law-sotu-length",
+    "kind": "decision",
+    "title": "State Of The Union Draft",
+    "text": "The draft speech runs ninety minutes. Your speechwriter suggests cuts. Your own notes suggest sixty more minutes of applause lines.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Cut it to an hour",
+        "effects": {
+          "stability": 9,
+          "ego": -5
+        },
+        "result": "A concise speech. The Chamber stays awake, and you spend an unsettling thirty minutes with no clapping."
+      },
+      {
+        "label": "Add the extra hour",
+        "effects": {
+          "ego": 7,
+          "stability": -6
+        },
+        "result": "A record is set. Several members have left the chamber for snacks and one for retirement."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "No draft was approved. The Speaker began improvising a welcome."
+    },
+    "inspiredBy": "The February 2026 State of the Union lasted about 108 minutes, the longest on record."
+  },
+  {
+    "id": "law-baby-accounts",
+    "kind": "decision",
+    "title": "Name The Savings Accounts",
+    "text": "The new child savings accounts need a name on the forms. Treasury suggests 'Child Savings Accounts.' A staffer slides over a draft that says something else.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Keep the plain name",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "Forms printed. Parents understand them. You feel mildly unaccompanied."
+      },
+      {
+        "label": "Use your own name on them",
+        "effects": {
+          "ego": 5,
+          "stability": -3
+        },
+        "result": "The accounts carry your name. Budget analysts were more excited by the ones that do not."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The forms were printed with a blank. Parents filled in their own names, loudly."
+    },
+    "inspiredBy": "The 2025 tax and spending law created 'Trump Accounts' savings accounts for children."
+  },
+  {
+    "id": "law-scotus-disgrace",
+    "kind": "press",
+    "title": "Reaction To The Ruling",
+    "text": "Reporters want your response to the Supreme Court's ruling against your tariffs. Two of your own appointees voted against you. A microphone is already at your chin.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say you will comply and appeal",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "A calm statement about 'reviewing options.' The press wrote it up as 'strange but calm.'"
+      },
+      {
+        "label": "Call the Court a disgrace",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "Called a disgrace on live TV. Two justices have declined to comment, loudly."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "No comment was given. Commentators wrote it for you."
+    },
+    "inspiredBy": "After the February 2026 tariff ruling the president called the decision 'a disgrace'."
+  },
+  {
+    "id": "law-press-third-term",
+    "kind": "press",
+    "title": "Interview On 2028",
+    "text": "A reporter asks about a third term. Your lawyer winces from off camera. The 22nd Amendment is, for once, trending.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say you will honor the Constitution",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "Clear and brief. Aides exchange looks as the segment ends."
+      },
+      {
+        "label": "Smile and say 'we'll see'",
+        "effects": {
+          "ego": 6,
+          "stability": -5
+        },
+        "result": "The clip ran all week. Constitutional scholars are now doing television, in shifts."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "No answer was given. A hat vendor filled the gap."
+    },
+    "inspiredBy": "The president repeatedly teased the idea of a third term in 2025 despite the constitutional limit."
+  },
+  {
+    "id": "law-press-autopen",
+    "kind": "press",
+    "title": "Signature Question",
+    "text": "A reporter asks whether you sign everything by hand. The machine in the corner has not been used, but a staffer glances at it nervously.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Answer plainly",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You explained the process. The machine remained a mere table decoration."
+      },
+      {
+        "label": "Hold up an oversized signature",
+        "effects": {
+          "ego": 5,
+          "stability": -4
+        },
+        "result": "The loops were huge, the ink was wet, and the White House counsel sighed."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The reporter wrote a long piece on signatures. It was not about yours."
+    },
+    "inspiredBy": "In 2025 the president attacked a predecessor's autopen pardons while also being asked about his own signing habits."
+  },
+  {
+    "id": "law-press-joint-session",
+    "kind": "press",
+    "title": "Joint Session Interview",
+    "text": "Before an address to Congress, a reporter asks what you will say. Your speechwriter is shaking his head behind a pillar.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Keep the answer short",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You gave the headlines. The surprise remained intact, for about a day."
+      },
+      {
+        "label": "Preview the whole speech",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "Forty minutes of preview. The actual address was now a rerun."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The reporter filled the gap with speculation. The address still ran long."
+    },
+    "inspiredBy": "The president addressed a joint session of Congress in March 2025 and again in February 2026."
+  },
+  {
+    "id": "law-press-pen-gifts",
+    "kind": "press",
+    "title": "The Gavel Question",
+    "text": "A reporter asks about the ceremonial gavel and pen you collect at every signing. The collection now fills a vitrine, then a shelf, then a hallway.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Note they go to the archive",
+        "effects": {
+          "stability": 4,
+          "ego": -3
+        },
+        "result": "The archive is thrilled. It asked for the pens' receipts."
+      },
+      {
+        "label": "Say you have the best collection",
+        "effects": {
+          "ego": 5,
+          "stability": -3
+        },
+        "result": "Pens were ranked on live television. The Smithsonian has asked for a quiet word."
+      }
+    ],
+    "ignore": {
+      "stability": -2,
+      "text": "The question hung in the air. A pen rolled away."
+    },
+    "inspiredBy": "Signing ceremonies in 2025 featured pens, gavels and prop souvenirs handed to the president."
+  },
+  {
+    "id": "law-call-speaker",
+    "kind": "call",
+    "title": "The Speaker Calls",
+    "text": "The Speaker says the House is one vote short on your bill. Two holdouts want something in writing, and one wants a golf outing.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Offer small, honest concessions",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "Both holdouts relented. One kept the golf outing, the other got a tweaked paragraph."
+      },
+      {
+        "label": "Promise whatever they ask",
+        "effects": {
+          "ego": 5,
+          "stability": -7
+        },
+        "result": "Passed by 218 to 214. You promised a statue, a highway and a sandwich. All three are on the books."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The vote failed by one. The Speaker rehearsed a very long sigh."
+    },
+    "inspiredBy": "The One Big Beautiful Bill Act passed the House 218 to 214 in July 2025 after intense whip efforts."
+  },
+  {
+    "id": "law-call-senate-leader",
+    "kind": "call",
+    "title": "Majority Leader On Nominees",
+    "text": "The Senate leader says rules can be changed to confirm nominees in bundles, but it will cost you minority goodwill. The goodwill, he notes, is mostly theoretical.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Keep the rules as they are",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The nominees wait their turn, which they find offensive and you find polite."
+      },
+      {
+        "label": "Change the rules to confirm them",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "Dozens confirmed in one vote. The minority called it a power grab, and then asked for a favor."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "Nominees waited. Acting officials acted, and acted, and acted."
+    },
+    "inspiredBy": "In October 2025 Senate Republicans changed rules to allow en bloc confirmation of many nominees."
+  },
+  {
+    "id": "law-call-solicitor",
+    "kind": "call",
+    "title": "Solicitor General's Line",
+    "text": "The Solicitor General says the appeals may go better if you stop posting about the judges. The line is silent as you consider this.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Let the lawyers talk",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The brief was filed on time, and nobody mentioned any judge by nickname."
+      },
+      {
+        "label": "Post about the judges anyway",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "The posts were quoted verbatim in the other side's brief, in a font larger than yours."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The line went dead. The brief went in with two typos and a joke."
+    },
+    "inspiredBy": "Government lawyers filed a wave of emergency appeals in 2025 while the president criticized judges publicly."
+  },
+  {
+    "id": "law-call-pardon-czar",
+    "kind": "call",
+    "title": "The Pardon Czar",
+    "text": "Your pardon czar has found a new batch of petitions. The list includes political allies, public figures and a man who sold a lot of fish.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Send them through the regular office",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "Slower. Most remained unpardoned, but the fish merchant is mid-review."
+      },
+      {
+        "label": "Say 'pardon everyone'",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "A sweeping order. The czar made a spreadsheet. The spreadsheet made a face."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The petitions piled up. A few filed pardons for the pile itself."
+    },
+    "inspiredBy": "The White House pardon czar publicized batches of clemency grants in 2025 and September 2026."
+  },
+  {
+    "id": "law-call-state-senate",
+    "kind": "call",
+    "title": "State Senate Leader On The Map",
+    "text": "A state senate leader says his chamber lacks the votes for a new congressional map. Several members have mixed feelings about being told what to do.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Accept the vote count",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The map stays as it was. State senators sent a modest fruit basket."
+      },
+      {
+        "label": "Threaten primaries for 'no' votes",
+        "effects": {
+          "ego": 6,
+          "stability": -7
+        },
+        "result": "The threat went public. The map failed anyway, and now there are primaries."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The vote happened without you. It was not close."
+    },
+    "inspiredBy": "In December 2025 the Indiana state senate rejected a mid-decade congressional map the White House had pushed."
+  },
+  {
+    "id": "law-jury-summons",
+    "kind": "decision",
+    "title": "Jury Duty",
+    "text": "A jury summons has arrived at the White House, addressed to you. The clerk says everyone gets one eventually.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Request the standard deferral",
+        "effects": {
+          "stability": 4,
+          "ego": -2
+        },
+        "result": "Deferral granted by form letter. It began \"Dear Resident\", which stung."
+      },
+      {
+        "label": "Show up and ask to be foreman",
+        "effects": {
+          "ego": 5,
+          "stability": -3
+        },
+        "result": "You arrived with a motorcade and a verdict. The judge excused the entire panel."
+      }
+    ],
+    "ignore": {
+      "stability": -2,
+      "text": "A second summons arrived, in red ink. Then a third, addressed to \"Occupant\"."
+    },
+    "inspiredBy": "Presidents and former presidents have periodically been summoned for jury duty."
+  }
+]

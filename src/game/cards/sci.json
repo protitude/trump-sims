@@ -1,0 +1,838 @@
+[
+  {
+    "id": "sci-balloons",
+    "kind": "briefing",
+    "title": "Weather Balloons",
+    "text": "The weather service is short of staff and some offices have stopped launching weather balloons. Slides are provided. Nobody on them is gold.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Read every slide",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You learned what a weather balloon does. You asked if it could carry a banner."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "Forecasters guessed the sky. The sky declined to confirm."
+    },
+    "inspiredBy": "Reports in 2025 of weather service offices cutting balloon launches amid staff losses."
+  },
+  {
+    "id": "sci-climate-assessment",
+    "kind": "briefing",
+    "title": "Climate Assessment",
+    "text": "Scientists have a national climate report, and a long argument about whether the website hosting it should exist. Sit through the chapters.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Sit through the chapters",
+        "effects": {
+          "stability": 8,
+          "ego": -4
+        },
+        "result": "Chapter 9 was about coastlines. You asked whether yours could be rebranded."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The report was published anyway, by people with no one to stop them."
+    },
+    "inspiredBy": "2025 removal of the National Climate Assessment website and dismissal of its authors."
+  },
+  {
+    "id": "sci-fema-council",
+    "kind": "briefing",
+    "title": "Disaster Season Review",
+    "text": "A council wants to review whether disaster response should shift to the states. The review has 140 pages and an appendix about forms.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Review the forms",
+        "effects": {
+          "stability": 10,
+          "ego": -3
+        },
+        "result": "You approved a plan that ensures every form has a place to sit."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The review was never signed. The next storm filed its own."
+    },
+    "inspiredBy": "2025 FEMA review council debating shifting disaster response to the states."
+  },
+  {
+    "id": "sci-artemis",
+    "kind": "briefing",
+    "title": "Moon Schedule",
+    "text": "Engineers walk you through the Artemis schedule: another delay, a heat shield, a revised landing date. You asked for a landing in your honor.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Hear out the engineers",
+        "effects": {
+          "stability": 9,
+          "ego": -4
+        },
+        "result": "The Moon is still on track for eventually. Your name is not on the lander."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The launch window closed while you picked a font for the crew patch."
+    },
+    "inspiredBy": "2025 and 2026 Artemis program delays and schedule revisions."
+  },
+  {
+    "id": "sci-ai-preemption",
+    "kind": "briefing",
+    "title": "AI Rules Patchwork",
+    "text": "Lawyers brief you on the clash between state AI laws and a single national rulebook. One slide is a map of states in angry colors.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Sit through the map",
+        "effects": {
+          "stability": 8,
+          "ego": -3
+        },
+        "result": "You now understand preemption. You still prefer the word \"winning\"."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "Fifty states wrote fifty AI laws. A lawyer cried in a hallway."
+    },
+    "inspiredBy": "Late 2025 executive order seeking to override state AI regulations."
+  },
+  {
+    "id": "sci-golden-dome",
+    "kind": "briefing",
+    "title": "Golden Dome Briefing",
+    "text": "Generals present the missile shield: layers, sensors, a price tag with a surprising number of zeroes. You ask whether the dome is actually gold.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Hear the cost estimates",
+        "effects": {
+          "stability": 9,
+          "ego": -4
+        },
+        "result": "The dome is not gold. The estimate is, in a way."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The shield got designed by committee. The committee has been issued an umbrella."
+    },
+    "inspiredBy": "2025 Golden Dome missile defense plan and its cost estimates."
+  },
+  {
+    "id": "sci-vaccine-panel",
+    "kind": "briefing",
+    "title": "Advisory Panel Minutes",
+    "text": "The vaccine advisory panel has issued six hours of minutes. Doctors on both sides would like a senior official to remember the minutes exist.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Read all six hours",
+        "effects": {
+          "stability": 8,
+          "ego": -4
+        },
+        "result": "You learned how to say \"immunization schedule\" without pausing."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The minutes went unread. The footnotes held a grudge."
+    },
+    "inspiredBy": "2025 reconstitution of the CDC vaccine advisory committee and its contested meetings."
+  },
+  {
+    "id": "sci-reactors",
+    "kind": "briefing",
+    "title": "Reactor Licensing",
+    "text": "Officials want sign-off on faster approvals for small nuclear reactors. They show a diagram that is not shaped like a ballroom.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Review the licensing plan",
+        "effects": {
+          "stability": 10,
+          "ego": -3
+        },
+        "result": "You approved a streamlined process and asked if one could be built in the Rose Garden. No."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The licensing queue stayed long. The reactors stayed theoretical."
+    },
+    "inspiredBy": "2025 executive orders to speed up nuclear reactor approvals."
+  },
+  {
+    "id": "sci-offshore-wind",
+    "kind": "decision",
+    "title": "Offshore Windmills",
+    "text": "An energy adviser says halting a half-built offshore wind farm will cost billions and invite a lawsuit. The windmills block your view of nothing.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Let the lawyers advise",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The lawyers won. The windmills turned, unforgiven."
+      },
+      {
+        "label": "Order the turbines stopped",
+        "effects": {
+          "ego": 6,
+          "stability": -7
+        },
+        "result": "The turbines froze mid-spin, like a photo of a windmill that someone hates."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The wind farm sat half-finished. Seagulls moved in."
+    },
+    "inspiredBy": "2025 stop-work orders and pauses on offshore wind projects, with court challenges."
+  },
+  {
+    "id": "sci-coal-plant",
+    "kind": "decision",
+    "title": "Coal Plant Order",
+    "text": "A utility wants to retire a coal plant on schedule. Engineers say the grid has enough power. An aide holds out a \"keep it open\" order.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Let it retire",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The plant retired with a small ceremony and a lot of relief on the grid."
+      },
+      {
+        "label": "Order it kept open",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "Coal lives. The plant manager sent flowers and a hefty repair bill."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The plant is in limbo and the old turbine is making noises."
+    },
+    "inspiredBy": "2025 emergency orders keeping coal plants open past retirement dates."
+  },
+  {
+    "id": "sci-showerhead",
+    "kind": "decision",
+    "title": "Showerhead Question",
+    "text": "An aide says the old water-saving rules are law, and a law is a law. You recall a shower that dribbled in a way that felt personal.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Study the law",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The law stands. Your hair, as ever, is not ruled by water pressure."
+      },
+      {
+        "label": "Demand more water pressure",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The shower roared like a waterfall. The plumbing bill was a small flood."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The rule remains in force. You took a cold shower anyway."
+    },
+    "inspiredBy": "2025 push to roll back water-saving appliance and showerhead standards."
+  },
+  {
+    "id": "sci-mars-race",
+    "kind": "decision",
+    "title": "Mars Deadline",
+    "text": "A space adviser says Mars landings are decades off and the Moon needs finishing first. A tech CEO says Mars by next spring. He means it, somehow.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Fund the Moon plan first",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The Moon plan advanced slowly. Mars grew a little more patient."
+      },
+      {
+        "label": "Announce Mars by next spring",
+        "effects": {
+          "ego": 7,
+          "stability": -7
+        },
+        "result": "The calendar accepts your date. Rockets do not read calendars."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The space plan was left floating. Nobody could agree on where."
+    },
+    "inspiredBy": "2025 debates over prioritizing Mars versus the Moon in NASA plans."
+  },
+  {
+    "id": "sci-ai-chips",
+    "kind": "decision",
+    "title": "Chip Export Deal",
+    "text": "A trade adviser proposes a deal letting an AI chip maker sell a cut-down chip abroad, with a cut to the Treasury. Security staff keep clearing their throats.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Take the security advice",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The chips stayed home. The chip maker sent a stern memo."
+      },
+      {
+        "label": "Cut the deal, take a cut",
+        "effects": {
+          "ego": 6,
+          "stability": -7
+        },
+        "result": "The Treasury got a cut. Your security people got migraines."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The licensing question sat unanswered. The chips found their own route."
+    },
+    "inspiredBy": "2025 deal letting Nvidia sell AI chips to China in exchange for a revenue share."
+  },
+  {
+    "id": "sci-woke-ai",
+    "kind": "decision",
+    "title": "Neutral AI Order",
+    "text": "An adviser says government AI systems should be tested for accuracy, not ideology. A draft order calls an assistant \"too polite to you\".",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Require accuracy tests",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The tests were dull and fair. The chatbot remained unreasonably courteous."
+      },
+      {
+        "label": "Order the AI to call you great",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The AI complied with a 40-paragraph tribute. Auditors noticed."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The AI guidance stayed vague. Every vendor wrote its own."
+    },
+    "inspiredBy": "2025 AI Action Plan and order on \"woke AI\" in federal procurement."
+  },
+  {
+    "id": "sci-ev-credit",
+    "kind": "decision",
+    "title": "Electric Car Credit",
+    "text": "Aides say ending the electric car tax credit will hit sales and a few factories. A tycoon at the other end of the supply chain would like a word.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Phase it out gently",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "The phase-out was gradual. The factories adjusted their sighs."
+      },
+      {
+        "label": "End it immediately",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "The credit died on Friday. The car companies held a quiet vigil."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The credit expired by default and the showrooms noticed."
+    },
+    "inspiredBy": "2025 repeal of electric vehicle tax credits."
+  },
+  {
+    "id": "sci-dome-name",
+    "kind": "decision",
+    "title": "Name The Shield",
+    "text": "The missile shield needs a name for the press release. \"Golden Dome\" is already taken. Naming it after yourself requires a form.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Keep the working title",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The shield is called what it was called. Engineers cheered."
+      },
+      {
+        "label": "Rename it after yourself",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The brass plaque is already on order. The shield has not been designed."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The shield was announced without a name. The press picked one."
+    },
+    "inspiredBy": "2025 Golden Dome announcement and its naming."
+  },
+  {
+    "id": "sci-shuttle",
+    "kind": "decision",
+    "title": "Space Shuttle Move",
+    "text": "Aides propose moving a retired space shuttle from one museum to another city. The museum and the lawyers object. The shuttle has no opinion.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Leave the shuttle alone",
+        "effects": {
+          "stability": 5,
+          "ego": -2
+        },
+        "result": "The shuttle stayed. It still looks great, parked."
+      },
+      {
+        "label": "Sign the shuttle order",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "The shuttle was moved. A crane, a state, and an angry senator are pending."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The shuttle stayed in limbo. A committee now owns the parking."
+    },
+    "inspiredBy": "2025 proposal to relocate a retired space shuttle in a budget bill."
+  },
+  {
+    "id": "sci-who-exit",
+    "kind": "decision",
+    "title": "Health Body Exit",
+    "text": "Doctors warn that leaving the global health organization will cut off disease data. Aides say the dues are steep and the building is far away.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Keep the data link",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The data kept flowing. The dues were tolerated, with grumbling."
+      },
+      {
+        "label": "Walk out, make a speech",
+        "effects": {
+          "ego": 6,
+          "stability": -7
+        },
+        "result": "You walked out. The data turned off, like an unpaid utility."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The paperwork sat in limbo. Epidemiologists made their own links."
+    },
+    "inspiredBy": "2025 order to withdraw the US from the World Health Organization."
+  },
+  {
+    "id": "sci-trumprx",
+    "kind": "decision",
+    "title": "Drug Price Site",
+    "text": "Pharma aides propose a government site for cheaper medicine. Doctors say to include clear safety information. The site name is already yours.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Add the safety information",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The site shows dosages and warnings. It feels like a pharmacy, not a billboard."
+      },
+      {
+        "label": "Launch it with your face",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The site launched with a large portrait. The pills are not in the photo."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The site is half-built. A banner reads \"coming soon, and great\"."
+    },
+    "inspiredBy": "2025 announcement of a TrumpRx drug price website."
+  },
+  {
+    "id": "sci-paper-straws",
+    "kind": "press",
+    "title": "Straw Question",
+    "text": "A reporter asks about your ban on paper straws. She says they dissolve in the drink, and that it is a big issue in your drink.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say you will review it",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You reviewed it. Soup was found to be a different issue."
+      },
+      {
+        "label": "Call paper straws a disaster",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "The line plays well. The plastic straw lobby sends a gift basket."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The straw question went unanswered. Sippy cups were rumored."
+    },
+    "inspiredBy": "2025 executive order promoting plastic straws over paper straws."
+  },
+  {
+    "id": "sci-physical",
+    "kind": "press",
+    "title": "Physical Results",
+    "text": "A reporter asks about your annual physical and the cognitive test. The doctor wants a calm, accurate summary, not a victory lap.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Let the doctor speak",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The doctor read the results. They were fine. It lasted four minutes."
+      },
+      {
+        "label": "Announce a perfect score",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "You said \"perfect\" eleven times. The test is a short screening."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "No one briefed the press. Everyone made up their own diagnosis."
+    },
+    "inspiredBy": "April 2025 annual physical and the reported cognitive screening test score."
+  },
+  {
+    "id": "sci-eclipse",
+    "kind": "press",
+    "title": "The Eclipse",
+    "text": "An eclipse is passing over Washington. Scientists have handed out special glasses and one very clear instruction.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Wear the glasses",
+        "effects": {
+          "stability": 4,
+          "ego": -2
+        },
+        "result": "You wore the glasses like everybody else. In the photos you are indistinguishable from an aide."
+      },
+      {
+        "label": "Look straight at it",
+        "effects": {
+          "ego": 4,
+          "stability": -3
+        },
+        "result": "You stared it down. The sun blinked first, you said. An optometrist has asked for a word."
+      }
+    ],
+    "ignore": {
+      "stability": -2,
+      "text": "You missed the eclipse. The photo of the empty balcony ran on every front page."
+    },
+    "inspiredBy": "The 2017 solar eclipse viewed from the White House balcony."
+  },
+  {
+    "id": "sci-tech-dinner",
+    "kind": "press",
+    "title": "Tech Dinner Toast",
+    "text": "A state dinner with tech CEOs begins. Each wants a regulation lifted. Aides suggest a short toast. You prefer a long one that features you.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Keep the toast short",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The toast was short. Dessert came in time to be happy."
+      },
+      {
+        "label": "Ask who is richest",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "You asked who invested the most. Phone cameras came out in unison."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The dinner had no toast. The CEOs toasted each other."
+    },
+    "inspiredBy": "September 2025 White House dinner with major tech CEOs."
+  },
+  {
+    "id": "sci-genesis",
+    "kind": "press",
+    "title": "Science Mission Event",
+    "text": "At an event for a new AI science program, a reporter asks how it will work. The scientists would like to answer. They stand behind you.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Hand the mic to scientists",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "A scientist explained it in plain words. You nodded as if you wrote it."
+      },
+      {
+        "label": "Say it will be tremendous",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "You said \"tremendous\" four times. The scientists stared at their shoes."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The event ended with no explanation. The scientists went to lunch."
+    },
+    "inspiredBy": "Late 2025 executive order launching the Genesis Mission for AI-driven science."
+  },
+  {
+    "id": "sci-un-climate",
+    "kind": "press",
+    "title": "Climate Remarks",
+    "text": "At an international gathering, you are about to speak on climate. Scientists want you to respect the data. Your speechwriter has a different opinion.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Read the data fairly",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The speech cited real data. Several diplomats were pleased and confused."
+      },
+      {
+        "label": "Call it a con job",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The hall gasped. You counted it as applause."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The speech was never written. You ad-libbed the weather."
+    },
+    "inspiredBy": "September 2025 UN speech calling climate change a \"con job\"."
+  },
+  {
+    "id": "sci-mri",
+    "kind": "call",
+    "title": "Doctor On The Line",
+    "text": "A doctor calls about the scan you had. Everything looks normal and she wants to explain in detail. You want to tell her it was \"amazing\".",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Listen to the full report",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "It was an ordinary scan. The doctor was relieved that you listened."
+      },
+      {
+        "label": "Announce it was perfect",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You told the press it was \"perfect\", and the doctor winced politely."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "No one returned the doctor's call. The scan sits in a drawer."
+    },
+    "inspiredBy": "October 2025 reports of a routine MRI at Walter Reed and the White House statements about it."
+  },
+  {
+    "id": "sci-nasa-chief",
+    "kind": "call",
+    "title": "NASA Chief Calls",
+    "text": "The NASA chief calls about the budget and a nomination that was pulled and then restored. He asks only for a plain answer.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Give a clear answer",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "You answered clearly. The call lasted six minutes, which is a record."
+      },
+      {
+        "label": "Ask about a Moon statue",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "You asked about a gold statue on the Moon. The line went silent."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The call went to voicemail. The mission chose its own budget."
+    },
+    "inspiredBy": "2025 nomination, withdrawal and renomination of the NASA administrator."
+  },
+  {
+    "id": "sci-comet-name",
+    "kind": "decision",
+    "title": "Name That Comet",
+    "text": "Astronomers have spotted a visitor from another star system. By convention it is named after the telescope that found it.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Congratulate the astronomers",
+        "effects": {
+          "stability": 4,
+          "ego": -3
+        },
+        "result": "You congratulated a telescope. It did not congratulate you back."
+      },
+      {
+        "label": "Sign an order naming it after you",
+        "effects": {
+          "ego": 6,
+          "stability": -3
+        },
+        "result": "The comet bears your name on all federal documents. It is leaving the solar system as fast as it can."
+      }
+    ],
+    "ignore": {
+      "stability": -2,
+      "text": "The comet passed unremarked. Several agencies issued rival names for it."
+    },
+    "inspiredBy": "The interstellar comet 3I/ATLAS, discovered in July 2025."
+  },
+  {
+    "id": "sci-data-centers",
+    "kind": "call",
+    "title": "Power Grid Call",
+    "text": "A grid operator calls: data centers are using more power than the grid can provide. She asks for a plan that adds actual generation.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Back a real power plan",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "The plan added power, and a cable. The call was dull."
+      },
+      {
+        "label": "Say AI will invent more power",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "You said AI will think of something. The operator took notes, sadly."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The call went unreturned. Servers and lamps argued over the outlets."
+    },
+    "inspiredBy": "2025 concerns about data center electricity demand straining the grid."
+  },
+  {
+    "id": "sci-mrna",
+    "kind": "call",
+    "title": "Vaccine Lab Call",
+    "text": "A lab director calls: federal funding for vaccine technology projects was canceled, and she wants to keep a few trials going. She asks for five minutes.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Keep the trials funded",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The trials survived. She thanked you and then thanked the lab techs."
+      },
+      {
+        "label": "Say you prefer something else",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "You said you have a better idea. It had no name yet."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The lab never heard back. The freezer was left with a sticky note."
+    },
+    "inspiredBy": "August 2025 cancellation of federal mRNA vaccine research contracts."
+  }
+]

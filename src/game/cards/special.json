@@ -1,0 +1,737 @@
+[
+  {
+    "id": "crisis-shutdown",
+    "kind": "crisis",
+    "title": "CRISIS: The Lights Go Off",
+    "text": "Congress and the White House have been staring at each other for weeks. Nobody has picked up the phone. Federal workers have been told to stay home and wait.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Call both parties in and negotiate",
+        "effects": {
+          "stability": 10,
+          "ego": -7
+        },
+        "result": "You sat in a room with the other side for six hours. Nobody took a photo. The lights came back on."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The shutdown became the longest on record. A museum of it is being planned."
+    },
+    "inspiredBy": "The record federal shutdown of October to November 2025."
+  },
+  {
+    "id": "crisis-airports",
+    "kind": "crisis",
+    "title": "CRISIS: Air Traffic Gets Thin",
+    "text": "Controllers are unpaid and calling in sick. Flights are being cut. Your own jet is fine, which is the only thing you checked.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Fund the controllers, quietly",
+        "effects": {
+          "stability": 9,
+          "ego": -6
+        },
+        "result": "You signed a boring funding line. Planes departed more or less on time, which nobody thanked you for."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "Airlines cancelled the entire holiday season as a courtesy."
+    },
+    "inspiredBy": "Flight cuts and delays caused by air traffic staffing during the 2025 shutdown."
+  },
+  {
+    "id": "crisis-bonds",
+    "kind": "crisis",
+    "title": "CRISIS: The Bond Market Sulks",
+    "text": "Investors who lend the country money have started asking whether it is a good idea. Yields are up. So is a very quiet panic.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Reassure the lenders, dully",
+        "effects": {
+          "stability": 10,
+          "ego": -8
+        },
+        "result": "You read a statement with the word \"sustainable\" in it. The lenders went back to sleep."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The interest bill grew large enough to need its own zip code."
+    },
+    "inspiredBy": "The April 2025 rise in long-term Treasury yields during the tariff sell-off."
+  },
+  {
+    "id": "crisis-wrongchat",
+    "kind": "crisis",
+    "title": "CRISIS: Wrong Person In The Chat",
+    "text": "Someone on the team added a journalist to the plans group chat. It has been a very informative week for the journalist.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Fix the phones and the policy",
+        "effects": {
+          "stability": 9,
+          "ego": -6
+        },
+        "result": "You issued a memo about messaging apps. It was read by everyone, including the journalist."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The chat has been renamed \"Public Briefing\" by popular demand."
+    },
+    "inspiredBy": "The March 2025 Signal group chat episode with an accidentally added editor."
+  },
+  {
+    "id": "crisis-rehire",
+    "kind": "crisis",
+    "title": "CRISIS: Please Come Back",
+    "text": "The staff you fired turned out to look after something important. The agency is calling them back, politely, by email, with an apology template.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Rehire the staff, sheepishly",
+        "effects": {
+          "stability": 9,
+          "ego": -7
+        },
+        "result": "You approved the rehiring memo. It is titled \"Restoring Efficiency\". Nobody laughed on camera."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The agency is now run by one intern and a very confident printer."
+    },
+    "inspiredBy": "The February 2025 rehiring of nuclear security staff dismissed in federal cuts."
+  },
+  {
+    "id": "crisis-tariffcourt",
+    "kind": "crisis",
+    "title": "CRISIS: The Court Reads Your Tariffs",
+    "text": "A court has looked at the legal basis for your tariffs and used the word \"unlawful\" in a footnote. Importers are holding their breath and their invoices.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Seek a lawful route to the same goal",
+        "effects": {
+          "stability": 10,
+          "ego": -8
+        },
+        "result": "Your lawyers found three statutes that do the job. All three require paperwork. You signed it."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The tariffs were refunded by a clerk with a very large rubber stamp."
+    },
+    "inspiredBy": "The 2025 and 2026 court challenges to emergency-powers tariffs."
+  },
+  {
+    "id": "crisis-magnets",
+    "kind": "crisis",
+    "title": "CRISIS: Magnet Shortage",
+    "text": "A major supplier has restricted exports of rare earth magnets. Factories are tapping their fridge doors for spares.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Talk to the supplier, patiently",
+        "effects": {
+          "stability": 10,
+          "ego": -7
+        },
+        "result": "You agreed to a truce and a reading of a spreadsheet. Factories got their magnets. You got no applause."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "Carmakers began selling cars with a fridge magnet and a prayer."
+    },
+    "inspiredBy": "China's October 2025 rare earth export controls and the trade scramble that followed."
+  },
+  {
+    "id": "crisis-eggs",
+    "kind": "crisis",
+    "title": "CRISIS: The Price Of Everything",
+    "text": "Families are being told that dinner costs more than expected. A press aide has suggested you say \"the economy is great\" more loudly.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Address costs with an actual plan",
+        "effects": {
+          "stability": 9,
+          "ego": -6
+        },
+        "result": "You held a dull press conference on supply chains. Grocery prices wobbled in a pleasing direction."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "Shoppers reportedly started paying for eggs with the gold leaf."
+    },
+    "inspiredBy": "Public frustration over grocery and living costs in 2025."
+  },
+  {
+    "id": "crisis-stats",
+    "kind": "crisis",
+    "title": "CRISIS: The Statistics Office Has No Boss",
+    "text": "After a poor jobs report, the head of the statistics bureau was dismissed. Now nobody can find the numbers, and nobody trusts them.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Appoint someone credible, and stand back",
+        "effects": {
+          "stability": 10,
+          "ego": -8
+        },
+        "result": "You named a person who knows what a median is. The numbers returned, and so did the bad news."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The jobs report was replaced by a vibe, released on Fridays."
+    },
+    "inspiredBy": "The August 2025 dismissal of the labor statistics commissioner after a weak jobs report."
+  },
+  {
+    "id": "crisis-canadaad",
+    "kind": "crisis",
+    "title": "CRISIS: Neighbour Hangs Up",
+    "text": "A trade call with your northern neighbour ended when a television ad annoyed you. The neighbour is now also annoyed. So is every border town.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Resume the talks, politely",
+        "effects": {
+          "stability": 9,
+          "ego": -7
+        },
+        "result": "You called back and apologised without using the word. The neighbour returned your calls and your lumber."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The border was repainted with the word \"Hello\" and nobody came."
+    },
+    "inspiredBy": "The October 2025 suspension of US-Canada trade talks over a political ad."
+  },
+  {
+    "id": "crisis-coffee",
+    "kind": "crisis",
+    "title": "CRISIS: Breakfast Prices Spike",
+    "text": "Tariffs on coffee and beef are now showing up in the one place you cannot gild: the breakfast table. Aides are calling it a \"temporary adjustment\".",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Roll back the breakfast tariffs",
+        "effects": {
+          "stability": 10,
+          "ego": -8
+        },
+        "result": "You exempted coffee and beef by memo. Breakfast prices eased and nobody noticed you did it."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The nation switched to hot water and rumours."
+    },
+    "inspiredBy": "The 2025 tariffs on Brazilian goods and the later exemptions on coffee and beef."
+  },
+  {
+    "id": "crisis-fed",
+    "kind": "crisis",
+    "title": "CRISIS: Central Bank Standoff",
+    "text": "You and the central bank are not speaking. Rates are a mood now. Markets are checking whether the independent bit is still independent.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Respect the bank, and keep quiet",
+        "effects": {
+          "stability": 9,
+          "ego": -6
+        },
+        "result": "You said \"no comment\" for a whole week. Financial markets nearly wept with joy."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The central bank moved to a building with a better lock."
+    },
+    "inspiredBy": "The 2025 and 2026 pressure on the Federal Reserve over interest rates and its leadership."
+  },
+  {
+    "id": "crisis-visafee",
+    "kind": "crisis",
+    "title": "CRISIS: The Visa Fee Mix-Up",
+    "text": "A new huge fee on skilled worker visas was announced at dinner and clarified at breakfast. Employers do not know whether to pay it, frame it or flee.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Publish clear rules, in small print",
+        "effects": {
+          "stability": 9,
+          "ego": -6
+        },
+        "result": "You issued two pages of rules, one of which was correct. Employers sighed and filed forms."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "Seven hundred hiring managers started a support group."
+    },
+    "inspiredBy": "The September 2025 announcement of a $100,000 fee on H-1B visas and the confusion around it."
+  },
+  {
+    "id": "crisis-india",
+    "kind": "crisis",
+    "title": "CRISIS: The Quad Turns Quiet",
+    "text": "High tariffs on a large Asian partner have made a joint summit awkward. The empty chairs are being described as \"scheduling\".",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Repair the partnership, in person",
+        "effects": {
+          "stability": 10,
+          "ego": -7
+        },
+        "result": "You made a phone call that included the word \"partner\". The chairs filled up. No one thanked you."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The summit was held without you, and also without a table."
+    },
+    "inspiredBy": "The 2025 US tariffs on India and the strain on the Quad partnership."
+  },
+  {
+    "id": "crisis-greenland",
+    "kind": "crisis",
+    "title": "CRISIS: Frozen Real Estate",
+    "text": "Your remarks about acquiring a large Arctic island have upset a small, polite country. Its leaders have started using the word \"sovereign\" a lot.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Reassure the allies, then retreat",
+        "effects": {
+          "stability": 9,
+          "ego": -8
+        },
+        "result": "You said you wanted \"a framework\". Nobody knew what it meant, but the polite country relaxed."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The island formally declared itself not for sale."
+    },
+    "inspiredBy": "The January 2026 row between the US and Denmark over Greenland."
+  },
+  {
+    "id": "crisis-ovalrow",
+    "kind": "crisis",
+    "title": "CRISIS: The Meeting Goes Off Script",
+    "text": "A visiting leader and you have exchanged views in front of the cameras. The aides have left the room. The cameras have not.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Rebuild the relationship after the fact",
+        "effects": {
+          "stability": 10,
+          "ego": -8
+        },
+        "result": "You issued a joint statement that said nothing very kindly. Everyone relaxed."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The visitor left by a side door, and the side door was named."
+    },
+    "inspiredBy": "The February 2025 Oval Office meeting with Ukraine's president that ended in a public clash."
+  },
+  {
+    "id": "crisis-parcels",
+    "kind": "crisis",
+    "title": "CRISIS: The Parcel Pile-Up",
+    "text": "You ended the small-parcel customs exemption. Postal services abroad stopped shipping to America. Millions of packages are piled in a depot.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Fix the customs rules, tediously",
+        "effects": {
+          "stability": 9,
+          "ego": -5
+        },
+        "result": "You issued a rule on parcel forms. Mail resumed. Customs staff now use your name as a verb."
+      }
+    ],
+    "ignore": {
+      "stability": -18,
+      "text": "The packages became a national monument to waiting."
+    },
+    "inspiredBy": "The August 2025 end of the de minimis exemption and postal suspensions abroad."
+  },
+  {
+    "id": "hybrid-fifa",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: The Peace Prize That Isn't Nobel",
+    "text": "A football body has a new trophy and one obvious winner. It also needs you to host a draw and sign an agreement on visas.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Accept the trophy, then fix the visas",
+        "effects": {
+          "stability": 9,
+          "ego": 12,
+          "gold": 1
+        },
+        "result": "A real visa deal, a real trophy and a real standing ovation. The trophy is heavy. You checked."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The trophy went to a very nice goalkeeper."
+    },
+    "inspiredBy": "The December 2025 FIFA Peace Prize presented to the president at the World Cup draw."
+  },
+  {
+    "id": "hybrid-sharm",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: Ceasefire With Flags",
+    "text": "A regional ceasefire needs a signing ceremony. The negotiators did the work. They would like a famous chairman and a good chair.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Chair the ceremony",
+        "effects": {
+          "stability": 11,
+          "ego": 11
+        },
+        "result": "A real ceasefire, signed by real leaders, with your picture in every front row. You found it unseemly. You stayed."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The ceremony was run by a mid-sized Egyptian chair."
+    },
+    "inspiredBy": "The October 2025 Gaza ceasefire summit at Sharm el-Sheikh."
+  },
+  {
+    "id": "hybrid-route",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: Route 47",
+    "text": "Two neighbouring countries want a trade corridor and a peace paper. They have asked if it could carry your name on the road signs.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Sign the deal, and the signs",
+        "effects": {
+          "stability": 10,
+          "ego": 11,
+          "names": 1
+        },
+        "result": "A real corridor, a real peace declaration, and a sign that reads your name in a font you approved."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The road was named after a local bus."
+    },
+    "inspiredBy": "The August 2025 Armenia and Azerbaijan peace declaration and the planned \"Trump Route\"."
+  },
+  {
+    "id": "hybrid-kennedy",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: Curtain Call",
+    "text": "A national arts venue needs a new board, and a new chairman. The board would like to call it something with your name in it.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Take the chair, keep the lights on",
+        "effects": {
+          "stability": 8,
+          "ego": 12,
+          "names": 1
+        },
+        "result": "The venue got a budget, a board and a new sign. It now says your name above a very old stage."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The venue kept its old name, out of laziness."
+    },
+    "inspiredBy": "The 2025 takeover of the Kennedy Center board and later renaming proposals."
+  },
+  {
+    "id": "hybrid-japan",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: Investment Fund With A Bow",
+    "text": "An allied government offers a vast investment pledge and a trade deal. They have even drafted a speech about you.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Accept the pledge, read the speech",
+        "effects": {
+          "stability": 10,
+          "ego": 10
+        },
+        "result": "A real trade deal, a real investment pledge, and a speech about your negotiation genius. You asked for a copy."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The pledge was declared a cultural treasure and filed away."
+    },
+    "inspiredBy": "The July 2025 US-Japan trade deal and its $550 billion investment pledge."
+  },
+  {
+    "id": "hybrid-congo",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: The Institute Of Peace And You",
+    "text": "Two African neighbours want to sign a peace accord in Washington. The host building could use a nicer name, and you could use a building.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Host the signing",
+        "effects": {
+          "stability": 10,
+          "ego": 11,
+          "names": 1
+        },
+        "result": "A real accord. A real building. A real plaque, hung before the ink was dry."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The accord was signed in a conference room that nobody enjoyed."
+    },
+    "inspiredBy": "The December 2025 DRC and Rwanda accord signed in Washington at the renamed peace institute."
+  },
+  {
+    "id": "hybrid-goldcard",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: The Gold Card",
+    "text": "A new residency scheme would raise money for the Treasury and arrive in a very shiny package. Aides say it is \"mostly legal\".",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Sign the order, hold the card",
+        "effects": {
+          "stability": 7,
+          "ego": 10,
+          "gold": 2
+        },
+        "result": "A real revenue line, and a card made of something that gleams. The Treasury asked what it was made of."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The scheme was sold to a small island."
+    },
+    "inspiredBy": "The September 2025 \"Gold Card\" visa executive order."
+  },
+  {
+    "id": "hybrid-banquet",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: Banquet At The Castle",
+    "text": "A monarch has invited you to a state visit with carriages, a banquet and a long speech in your honour. Some trade talks are attached.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Attend, and sign the tech pact",
+        "effects": {
+          "stability": 7,
+          "ego": 8
+        },
+        "result": "A real tech deal and a real banquet. The carriage was gilded and you asked who ordered it."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The banquet was held for a visiting goat."
+    },
+    "inspiredBy": "The September 2025 state visit to the UK and the technology agreement signed."
+  },
+  {
+    "id": "hybrid-gulf",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: The Gulf Welcome Mat",
+    "text": "Three wealthy governments have laid out the red carpet and a series of investment pledges. One of them has a very large aeroplane.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Fly out and sign everything",
+        "effects": {
+          "stability": 9,
+          "ego": 11,
+          "gold": 2
+        },
+        "result": "Real investment pledges, real handshakes and a real aeroplane. The aeroplane has a gold trim. You noticed."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The trip was covered by a state broadcaster, and by itself."
+    },
+    "inspiredBy": "The May 2025 Gulf tour with investment pledges and a gifted jet."
+  },
+  {
+    "id": "hybrid-kl",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: Peace In Kuala Lumpur",
+    "text": "Two southeast Asian neighbours are ready to stop a border spat. They want a famous guest at the signing. The venue has air conditioning.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Attend the signing",
+        "effects": {
+          "stability": 6,
+          "ego": 7
+        },
+        "result": "A real ceasefire, a real accord, and a short applause for you. The room was very cool."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The spat was resolved by a local grandmother."
+    },
+    "inspiredBy": "The October 2025 Thailand and Cambodia ceasefire signed in Kuala Lumpur."
+  },
+  {
+    "id": "hybrid-busan",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: The Busan Handshake",
+    "text": "The two largest economies would like to pause a trade war. The leaders will meet on a runway. The runway has excellent lighting.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Meet him on the runway",
+        "effects": {
+          "stability": 10,
+          "ego": 9
+        },
+        "result": "A real truce, real tariff cuts and a handshake that lasted 40 seconds. You counted. It was longer than his."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The truce was extended by a very patient clerk."
+    },
+    "inspiredBy": "The October 2025 US-China trade truce reached in South Korea."
+  },
+  {
+    "id": "hybrid-accordsjoin",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: A New Name On The List",
+    "text": "Another country wants to join a regional accord. The signing is quick and the photo is excellent. Your portrait is expected.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Welcome them to the accord",
+        "effects": {
+          "stability": 6,
+          "ego": 8,
+          "names": 1
+        },
+        "result": "A real accord widening, and a new line on the plaque. Yours is in larger letters."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The new member joined by email."
+    },
+    "inspiredBy": "The November 2025 announcement of Kazakhstan joining the Abraham Accords."
+  },
+  {
+    "id": "hybrid-parade",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: Parade With A Point",
+    "text": "The army turns 250 and wants a parade. Veterans, lasting pensions and a long review of the equipment come with the invitation.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Review the troops, fund the pensions",
+        "effects": {
+          "stability": 9,
+          "ego": 11
+        },
+        "result": "A real parade and a real pension fix. The tanks were beautiful and the pensions less so. You liked both."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The parade was attended by a mild drizzle."
+    },
+    "inspiredBy": "The June 2025 US Army 250th anniversary parade in Washington."
+  },
+  {
+    "id": "hybrid-trumprx",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: A Pharmacy With Your Name",
+    "text": "Drug makers will cut prices if the website that sells them carries your name. Patients get a real discount. You get a logo.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Sign the pricing deal",
+        "effects": {
+          "stability": 9,
+          "ego": 10,
+          "names": 1
+        },
+        "result": "A real price cut, and a website with your name on it. The font is gold. You checked the font."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The website was named after a pharmacist."
+    },
+    "inspiredBy": "The 2025 drug-pricing deals and the TrumpRx website announced for 2026."
+  },
+  {
+    "id": "hybrid-kashmir",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: Credit For A Ceasefire",
+    "text": "Two nuclear neighbours stopped fighting on their own and are being very quiet about who helped. You offered to say it was you.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Announce it, and call both leaders",
+        "effects": {
+          "stability": 6,
+          "ego": 8
+        },
+        "result": "A real ceasefire and a real phone call. You told the cameras you did it. The neighbours said \"mostly\"."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The neighbours have asked for a footnote."
+    },
+    "inspiredBy": "The May 2025 India and Pakistan ceasefire and the dispute over US credit."
+  },
+  {
+    "id": "hybrid-dome",
+    "kind": "hybrid",
+    "title": "OPPORTUNITY: A Dome Above It All",
+    "text": "A missile defence programme needs a name, a budget and a prominent supporter. The name on offer is shiny and has \"Golden\" in it.",
+    "cost": 3,
+    "options": [
+      {
+        "label": "Launch the programme, with a speech",
+        "effects": {
+          "stability": 9,
+          "ego": 10,
+          "gold": 1
+        },
+        "result": "A real defence programme and a real speech about gold. You spoke for forty minutes. The budget is a rumour."
+      }
+    ],
+    "ignore": {
+      "stability": 0,
+      "text": "The dome was cancelled for lack of a dome."
+    },
+    "inspiredBy": "The 2025 \"Golden Dome\" missile defence initiative announced by the White House."
+  }
+]

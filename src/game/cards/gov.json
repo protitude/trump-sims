@@ -1,0 +1,830 @@
+[
+  {
+    "id": "gov-shutdown-day43",
+    "kind": "briefing",
+    "title": "Shutdown, Day 43",
+    "text": "A deputy walks you through the longest shutdown in history, one agency at a time. Nobody mentions a ballroom.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Sit through the whole slide deck",
+        "effects": {
+          "stability": 9,
+          "ego": -4
+        },
+        "result": "The lights come back on in the agencies. Your name was on one slide, in the footnotes."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The shutdown is now older than some sandwiches in the White House fridge."
+    },
+    "inspiredBy": "The record-long federal shutdown of October-November 2025."
+  },
+  {
+    "id": "gov-rehire-ledger",
+    "kind": "briefing",
+    "title": "The Rehiring Ledger",
+    "text": "A personnel officer presents a spreadsheet of workers fired in February and rehired in March. Some were rehired by the same person who fired them.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Read every row aloud, slowly",
+        "effects": {
+          "stability": 8,
+          "ego": -3
+        },
+        "result": "The ledger balances, in the sense that nobody can find the first column."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "Fired staff keep getting hired back by e-mail. Nobody is sure who is on the payroll, including payroll."
+    },
+    "inspiredBy": "Agencies rehiring workers laid off in the 2025 efficiency drive, including nuclear weapons staff fired and rehired within a day."
+  },
+  {
+    "id": "gov-acting-everything",
+    "kind": "briefing",
+    "title": "The Acting Org Chart",
+    "text": "A flowchart shows one official acting as head of three agencies, plus a fourth on Thursdays. The arrows are circular.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Learn who is acting what",
+        "effects": {
+          "stability": 9,
+          "ego": -4
+        },
+        "result": "You now know who is in charge of what. By Friday it will be different."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "A single official signs the memo, countersigns it, and then appeals it to himself."
+    },
+    "inspiredBy": "Officials holding several top posts at once in 2025, including a cabinet member running more than one agency."
+  },
+  {
+    "id": "gov-watchdog-vacancies",
+    "kind": "briefing",
+    "title": "Watchdog Vacancies",
+    "text": "A clerk reads out the list of agencies whose inspector general posts are filled by deputies, acting deputies and, in one case, a very tall plant.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Hear the full roll call",
+        "effects": {
+          "stability": 8,
+          "ego": -3
+        },
+        "result": "The posts are tallied. The plant has the best attendance record."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "Seventeen offices have nobody asking awkward questions. Honestly, it is a little eerie."
+    },
+    "inspiredBy": "The mass firing of about 17 inspectors general in January 2025 and the acting replacements."
+  },
+  {
+    "id": "gov-jobs-methods",
+    "kind": "briefing",
+    "title": "How Jobs Are Counted",
+    "text": "Statisticians explain survey response rates and why last month's figure was revised. You ask whether the figure can be revised to be better.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Accept that revisions are routine",
+        "effects": {
+          "stability": 10,
+          "ego": -5
+        },
+        "result": "It turns out numbers get adjusted as more data arrives. You were visibly let down."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The job numbers arrive late, then change, then change back. Markets do not like your face."
+    },
+    "inspiredBy": "The August 2025 firing of the labor statistics chief after large downward jobs revisions."
+  },
+  {
+    "id": "gov-controller-plan",
+    "kind": "briefing",
+    "title": "Controller Workforce Plan",
+    "text": "The aviation agency presents a plan to hire thousands of controllers. Training takes years. You ask for it by Thursday.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Absorb the training timeline",
+        "effects": {
+          "stability": 9,
+          "ego": -4
+        },
+        "result": "The plan is sound. It will help in roughly the next presidency."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "Tower staff are on overtime and snacks. A departure board has simply given up."
+    },
+    "inspiredBy": "The 2025-26 push to hire thousands of air traffic controllers amid shortages and shutdown delays."
+  },
+  {
+    "id": "gov-park-staffing",
+    "kind": "briefing",
+    "title": "Ranger Headcount",
+    "text": "A parks official unrolls a map. The dots are rangers. There are very few dots, and one of them is a bear in a ranger hat.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Study the map in silence",
+        "effects": {
+          "stability": 8,
+          "ego": -3
+        },
+        "result": "You approve more seasonal rangers. The bear is not reappointed."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "Visitor centers are staffed by a laminated sign saying Back in 15 Minutes. It is year-round."
+    },
+    "inspiredBy": "National Park Service staffing cuts and partial reinstatements in 2025."
+  },
+  {
+    "id": "gov-lease-review",
+    "kind": "briefing",
+    "title": "Lease Termination Review",
+    "text": "A real estate officer reviews hundreds of building leases that were cancelled, uncancelled and cancelled again. Some offices were still full of people.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Initial each page",
+        "effects": {
+          "stability": 9,
+          "ego": -5
+        },
+        "result": "Over 480 leases are spared. The building you wanted gilded is not among them."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "A department is evicted from its own office and holds its meetings on the steps."
+    },
+    "inspiredBy": "The 2025 efficiency drive terminated hundreds of federal leases, many later spared."
+  },
+  {
+    "id": "gov-records-law",
+    "kind": "briefing",
+    "title": "Federal Records Briefing",
+    "text": "An archivist explains that official messages must be kept, even the ones with a thumbs-up emoji, even the ones that disappear on purpose.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Learn the retention rules",
+        "effects": {
+          "stability": 8,
+          "ego": -2
+        },
+        "result": "Everyone agrees to keep records. The chat app agrees to disagree."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The archive request arrives for a chat nobody remembers, and it is somehow the one you were in."
+    },
+    "inspiredBy": "Lawsuits and FOIA reports in 2025 on cabinet use of auto-deleting messaging apps for official business."
+  },
+  {
+    "id": "gov-stats-chief",
+    "kind": "decision",
+    "title": "A Commissioner Needed",
+    "text": "The statistics bureau needs a new head. Your shortlist is one economist and one friend who is very good at saying numbers are great.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Appoint the veteran economist",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The numbers keep arriving as numbers. This is considered suspicious by people who like better ones."
+      },
+      {
+        "label": "Appoint the numbers cheerleader",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "Every month is the best month ever. Economists begin laughing in a measured, quarterly way."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The bureau is run by an acting deputy who is just trying to do arithmetic."
+    },
+    "inspiredBy": "Turmoil at the labor statistics bureau after the August 2025 firing of its commissioner."
+  },
+  {
+    "id": "gov-weak-report",
+    "kind": "decision",
+    "title": "A Dismal Report",
+    "text": "The jobs report is weak. An adviser suggests publishing it unchanged. Another suggests it was obviously written by someone unfriendly.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Publish and explain the context",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "The report is released with caveats. The caveats are the most popular part."
+      },
+      {
+        "label": "Declare the numbers rigged",
+        "effects": {
+          "ego": 5,
+          "stability": -7
+        },
+        "result": "The numbers are now rigged by decree. The actual numbers are unimpressed and arrive anyway."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The report speaks for itself, and it is not flattering."
+    },
+    "inspiredBy": "The 2025 weak jobs report and the claim by the White House that the figures were rigged."
+  },
+  {
+    "id": "gov-ig-report",
+    "kind": "decision",
+    "title": "The Watchdog Report",
+    "text": "An inspector general has found a spending problem at an agency you like. The report is 200 pages and has a very small font.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Let the review proceed",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The report is published. Your agency promises to take the 200 pages seriously."
+      },
+      {
+        "label": "Replace the inspector general",
+        "effects": {
+          "ego": 6,
+          "stability": -7
+        },
+        "result": "The inspector general is replaced. The problems are not. The new one does not read small fonts."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The report sits unread, where all the best reports sit."
+    },
+    "inspiredBy": "Firings and replacements of inspectors general in 2025."
+  },
+  {
+    "id": "gov-doge-cuts",
+    "kind": "decision",
+    "title": "Another Efficiency Cut",
+    "text": "The efficiency czar wants to eliminate a whole agency by Friday. Asked what it does, he says it has too many letters.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Study what the agency does first",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "A review finds the agency inspects things that explode. It is kept."
+      },
+      {
+        "label": "Cut it, and cut a ribbon too",
+        "effects": {
+          "ego": 7,
+          "stability": -8
+        },
+        "result": "The agency is gone on Friday and rehired on Saturday. The ribbon remains in place."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "Half the agency is fired, half rehired, and nobody can say which half."
+    },
+    "inspiredBy": "The 2025 efficiency drive that cut agencies, then rehired staff when services broke."
+  },
+  {
+    "id": "gov-weather-hire",
+    "kind": "decision",
+    "title": "Forecasters Needed",
+    "text": "The weather service lost hundreds of staff and needs to hire meteorologists back. Meanwhile the forecast for your approval is cloudy.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Approve the rehiring",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "Forecasters return. It is going to rain, and for once somebody was warned."
+      },
+      {
+        "label": "Rename the forecast after yourself",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "The Presidential Weather is now partly sunny with a chance of statues. Pilots are baffled."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The forecast is a man looking out of a window, with a tablet."
+    },
+    "inspiredBy": "The National Weather Service losing over 560 staff in 2025 then getting approval to rehire about 125."
+  },
+  {
+    "id": "gov-postal-plan",
+    "kind": "decision",
+    "title": "A Postal Proposal",
+    "text": "An adviser proposes moving the postal service under a cabinet department. The postal service points out that it has delivered mail since 1775.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Leave the mail alone",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The mail continues to arrive. A letter carrier salutes you, and you have no idea why."
+      },
+      {
+        "label": "Put your face on the stamp",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The stamp is issued, then sticks to every envelope, and to your hands."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The postal service stays in limbo, and so do four birthday cards."
+    },
+    "inspiredBy": "2025 reports of White House interest in changing the postal service's governance and finances."
+  },
+  {
+    "id": "gov-park-pass",
+    "kind": "decision",
+    "title": "The Park Pass Design",
+    "text": "A new annual pass for national parks needs a picture on the front. Options are a mountain, a bison, or a very handsome president.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Print the mountain",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The mountain is chosen. It is more photogenic than you, and it knows it."
+      },
+      {
+        "label": "Print your portrait, huge",
+        "effects": {
+          "ego": 7,
+          "stability": -6
+        },
+        "result": "The pass is a bestseller. Wildlife refuses to scan it."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The pass is a plain card, and the bison look bored."
+    },
+    "inspiredBy": "2025 reports of changes to national park passes, including pricing and presidential imagery."
+  },
+  {
+    "id": "gov-tower-name",
+    "kind": "decision",
+    "title": "The Tower Upgrade",
+    "text": "The aviation agency wants funds to modernize its radar and training. A prominent donor wants the main tower named after you instead.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Fund the radar and training",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The radar is modernized. It is named the Radar. Nobody cheers."
+      },
+      {
+        "label": "Fund a golden tower name sign",
+        "effects": {
+          "ego": 6,
+          "stability": -7
+        },
+        "result": "A huge sign goes up, and the radar remains from 1987."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "Planes are arriving, by faith and by luck."
+    },
+    "inspiredBy": "The 2025-26 effort to modernize air traffic control systems amid controller shortages."
+  },
+  {
+    "id": "gov-three-jobs",
+    "kind": "decision",
+    "title": "A Fourth Hat",
+    "text": "One loyal official already runs two agencies and a security council. You are asked whether to give him a third agency, as a treat.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Name a separate person",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "A new person is hired. The first official finally gets to sit down."
+      },
+      {
+        "label": "Add a fourth job to his pile",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "He now chairs a meeting of himself. It runs long and the minutes are signed twice."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The official signs the same memo as three different titles."
+    },
+    "inspiredBy": "One official holding multiple top posts at once in 2025, including a cabinet member as acting head of other agencies."
+  },
+  {
+    "id": "gov-chat-app",
+    "kind": "decision",
+    "title": "The Group Chat",
+    "text": "Staff want to coordinate strikes on a messaging app. Security says use the secure system. The app has better emoji and a thumbs-up for you.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Use the secure room",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "Everyone moves to the secure room. It has no emoji, and it has no reporters."
+      },
+      {
+        "label": "Add you to a bigger chat",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "The chat grows to fifty. A reporter joins as plus one."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "Plans are texted in public, with a handshake emoji."
+    },
+    "inspiredBy": "The March 2025 group chat leak in which a journalist was added to a chat about military strikes."
+  },
+  {
+    "id": "gov-loyalty-test",
+    "kind": "decision",
+    "title": "The Loyalty Quiz",
+    "text": "An agency head wants to hire by merit. A deputy wants to include a quiz asking how much you won the election by. The answer key is you.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Hire on skills and merit",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "Qualified candidates are hired. All of them do not know your favorite font."
+      },
+      {
+        "label": "Add the quiz for new hires",
+        "effects": {
+          "ego": 6,
+          "stability": -7
+        },
+        "result": "Everyone passes. The agency now runs on affirmation and dread."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "Hiring stalls as nobody can agree on the quiz."
+    },
+    "inspiredBy": "2025 efforts to reclassify civil service jobs and prioritize loyalty in federal hiring."
+  },
+  {
+    "id": "gov-fork-email",
+    "kind": "decision",
+    "title": "The Fork in the Road",
+    "text": "Staff are offered a deferred resignation by one email with the subject line a fork. A unit wants to know if it can be less cryptic.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Send a clear, polite notice",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "The notice is clear. It uses the word please, twice. It is a little unsettling."
+      },
+      {
+        "label": "Send a second, fork-themed email",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "The second email contains a spoon. Staff are no clearer on the matter."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "Employees receive one more email, and then another, and then silence."
+    },
+    "inspiredBy": "The January 2025 deferred resignation email offered to federal workers."
+  },
+  {
+    "id": "gov-press-shutdown",
+    "kind": "press",
+    "title": "Shutdown Press Conference",
+    "text": "Reporters ask when the shutdown ends and whose fault it is. You want to discuss the ballroom.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Explain the funding deal",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "You explain a spending bill, fully. Reporters write that you seemed genuinely bored by it."
+      },
+      {
+        "label": "Blame everyone, brag about gold",
+        "effects": {
+          "ego": 7,
+          "stability": -8
+        },
+        "result": "You blame four parties and a ghost. The ballroom gets a single, golden mention."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The podium is surrounded by empty chairs and frozen microphones."
+    },
+    "inspiredBy": "The October-November 2025 shutdown and the White House messaging around it."
+  },
+  {
+    "id": "gov-press-cabinet",
+    "kind": "press",
+    "title": "The Cabinet Meeting Cameras",
+    "text": "A televised cabinet meeting. Each member is expected to open with praise for you. One is running late, and one has fallen asleep.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Move straight to the agenda",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "The meeting is over in forty minutes. Praise is limited to a quick nod."
+      },
+      {
+        "label": "Run the praise round, fully",
+        "effects": {
+          "ego": 7,
+          "stability": -6
+        },
+        "result": "The meeting runs three hours. By the end, you have been compared to a sunrise."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The cabinet meeting runs long, with no agenda, and no snacks."
+    },
+    "inspiredBy": "The 2025 televised cabinet meetings featuring long sessions of praise for the president."
+  },
+  {
+    "id": "gov-press-turnover",
+    "kind": "press",
+    "title": "The Turnover Question",
+    "text": "A reporter asks why so many senior aides have departed this year. It is a long list. It is read aloud, and the reporter runs out of breath.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Credit the staff who stayed",
+        "effects": {
+          "stability": 4,
+          "ego": -3
+        },
+        "result": "You thank the survivors. They look, with some dignity, like survivors."
+      },
+      {
+        "label": "Say everyone left for a promotion",
+        "effects": {
+          "ego": 6,
+          "stability": -5
+        },
+        "result": "Many have been promoted to unemployment. The reporter asks a very polite follow-up."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The list is read in full, and the room applauds the reader's lungs."
+    },
+    "inspiredBy": "High turnover of senior White House and cabinet staff in 2025 and 2026."
+  },
+  {
+    "id": "gov-press-doge",
+    "kind": "press",
+    "title": "The Efficiency Farewell",
+    "text": "The efficiency czar is leaving. Reporters ask what he saved. He holds up a chainsaw and a very long slide.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Thank him and give real totals",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The real savings are shown. They are smaller than the slide, and smaller than the chainsaw."
+      },
+      {
+        "label": "Hand him a trophy and a gold chainsaw",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The trophy is presented. It cost more than what was saved that day."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The czar leaves quietly, apart from a faint chainsaw sound."
+    },
+    "inspiredBy": "The departure of the lead of the 2025 efficiency drive and disputes over claimed savings."
+  },
+  {
+    "id": "gov-call-transport",
+    "kind": "call",
+    "title": "Call From Transport",
+    "text": "The transportation secretary reports that controllers are working overtime and that a runway is, technically, a car park. He wants an update.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Authorize hiring and training",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "Hiring is authorized. The secretary hangs up happily, and a bit surprised."
+      },
+      {
+        "label": "Ask if the tower sign can be gold",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "The secretary says no, politely. Then he says it a few more times."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "Delays pile up like luggage, and nobody can find the carousel."
+    },
+    "inspiredBy": "Transportation officials' warnings in 2025 of controller shortages and delays during the shutdown."
+  },
+  {
+    "id": "gov-call-postmaster",
+    "kind": "call",
+    "title": "Call From the Mail",
+    "text": "The postmaster general reports that the post office is losing money but also delivering the mail. He says it is difficult to do both.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Offer a modest funding plan",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "A modest plan is agreed. The postmaster says thanks, and the stamps keep coming."
+      },
+      {
+        "label": "Suggest selling the mail to a friend",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "The friend declines. He says he already has a lot of packages."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The postal service waits for instructions, which arrive slightly late."
+    },
+    "inspiredBy": "Reports in 2025 on postal service finances and proposals to change its governance."
+  },
+  {
+    "id": "gov-call-interior",
+    "kind": "call",
+    "title": "Call From Interior",
+    "text": "The interior secretary reports that parks are short of staff and one geyser is not doing its job. He wants to rehire seasonal rangers.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Approve the seasonal hires",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "Rangers are rehired. The geyser, for its part, returns to work too."
+      },
+      {
+        "label": "Ask for a geyser named after you",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The geyser is renamed. It now erupts only when someone says your name."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The geyser is unsupervised, and has never been happier."
+    },
+    "inspiredBy": "National park staffing shortages and reinstatements in 2025."
+  },
+  {
+    "id": "gov-call-governor",
+    "kind": "call",
+    "title": "Call From a Governor",
+    "text": "A governor says food aid payments are delayed by the shutdown and asks you to help. The governor has a map, and a very short fuse.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Back a quick funding fix",
+        "effects": {
+          "stability": 7,
+          "ego": -4
+        },
+        "result": "Funds flow, and the governor thanks you in a tone like a snow shovel."
+      },
+      {
+        "label": "Say it is all someone else's doing",
+        "effects": {
+          "ego": 5,
+          "stability": -7
+        },
+        "result": "You blame three people. The governor calls it a regional record."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The governor keeps calling, and the line holds on a theme tune."
+    },
+    "inspiredBy": "State officials' pleas about delayed aid during the 2025 shutdown."
+  },
+  {
+    "id": "gov-call-chief",
+    "kind": "call",
+    "title": "Call From Your Chief of Staff",
+    "text": "Your chief of staff has screened all calls and meetings for your own good. She says you should do fewer things at once. You disagree.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Accept her revised schedule",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "Your day is now organized, and this, she says, is the point."
+      },
+      {
+        "label": "Overrule her and fire the schedule",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The schedule is gone. By lunch you are in three meetings and no one knows which."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The calendar fills with lunches, and with a man you never invited."
+    },
+    "inspiredBy": "Tension and turnover around White House chiefs of staff and schedulers, reported 2025."
+  }
+]

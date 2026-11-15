@@ -1,0 +1,870 @@
+[
+  {
+    "id": "media-polling-deck",
+    "kind": "briefing",
+    "title": "Approval Ratings Presentation",
+    "text": "A pollster presents sixty slides of approval data. Every chart slopes the same way, and a staffer has labelled the axis \"Winning, mostly.\"",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Read every slide",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You studied the charts. The pollster was asked to leave the room when you asked whether the Y axis could be moved."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The polling deck went unread. The numbers carried on without your input."
+    },
+    "inspiredBy": "Reports of low approval ratings in polls through 2025 and 2026."
+  },
+  {
+    "id": "media-pentagon-pledge",
+    "kind": "briefing",
+    "title": "Press Credential Policy Briefing",
+    "text": "Lawyers walk you through a 20-page press credential pledge. Most reporters declined to sign it, which leaves a lot of empty chairs to discuss.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Review the pledge",
+        "effects": {
+          "stability": 8,
+          "ego": -4
+        },
+        "result": "You reviewed the pledge. The empty briefing-room chairs are now described as \"streamlined.\""
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The credential policy sat in a drawer. A new reporter tried signing it with a crayon."
+    },
+    "inspiredBy": "Defence Department press credential rules that major outlets refused to sign, October 2025."
+  },
+  {
+    "id": "media-cpb-wind-down",
+    "kind": "briefing",
+    "title": "Public Broadcasting Wind-Down Memo",
+    "text": "A memo explains what happens to local stations after federal funding ends. It has a section on puppets and you are asked to read it twice.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Read the whole memo",
+        "effects": {
+          "stability": 10,
+          "ego": -3
+        },
+        "result": "You read the memo. A station manager in a small town is now your most thoughtful correspondent."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The memo was unread. A children's program ended on a cliffhanger."
+    },
+    "inspiredBy": "Congress cancelled public broadcasting funding and the corporation began winding down, mid-2025."
+  },
+  {
+    "id": "media-engagement-report",
+    "kind": "briefing",
+    "title": "Social Media Analytics Review",
+    "text": "Staff present a report on which of your posts did best. Posts about posting did best. Posts about policy did slightly worse than a weather alert.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Study the report",
+        "effects": {
+          "stability": 8,
+          "ego": -4
+        },
+        "result": "You learned that policy posts underperform. You asked if the policy could be less policy."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The analytics report went unread, so your next post will be chosen by instinct again."
+    },
+    "inspiredBy": "Debate over the volume and content of presidential social media posting, 2025."
+  },
+  {
+    "id": "media-newspaper-suit",
+    "kind": "decision",
+    "title": "Fifteen Billion Dollar Complaint",
+    "text": "Lawyers propose suing a big newspaper for defamation. The first filing was returned by a judge for being too long and too angry.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Ask lawyers for a short version",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The lawyers cut it to a reasonable length. Several adjectives did not survive."
+      },
+      {
+        "label": "File it at full length",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You filed the 85-page version. It ran longer than the paper's coverage you disliked."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The suit sat unfiled. The newspaper ran another article and nobody sued."
+    },
+    "inspiredBy": "Trump sued a major newspaper for about $15 billion; a judge struck the first complaint, September 2025."
+  },
+  {
+    "id": "media-birthday-letter",
+    "kind": "decision",
+    "title": "Birthday Letter Lawsuit",
+    "text": "A financial paper has published a story about a birthday letter you say you never wrote. Lawyers say suing means answering questions under oath.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Skip the lawsuit",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You let it pass. Your lawyer sighed with relief and ordered a very large lunch."
+      },
+      {
+        "label": "Sue for ten billion",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You sued for ten billion. Discovery now requires you to find a birthday letter."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The story kept circulating. The letter has still not been located."
+    },
+    "inspiredBy": "Trump sued a financial newspaper over a reported birthday letter, July 2025."
+  },
+  {
+    "id": "media-poll-lawsuit",
+    "kind": "decision",
+    "title": "Sue the Pollster",
+    "text": "A poll showed you trailing in a state you won. Lawyers say there is a legal theory that polls are consumer fraud, though not a good one.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Accept the poll",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You accepted the poll. The pollster has been invited to nothing, as usual."
+      },
+      {
+        "label": "Sue the pollster",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You sued the pollster. The poll is now the most famous poll in the country."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The poll stood. A second poll came out confirming the first."
+    },
+    "inspiredBy": "Lawsuit over a 2024 Iowa poll against a newspaper and its pollster."
+  },
+  {
+    "id": "media-pool-seats",
+    "kind": "decision",
+    "title": "Press Pool Seating Chart",
+    "text": "Staff ask who should sit in the pool. The traditional list includes a wire service that refuses to use a name you gave a body of water.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Restore the traditional pool",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The pool was restored. The wire service arrived with a very large map."
+      },
+      {
+        "label": "Seat only friendly outlets",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "The pool now contains six supportive streamers and a man filming his own lunch."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The seating chart stayed blank. Reporters stood and the Oval Office grew crowded."
+    },
+    "inspiredBy": "White House restricted a wire service from pool spaces over the Gulf of America naming dispute, 2025."
+  },
+  {
+    "id": "media-pool-takeover",
+    "kind": "decision",
+    "title": "Take Over the Pool Schedule",
+    "text": "The press association has traditionally chosen who joins the pool. You can now choose yourself, which would be your favourite kind of chart.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Leave the schedule alone",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You left it alone. The association kept scheduling, and no one was more bored than you."
+      },
+      {
+        "label": "Run the schedule yourself",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You now pick who asks questions. Every question is about how well you are doing."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The pool schedule stayed with the association. They invited the whole building."
+    },
+    "inspiredBy": "White House took control of press pool composition from the correspondents' association, February 2025."
+  },
+  {
+    "id": "media-network-settlement",
+    "kind": "decision",
+    "title": "Settle With the Network",
+    "text": "A network offers to settle a lawsuit about an interview edit for millions. Your lawyers note they would also like an apology, which is tricky for you.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Accept the plain settlement",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You took the money. Nobody was thanked and everyone moved on."
+      },
+      {
+        "label": "Demand a public apology too",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You asked for an apology. The network offered a statement with the word \"regret\" next to \"scheduling.\""
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The settlement offer expired. Lawyers billed you for the time."
+    },
+    "inspiredBy": "A network settled a lawsuit over an interview edit for $16 million, 2025."
+  },
+  {
+    "id": "media-international-broadcasting",
+    "kind": "decision",
+    "title": "Cut an International Broadcaster",
+    "text": "A government broadcaster sends news abroad in dozens of languages. A memo suggests ending it, and replacing it with one channel playing you.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Keep a lean version",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You kept a lean version. The foreign-language announcers continue reading the weather."
+      },
+      {
+        "label": "Replace it with You TV",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "Your channel now airs in fifty languages. Viewers gave it solid ratings in six."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The funding question stayed open. The broadcaster kept broadcasting, to your irritation."
+    },
+    "inspiredBy": "Administration moves to shut down a government-funded international broadcaster, 2025."
+  },
+  {
+    "id": "media-pope-image",
+    "kind": "decision",
+    "title": "Post the Papal Image",
+    "text": "An AI image shows you dressed as a pope. Staff say it is probably okay to post. A Cardinal says it is probably not.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Do not post it",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You did not post it. The image remains in your phone as a prayer."
+      },
+      {
+        "label": "Post it anyway",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You posted it. Several billion Catholics and one Cardinal gave their reviews."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The image sat in drafts and a staffer posted it from their own account."
+    },
+    "inspiredBy": "Trump shared an AI image of himself dressed as pope, May 2025."
+  },
+  {
+    "id": "media-approval-poll",
+    "kind": "press",
+    "title": "The Approval Number",
+    "text": "A new poll puts your approval at 41 percent. A reporter reads the number aloud, slowly, as if it were a diagnosis.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say polls go up and down",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "You said polls go up and down. This one stayed where it was, but everyone moved on."
+      },
+      {
+        "label": "Announce your own poll",
+        "effects": {
+          "ego": 6,
+          "stability": -3
+        },
+        "result": "Your poll has you at 104 percent. The pollster is you. The margin of error is zero."
+      }
+    ],
+    "ignore": {
+      "stability": -2,
+      "text": "You left the number unanswered. It was shown on a loop, with a downward arrow."
+    },
+    "inspiredBy": "Recurring 2025 approval polling and the president disputing unfavourable polls."
+  },
+  {
+    "id": "media-late-night-host",
+    "kind": "press",
+    "title": "Late-Night Host Monologue",
+    "text": "A late-night host has made a joke about you. You were not named but you recognised yourself, as one does.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Let the joke go",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You said nothing. The host ran out of material by Thursday."
+      },
+      {
+        "label": "Demand he be fired",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You demanded his firing. The ratings of his show tripled."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You said nothing, then eight million people repeated the joke for you."
+    },
+    "inspiredBy": "Late-night host suspension and return after FCC chair comments, September 2025."
+  },
+  {
+    "id": "media-cancelled-show",
+    "kind": "press",
+    "title": "Late-Night Show Cancelled",
+    "text": "A major late-night show has been cancelled. Reporters ask whether you had anything to do with it, which you did not and want credit for.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say it was a business decision",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You said it was business. A network executive nodded from a hiding place."
+      },
+      {
+        "label": "Claim victory publicly",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You took credit. Their lawyers asked you to stop helping."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You said nothing. The host's farewell special was seen by everyone."
+    },
+    "inspiredBy": "CBS cancelled The Late Show; Trump celebrated on social media, July 2025."
+  },
+  {
+    "id": "media-sixty-minutes",
+    "kind": "press",
+    "title": "Sunday Interview",
+    "text": "A major newsmagazine wants an interview. They will edit it, which as you know is where the crimes happen.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Do it live, no edits",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You went live. It was fine, which is the most annoying result."
+      },
+      {
+        "label": "Demand final cut",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You demanded final cut. The producer asked what he was cutting from."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The interview was declined. A guest chair stayed empty on Sunday night."
+    },
+    "inspiredBy": "Trump's dispute and settlement with a network over edit of an interview, 2024-2025."
+  },
+  {
+    "id": "media-crowd-size",
+    "kind": "press",
+    "title": "Crowd Size Question",
+    "text": "A reporter asks about turnout at your military parade. Aerial photographs exist and are not helpful to your side.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say attendance was fine",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You said it was a solid turnout. The photographs agreed, mostly."
+      },
+      {
+        "label": "Claim it was historic",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You called it the biggest ever. Several photographers have a lot to say about it."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The question hung in the air. A drone provided the answer later."
+    },
+    "inspiredBy": "Disputes over crowd sizes at Trump's military parade, June 2025."
+  },
+  {
+    "id": "media-jet-video",
+    "kind": "press",
+    "title": "AI Video Question",
+    "text": "A reporter asks about an AI video you posted of a jet dropping something unpleasant on protesters. A staffer says it is \"satire.\"",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Say you did not review it",
+        "effects": {
+          "stability": 9,
+          "ego": -4
+        },
+        "result": "You said staff posted it. Staff said it was you. It was you."
+      },
+      {
+        "label": "Defend it as great",
+        "effects": {
+          "ego": 7,
+          "stability": -6
+        },
+        "result": "You defended the video. The video now has a sequel and a director."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The question went unanswered. The video was shown on every channel, free."
+    },
+    "inspiredBy": "Trump posted an AI video of a jet dumping on protesters after No Kings rallies, October 2025."
+  },
+  {
+    "id": "media-ratings-brag",
+    "kind": "press",
+    "title": "Ratings Question",
+    "text": "A reporter asks about your policy agenda. You would rather discuss how many people watched your last speech.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Talk about policy",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You discussed policy. Your ratings fell to your own satisfaction, but only by a little."
+      },
+      {
+        "label": "Quote the ratings",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You cited the ratings. The reporter checked and they were the second-highest in history."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You never answered. The reporter wrote the numbers up for you."
+    },
+    "inspiredBy": "Trump's frequent references to TV ratings for himself and allies, 2025."
+  },
+  {
+    "id": "media-nickname",
+    "kind": "press",
+    "title": "Nickname Round",
+    "text": "A reporter asks about a rival. You have a new nickname ready. It rhymes with nothing but you are sure it is working.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Use his actual name",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You used his name. The room paused to see whether this was a trap."
+      },
+      {
+        "label": "Deploy the nickname",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You rolled out the nickname. It took six tries to pronounce."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You never answered. The nickname leaked anyway, in the first person."
+    },
+    "inspiredBy": "Trump's habit of giving critics and rivals nicknames in 2025."
+  },
+  {
+    "id": "media-walkout",
+    "kind": "press",
+    "title": "Empty Briefing Seats",
+    "text": "Most reporters walked out of the Pentagon rather than sign your pledge. A reporter asks if anyone remains.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say you will talk to them",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You offered talks. The reporters were polite and kept their umbrellas."
+      },
+      {
+        "label": "Say the press is replaced",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You announced a new press corps. It consisted of five podcasters and an inflatable."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "No one answered. The seats stayed empty and so did the scheduling."
+    },
+    "inspiredBy": "Dozens of reporters surrendered Pentagon credentials rather than sign a policy, October 2025."
+  },
+  {
+    "id": "media-british-edit",
+    "kind": "press",
+    "title": "Documentary Edit Question",
+    "text": "A broadcaster edited two parts of your speech into one. A reporter asks whether you want an apology or a billion dollars.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Accept the apology",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You took the apology. The executive offered a second one, in case."
+      },
+      {
+        "label": "Ask for the billion",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You asked for a billion dollars. The broadcaster's lawyer asked whether you meant pounds."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You said nothing. A broadcasting chief resigned anyway and you took the credit."
+    },
+    "inspiredBy": "Trump threatened a lawsuit over a documentary that edited his speech; BBC leaders resigned, November 2025."
+  },
+  {
+    "id": "media-nap",
+    "kind": "press",
+    "title": "Sleepy Event Question",
+    "text": "A reporter asks whether you dozed off during an event. Photographs show closed eyes and a very open mouth.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say you were resting",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You said you were resting your eyes. The photographer said they were very rested."
+      },
+      {
+        "label": "Say you were blinking",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You said it was long blinking. The photographers called this a new record."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You ignored the question. The photo spent the week on the front page."
+    },
+    "inspiredBy": "Reports and photos of Trump appearing to nod off at public events, 2025."
+  },
+  {
+    "id": "media-new-media",
+    "kind": "press",
+    "title": "New Media Seat Question",
+    "text": "A reporter asks why the briefing room has chairs for podcasters and none for the old guard. Your press secretary says it is \"diversity.\"",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Expand the room",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You added chairs. The room is now a very cheerful, very crowded place."
+      },
+      {
+        "label": "Stay with the influencers",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You kept the influencers. Their first question was about your hair."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You never explained the seating. Fifty chairs arrived unannounced."
+    },
+    "inspiredBy": "White House gave briefing room seats to new media and podcasters, 2025."
+  },
+  {
+    "id": "media-fact-check",
+    "kind": "press",
+    "title": "Fact-Check Moment",
+    "text": "A reporter points out that a number you gave on stage is off by a factor of ten.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Correct the number",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You corrected it. The room applauded politely and then looked at their phones."
+      },
+      {
+        "label": "Insist it is right",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You doubled down. The number has since been increased to be consistent."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You said nothing. The correction went out on the news and the chart."
+    },
+    "inspiredBy": "Trump's public statements frequently drew fact-checks from reporters during 2025."
+  },
+  {
+    "id": "media-license-call",
+    "kind": "call",
+    "title": "The Broadcast License Call",
+    "text": "The communications regulator calls. A network aired something unkind, and he is wondering about licences. He would like you to be impressed.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Stay out of it",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You said regulators are independent. The regulator said \"of course\" and meant \"wink.\""
+      },
+      {
+        "label": "Encourage the threat",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You told him to look into it. He said he already had, which you had not known."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The call went to voicemail. The regulator tweeted about it anyway."
+    },
+    "inspiredBy": "FCC chair threatened broadcasters over content, with licence remarks and presidential support, 2025."
+  },
+  {
+    "id": "media-merger-call",
+    "kind": "call",
+    "title": "The Merger Call",
+    "text": "A media owner calls about a merger that needs approval. He mentions that his news division is \"reviewing its tone.\"",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say it goes through the process",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You stayed out of it. The owner said \"of course\" and went to rework his news."
+      },
+      {
+        "label": "Hint at a news anchor change",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You mentioned an anchor. The owner wrote it down."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The call went unreturned. The merger was approved and you took the credit."
+    },
+    "inspiredBy": "Media mergers requiring federal approval amid pressure on news divisions, 2025."
+  },
+  {
+    "id": "media-editor-call",
+    "kind": "call",
+    "title": "The Editor Calls Back",
+    "text": "A newspaper editor calls after a story you disliked. She offers a correction, which would be a historic first for your desk.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Take the correction",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You took it. The correction was small and so were your complaints."
+      },
+      {
+        "label": "Ask for the front page",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You asked for a front-page apology. She said the front page was \"full.\""
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You did not return the call. The editor ran the story with a clarifying note."
+    },
+    "inspiredBy": "Disputes with newspapers over corrections and lawsuits, 2025."
+  },
+  {
+    "id": "media-press-secretary",
+    "kind": "call",
+    "title": "The Press Secretary Calls",
+    "text": "Your press secretary calls at 6 a.m. about the fourteen posts you sent overnight. Three have typos and one has a hat.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Delete a few posts",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You deleted four posts. The press secretary sent flowers, a note, and a replacement phone."
+      },
+      {
+        "label": "Post more",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You posted nine more. The press secretary now speaks in a calm, slow voice."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You ignored the call. The posts remained, and so did her sigh."
+    },
+    "inspiredBy": "Trump's overnight bursts of dozens of social posts, reported through 2025."
+  },
+  {
+    "id": "media-approval-question",
+    "kind": "press",
+    "title": "Approval Rating Question",
+    "text": "A reporter reads out a poll showing your approval at a new low and asks what you make of it. Staff signal that \"fake\" is not an answer.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say you hear the concern",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You said you heard the concern. A staffer fainted, then recovered."
+      },
+      {
+        "label": "Cite your private polls",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You said your own polls show 95 percent. The pollster turned out to be a golf friend."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The question went unanswered. The poll was then read out again, slower."
+    },
+    "inspiredBy": "Polls showing Trump approval ratings at second-term lows, 2025-2026."
+  }
+]

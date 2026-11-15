@@ -1,0 +1,1158 @@
+[
+ {
+  "id": "chaos-harp-sad",
+  "title": "Natalie Harp Is Feeling Sad",
+  "text": "Natalie Harp, your gatekeeper and keeper of the binders, is sitting in the hallway looking at her shoes. She has not mentioned the binders once. This is serious.",
+  "choices": [
+   {
+    "label": "Comfort her",
+    "cost": 1,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 9,
+       "stability": 2
+      },
+      "text": "Harp cheered up after a ten-minute chat and a printed photo of the ballroom. Staff morale is described as 'stable, with sparkle'."
+     },
+     {
+      "effects": {
+       "ego": 4,
+       "stability": -4
+      },
+      "text": "Harp feels better, but spent the chat hearing about your polling. The binders are now bound in leather and the schedule is tighter."
+     },
+     {
+      "effects": {
+       "ego": -9,
+       "stability": -5
+      },
+      "text": "Comfort misfired. Harp heard a long speech about her own career and cried harder. The binders remain closed."
+     }
+    ]
+   },
+   {
+    "label": "Tell her to buck up",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 8,
+       "stability": 3
+      },
+      "text": "Harp laughed, said 'yes, sir' and ran the day like a metronome. Staff now call this 'the tough love thing'."
+     },
+     {
+      "effects": {
+       "ego": 5,
+       "stability": -3
+      },
+      "text": "Harp is back at her desk, but the West Wing has gone quiet. A staffer was seen hiding in the copier room."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "Harp took the pep talk badly and left early. The West Wing goes a full afternoon without anyone knowing where anything is."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore her",
+   "text": "Harp kept looking at her shoes. A binder has been moved to a shelf you cannot reach.",
+   "blowback": [
+    {
+     "effects": {
+      "ego": -8
+     },
+     "text": "Remember Natalie Harp's sad afternoon? The binders are now filed alphabetically by grievance, and nobody can find the schedule."
+    },
+    {
+     "effects": {
+      "ego": -8,
+      "stability": -6
+     },
+     "text": "Remember Harp's bad day? She has gone to work for a rival aide and taken the binders, the schedule and the good pens with her."
+    },
+    {
+     "effects": {},
+     "text": "Remember Harp's sad afternoon? She was fine. She had just run out of tea."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-hurricane-florida",
+  "title": "Hurricane Barrels Toward Florida",
+  "text": "A major hurricane is aimed at the Florida coast. Cable news has a map with a very large spiral on it. The ballroom crew has asked whether the tarps count as emergency supplies.",
+  "choices": [
+   {
+    "label": "FEMA on it, address the nation",
+    "cost": 2,
+    "outcomes": [
+     {
+      "effects": {
+       "stability": 8,
+       "ego": 3
+      },
+      "text": "FEMA moved early, you gave a calm address, and the coast held. Pundits call it 'competent', then rest."
+     },
+     {
+      "effects": {
+       "stability": 5,
+       "ego": -3
+      },
+      "text": "The response worked, but the address ran forty minutes and included a ballroom update. Relief supplies arrived on time. So did the memes."
+     },
+     {
+      "effects": {
+       "stability": -12
+      },
+      "text": "FEMA was slow, the address went long, and a reporter asked about the tarps. Florida would like a word."
+     }
+    ]
+   },
+   {
+    "label": "Tell DeSantis to sort it, talk ballroom",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "stability": 10
+      },
+      "text": "DeSantis sorted it, the storm veered out to sea and you took credit for the weather. A ballroom segment aired at prime time."
+     },
+     {
+      "effects": {
+       "stability": 4,
+       "ego": -4
+      },
+      "text": "Florida coped, the ballroom segment trended, and the governor sent a short note that was just a calendar invite."
+     },
+     {
+      "effects": {
+       "stability": -12
+      },
+      "text": "DeSantis felt snubbed, the storm hit hard, and your ballroom segment aired over live damage footage. Cable news discusses tone."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore the storm",
+   "text": "The hurricane has moved up in the briefing from 'monitor' to 'watching closely'. Nobody has told you the second part.",
+   "blowback": [
+    {
+     "effects": {
+      "stability": -8
+     },
+     "text": "Remember the hurricane? Relief aid in Florida is still stuck at three desks and a very patient fax machine."
+    },
+    {
+     "effects": {
+      "ego": -5,
+      "stability": -9
+     },
+     "text": "Remember the Florida hurricane? The governor and the mayors have held a joint press event about you. It has a slideshow."
+    },
+    {
+     "effects": {},
+     "text": "Remember the hurricane? It turned out to sea, got a nice name and was forgotten by Thursday."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-donjr-oligarch",
+  "title": "Don Jr. Takes More Russian Money",
+  "text": "Don Jr. has accepted another large cheque from a Russian oligarch, apparently for 'consulting'. The oligarch has also been consulting your schedule.",
+  "choices": [
+   {
+    "label": "Repay the oligarch, calm the press",
+    "cost": 1,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 4,
+       "stability": 6
+      },
+      "text": "The money went back with a tidy letter, and the press cooled. Don Jr. was heard to say 'it was just a very nice vase'."
+     },
+     {
+      "effects": {
+       "stability": 4,
+       "ego": -4
+      },
+      "text": "The oligarch took the refund, but the press smelled a story. Trust in the family ledger is up and the family is not pleased."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "Repayment was reported as an admission. The oligarch kept the vase, and the press now asks about the vase."
+     }
+    ]
+   },
+   {
+    "label": "Say Hunter and Obama were way worse",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 5,
+       "stability": 5
+      },
+      "text": "Cable news ran the Hunter Biden whataboutism for six days. By Friday, nobody could say what the original question was."
+     },
+     {
+      "effects": {
+       "ego": 5,
+       "stability": -3
+      },
+      "text": "The deflection landed with your base, but a second oligarch has now written. He has also consulted."
+     },
+     {
+      "effects": {
+       "stability": -9,
+       "ego": -5
+      },
+      "text": "The Hunter line did not land. Newsrooms put the oligarch cheque and your deflection on the same graphic."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore it",
+   "text": "Don Jr. has gone quiet and bought a larger vase. A journalist is already reading the bank records.",
+   "blowback": [
+    {
+     "effects": {
+      "ego": -3,
+      "stability": -5
+     },
+     "text": "Remember Don Jr. and the oligarch money? A committee has found the receipt and is reading it aloud, slowly."
+    },
+    {
+     "effects": {
+      "ego": -6,
+      "stability": -8
+     },
+     "text": "Remember the oligarch cheque? Two more have surfaced, along with a vase. Allies are now using the phrase 'family business'."
+    },
+    {
+     "effects": {},
+     "text": "Remember Don Jr.'s consulting? The story was buried under a bigger story about a goat."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-musk-feud",
+  "title": "Elon Musk Feud Reignites",
+  "text": "Elon Musk has posted a long thread about your spending, your ballroom and your hair. It has charts. It has been viewed 80 million times, mostly by him.",
+  "choices": [
+   {
+    "label": "Call him and smooth it over",
+    "cost": 1,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 9,
+       "stability": 2
+      },
+      "text": "Musk apologised, deleted the thread and called you 'a great guy, mostly'. Your standing in Silicon Valley has risen to 'not a pariah'."
+     },
+     {
+      "effects": {
+       "ego": 5,
+       "stability": -3
+      },
+      "text": "You made up on the phone. Musk got a seat at the table and you got a very long thread about his plans for Mars."
+     },
+     {
+      "effects": {
+       "ego": -9,
+       "stability": -5
+      },
+      "text": "The call went badly. Musk screenshotted it, posted it and attached a poll. The poll was close."
+     }
+    ]
+   },
+   {
+    "label": "Post that he is a total clown",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 8,
+       "stability": 3
+      },
+      "text": "Your post got four million likes and Musk deleted his thread. He says the thread was a software bug."
+     },
+     {
+      "effects": {
+       "ego": 4,
+       "stability": -4
+      },
+      "text": "Your post trended, Musk went quiet, and Tesla stock fell for reasons nobody can explain. Your base is delighted."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "Musk replied with a nine-part thread, a chart and a meme. You have been compared to a minor Roman emperor."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore him",
+   "text": "Musk has posted again and hinted at a new political party. His profile picture is now your ballroom, on fire.",
+   "blowback": [
+    {
+     "effects": {
+      "ego": -8
+     },
+     "text": "Remember the Musk feud? He has funded a new party called 'The Efficiency Party', with a logo that looks like a chainsaw."
+    },
+    {
+     "effects": {
+      "ego": -8,
+      "stability": -6
+     },
+     "text": "Remember Musk and the thread? He has started a rival social platform, posted your phone number and named a rocket after you. It exploded."
+    },
+    {
+     "effects": {},
+     "text": "Remember the Musk feud? He had a new feud by Tuesday and forgot you entirely."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-truth-social-down",
+  "title": "Truth Social Goes Down",
+  "text": "Truth Social has gone offline for all users. The error page is a picture of a very sad eagle. There is a rumour it is a server in someone's garage.",
+  "choices": [
+   {
+    "label": "Call in the engineers",
+    "cost": 1,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 8,
+       "stability": 3
+      },
+      "text": "Engineers restored the site in an hour and added a feature that shows how many people are reading you. The number is large."
+     },
+     {
+      "effects": {
+       "ego": 4,
+       "stability": -4
+      },
+      "text": "The site came back, but the 'who is reading' feature has also exposed that some followers are sixteen bots from one office."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "The engineers rebooted the wrong server and wiped the server list. The sad eagle is now your official brand image."
+     }
+    ]
+   },
+   {
+    "label": "Post it on a rival site",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 10
+      },
+      "text": "Your post on a rival site went viral, the site crashed and Truth Social returned the same minute. The sad eagle was retired."
+     },
+     {
+      "effects": {
+       "ego": 5,
+       "stability": -3
+      },
+      "text": "The rival site gave you a verified badge. Truth Social returned with an apology and a new colour scheme."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "You posted on a rival site. They did not delete it, they framed it. Truth Social now trends with a hashtag about the garage."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore it",
+   "text": "Truth Social is still down. The eagle now has a tear. Three accounts have noticed.",
+   "blowback": [
+    {
+     "effects": {
+      "ego": -8
+     },
+     "text": "Remember the Truth Social outage? Investors have asked, in writing, if the garage is a business unit."
+    },
+    {
+     "effects": {
+      "ego": -8,
+      "stability": -6
+     },
+     "text": "Remember when Truth Social went down? It stayed down long enough for an auditor to find the garage and open a folder."
+    },
+    {
+     "effects": {},
+     "text": "Remember the Truth Social outage? Someone plugged it back in. Nobody was told how."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-hegseth-groupchat",
+  "title": "Hegseth Adds a Reporter to the Chat",
+  "text": "Pete Hegseth has added a magazine editor to the group chat where war plans are discussed. The editor has replied with a thumbs-up.",
+  "choices": [
+   {
+    "label": "Launch a full review of the chat",
+    "cost": 2,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 4,
+       "stability": 6
+      },
+      "text": "The review found the chat was only 'a bit loose'. Hegseth got a laminated card that says 'check the list'. Allies approved of the card."
+     },
+     {
+      "effects": {
+       "stability": 5,
+       "ego": -3
+      },
+      "text": "The review closed the leak but also found that Hegseth uses emojis for strike coordinates. Both reports have been published."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "The review took a month, and leaked on day two. The editor has since published the chat with annotations."
+     }
+    ]
+   },
+   {
+    "label": "Praise Hegseth, call it a witch hunt",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 5,
+       "stability": 5
+      },
+      "text": "The press ran out of steam after a two-day fight about the word 'witch'. Hegseth was awarded a medal that is also a coaster."
+     },
+     {
+      "effects": {
+       "ego": 4,
+       "stability": -4
+      },
+      "text": "The base cheered, but a general has now asked to be removed from all group chats. He asked via group chat."
+     },
+     {
+      "effects": {
+       "stability": -9,
+       "ego": -5
+      },
+      "text": "The defence was shredded by a leaked screenshot that showed you asking 'is this the real one?' The editor has liked it."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore it",
+   "text": "The editor is still in the chat. The editor has muted it, which is somehow worse.",
+   "blowback": [
+    {
+     "effects": {
+      "ego": -3,
+      "stability": -5
+     },
+     "text": "Remember the group chat with the editor? The Pentagon now holds its meetings in a car park, in whispers, on paper."
+    },
+    {
+     "effects": {
+      "ego": -6,
+      "stability": -8
+     },
+     "text": "Remember Hegseth's group chat? The editor has a book deal. It is called 'Thumbs Up' and it has a chapter on you."
+    },
+    {
+     "effects": {},
+     "text": "Remember the group chat? The editor left. He said the emojis were 'too upsetting'."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-egg-prices",
+  "title": "Egg Prices Hit a Record High",
+  "text": "The price of a dozen eggs has passed the price of a small ballroom chandelier. Shoppers are buying single eggs. A farmer on cable news is crying, as is the egg.",
+  "choices": [
+   {
+    "label": "Fix the supply chain",
+    "cost": 1,
+    "outcomes": [
+     {
+      "effects": {
+       "stability": 9,
+       "ego": 2
+      },
+      "text": "Egg imports arrived, prices fell and a grateful nation made an omelette. You were described as 'adequately competent', a first."
+     },
+     {
+      "effects": {
+       "stability": 4,
+       "ego": -4
+      },
+      "text": "Prices fell, but the imported eggs are from a country you were rude to last week. The first box was labelled 'sorry'."
+     },
+     {
+      "effects": {
+       "stability": -9,
+       "ego": -5
+      },
+      "text": "The supply fix triggered a shortage of cartons. Eggs now cost the same, but each comes with a very expensive box."
+     }
+    ]
+   },
+   {
+    "label": "Tell everyone eggs are overrated",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "stability": 8,
+       "ego": 3
+      },
+      "text": "The country briefly discovered it did not need eggs. Cereal made a record profit and egg prices dropped out of embarrassment."
+     },
+     {
+      "effects": {
+       "stability": 5,
+       "ego": -3
+      },
+      "text": "Egg demand fell, prices eased and a farmer wrote an angry letter in what appears to be egg yolk."
+     },
+     {
+      "effects": {
+       "stability": -12
+      },
+      "text": "The speech was replayed on loop in the poultry belt. Egg prices doubled out of spite, and so did the hens."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore it",
+   "text": "Eggs now come with a security guard. A senator has been caught carrying a single egg to a meeting.",
+   "blowback": [
+    {
+     "effects": {
+      "stability": -8
+     },
+     "text": "Remember the egg crisis? Prices have returned. A black market has opened in a basement in Ohio."
+    },
+    {
+     "effects": {
+      "ego": -5,
+      "stability": -9
+     },
+     "text": "Remember the egg shortage? A cartel of chickens, or possibly men, is now running a national egg racket."
+    },
+    {
+     "effects": {},
+     "text": "Remember the egg crisis? Eggs went back to normal. The farmer is still crying, but at a different price."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-fox-host-criticises",
+  "title": "A Fox News Host Criticises You",
+  "text": "A top Fox News host has spent four minutes on air saying you could have handled the week better. The word 'frankly' was used. A graphic appeared. It is not a good graphic.",
+  "choices": [
+   {
+    "label": "Invite the host for dinner",
+    "cost": 1,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 8,
+       "stability": 3
+      },
+      "text": "Dinner went well. The host called you 'a statesman' on air and a golden spoon was involved. Your ratings are up."
+     },
+     {
+      "effects": {
+       "ego": 5,
+       "stability": -3
+      },
+      "text": "The host softened, but the dinner ran late and the bill was addressed to the ballroom fund. The host kept the spoon."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "The host repeated the criticism over dessert, then reported it live. The graphic got worse. The spoon is now evidence."
+     }
+    ]
+   },
+   {
+    "label": "Call in and complain live",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 10
+      },
+      "text": "Your live call was the highest-rated segment of the year. The host apologised, laughed and offered you a weekly slot."
+     },
+     {
+      "effects": {
+       "ego": 4,
+       "stability": -4
+      },
+      "text": "The call got ratings, but you said 'frankly' fourteen times. The host has started a counter on screen."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "The call turned into a quarrel. The host hung up first, which has never happened before, and the clip has six million views."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore it",
+   "text": "The host has been silent for an hour. A producer says there is a second segment in the works. It has a graphic.",
+   "blowback": [
+    {
+     "effects": {
+      "ego": -8
+     },
+     "text": "Remember the Fox host and the graphic? He has expanded it into a weekly series called 'Frankly'. Your poll numbers are the star."
+    },
+    {
+     "effects": {
+      "ego": -8,
+      "stability": -6
+     },
+     "text": "Remember the Fox criticism? Two more hosts have joined in, and one of them has started a podcast about it."
+    },
+    {
+     "effects": {},
+     "text": "Remember the Fox host's segment? It was cancelled for a rerun of a cooking show. Nobody has mentioned it since."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-greenland-incident",
+  "title": "Greenland Incident",
+  "text": "A Danish ship, a US ship and a very confused seal are all in the same fjord. Denmark has used the word 'sovereign' four times, in writing, on stationery.",
+  "choices": [
+   {
+    "label": "Send diplomats and apologise",
+    "cost": 2,
+    "outcomes": [
+     {
+      "effects": {
+       "stability": 10
+      },
+      "text": "The fjord was cleared with a handshake and a gift basket. The seal was relocated. Denmark called it 'a good week'."
+     },
+     {
+      "effects": {
+       "stability": 4,
+       "ego": -4
+      },
+      "text": "The incident ended, but Denmark wants the gift basket back. The seal has been named a goodwill ambassador. Both are unclear."
+     },
+     {
+      "effects": {
+       "stability": -12
+      },
+      "text": "The diplomats took the wrong boat. The seal was handed a treaty, the treaty was handed to Denmark and Denmark is not pleased."
+     }
+    ]
+   },
+   {
+    "label": "Say you will just buy the whole thing",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "stability": 9,
+       "ego": 2
+      },
+      "text": "Denmark laughed for a full day, then opened talks on a lease. The seal was offered citizenship. Markets cheered."
+     },
+     {
+      "effects": {
+       "stability": 5,
+       "ego": -3
+      },
+      "text": "Greenland polled at 'no thanks', but Iceland has offered to sell you a hill. Stocks are mixed."
+     },
+     {
+      "effects": {
+       "stability": -9,
+       "ego": -5
+      },
+      "text": "The offer was misread as a threat. Denmark has called an emergency meeting. The seal has called a lawyer."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore it",
+   "text": "The fjord is quiet for now. The seal has been spotted taking notes. Denmark has sent another stationery.",
+   "blowback": [
+    {
+     "effects": {
+      "stability": -8
+     },
+     "text": "Remember the Greenland incident? A joint Nordic statement has put you in a paragraph with the word 'again'."
+    },
+    {
+     "effects": {
+      "ego": -5,
+      "stability": -9
+     },
+     "text": "Remember the fjord, the ships and the seal? NATO is now holding a meeting about it, and the seal has been invited as an observer."
+    },
+    {
+     "effects": {},
+     "text": "Remember the Greenland incident? The seal swam away. The ships went home. Denmark has gone back to its sandwiches."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-tariff-typo",
+  "title": "A Tariff Typo Crashes Markets",
+  "text": "The new tariff order lists the rate as 1,000 percent. It should read 10. An intern is hiding in the supply closet, and the markets are not hiding anywhere.",
+  "choices": [
+   {
+    "label": "Issue a correction and steady the markets",
+    "cost": 2,
+    "outcomes": [
+     {
+      "effects": {
+       "stability": 9,
+       "ego": 2
+      },
+      "text": "The correction landed fast, the markets recovered by close, and the intern was promoted to 'tariff proofreader'. Traders breathed out."
+     },
+     {
+      "effects": {
+       "stability": 5,
+       "ego": -3
+      },
+      "text": "The markets steadied, but the correction listed a new typo. The tariff is now 'Ten percent, give or take'."
+     },
+     {
+      "effects": {
+       "stability": -9,
+       "ego": -5
+      },
+      "text": "The correction triggered a second selloff. A trader was seen weeping over a very small cup of coffee."
+     }
+    ]
+   },
+   {
+    "label": "Say the typo was a negotiating tactic",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "stability": 8,
+       "ego": 3
+      },
+      "text": "Trade partners believed you were serious and offered concessions. Markets rallied in confusion. The intern now has an office."
+     },
+     {
+      "effects": {
+       "stability": 4,
+       "ego": -4
+      },
+      "text": "The bluff worked on two countries and spooked five. Stocks bounced a little, then thought better of it."
+     },
+     {
+      "effects": {
+       "stability": -12
+      },
+      "text": "Nobody believed it. The typo was added to the official record, with an annotation and a laughing face. Markets fell again."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore it",
+   "text": "The tariff is still listed at 1,000 percent. An intern is now in the supply closet, and so is a second intern.",
+   "blowback": [
+    {
+     "effects": {
+      "stability": -8
+     },
+     "text": "Remember the tariff typo? A trade partner has cited it in a formal complaint, in a font that looks smug."
+    },
+    {
+     "effects": {
+      "ego": -5,
+      "stability": -9
+     },
+     "text": "Remember the 1,000 percent tariff? A court has ruled the typo is binding. Supply chains are holding emergency drills."
+    },
+    {
+     "effects": {},
+     "text": "Remember the tariff typo? Everyone had a good laugh, and it was quietly fixed in the footnotes."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-kanye-drops-by",
+  "title": "Kanye West Drops By Unannounced",
+  "text": "Kanye West has arrived at the gate, in a hat, with a sample of something. He says it is a gift. The security team says it is a 'situation'.",
+  "choices": [
+   {
+    "label": "Welcome him and hear him out",
+    "cost": 1,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 8,
+       "stability": 3
+      },
+      "text": "Kanye played you the sample, it was a drumbeat and a compliment, and you left feeling great. Staff report an 'unexpected calm'."
+     },
+     {
+      "effects": {
+       "ego": 4,
+       "stability": -4
+      },
+      "text": "The visit went well, but he stayed for six hours and left with the good chair. Your ego is soaring and the chair is not."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "Kanye's visit became a monologue that lasted until midnight and ended with him redesigning the Oval Office. The press loved it."
+     }
+    ]
+   },
+   {
+    "label": "Wave him off from the balcony",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 10
+      },
+      "text": "You waved. He waved back, hat in hand, and left a thank-you card. The press called it 'oddly graceful'."
+     },
+     {
+      "effects": {
+       "ego": 5,
+       "stability": -3
+      },
+      "text": "He left, but he posted the wave as a ten-minute video. The wave got more likes than your last speech."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "He saw the wave as a challenge and has set up an unannounced stage on the lawn. Security is not ready for this."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore it",
+   "text": "Kanye is still at the gate. He has set down the hat and started a short, slow, thoughtful pacing.",
+   "blowback": [
+    {
+     "effects": {
+      "ego": -8
+     },
+     "text": "Remember Kanye at the gate? He has released a concept album about the lawn, with a track for each shrub."
+    },
+    {
+     "effects": {
+      "ego": -8,
+      "stability": -6
+     },
+     "text": "Remember Kanye's visit? He has announced a run for something. It is not clear what, but there will be hats."
+    },
+    {
+     "effects": {},
+     "text": "Remember Kanye at the gate? He went home. The hat is still in the lost property cupboard."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-mtg-breaks-ranks",
+  "title": "Marjorie Taylor Greene Breaks Ranks",
+  "text": "Marjorie Taylor Greene has just criticised you on live television, then called it 'tough love', then called it 'a podcast'. The caucus is looking at the carpet.",
+  "choices": [
+   {
+    "label": "Meet her and listen",
+    "cost": 1,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 4,
+       "stability": 6
+      },
+      "text": "She walked out saying she was 'heard' and gave a thumbs-up. The caucus relaxed. The carpet stopped being interesting."
+     },
+     {
+      "effects": {
+       "stability": 5,
+       "ego": -3
+      },
+      "text": "The meeting settled her, but she asked for a favour. It involves a committee and a very large flag. Your base is split."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "The meeting leaked. She said you listened 'like a goldfish', and you have two new problems and a goldfish."
+     }
+    ]
+   },
+   {
+    "label": "Post that she is a nobody",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 5,
+       "stability": 5
+      },
+      "text": "The post sent her into a day-long rant that hurt her more than you. Allies have called it 'surprisingly effective'."
+     },
+     {
+      "effects": {
+       "ego": 4,
+       "stability": -4
+      },
+      "text": "The post got attention, but a few members have quietly asked for protection from your posts. A fundraiser dipped."
+     },
+     {
+      "effects": {
+       "stability": -9,
+       "ego": -5
+      },
+      "text": "She posted back, with a very long video of you from 2016 agreeing with her. The caucus has gone from the carpet to the ceiling."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore her",
+   "text": "Greene has not stopped. A podcast has been booked, along with a mug.",
+   "blowback": [
+    {
+     "effects": {
+      "ego": -3,
+      "stability": -5
+     },
+     "text": "Remember Greene breaking ranks? Three more members have joined her, and she is now running a small bloc called 'The Podcast'."
+    },
+    {
+     "effects": {
+      "ego": -6,
+      "stability": -8
+     },
+     "text": "Remember the Greene feud? She has organised a vote against you, and half the caucus attended the 'tough love' brunch."
+    },
+    {
+     "effects": {},
+     "text": "Remember Greene's outburst? She did a new podcast and forgot her old complaint. The caucus is back to the carpet."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-rfk-water",
+  "title": "RFK Jr. Has News About the Water",
+  "text": "RFK Jr. has called a briefing to announce something about the water. He will not say what, but he has brought a large jug and a worrying chart.",
+  "choices": [
+   {
+    "label": "Review the plan, then announce it",
+    "cost": 1,
+    "outcomes": [
+     {
+      "effects": {
+       "stability": 9,
+       "ego": 2
+      },
+      "text": "The plan was sensible after edits. The water got a stern label, the jug was retired and the chart was filed under 'friendly'."
+     },
+     {
+      "effects": {
+       "stability": 4,
+       "ego": -4
+      },
+      "text": "The plan passed, but the jug is now official government property and the chart has been reprinted in colour."
+     },
+     {
+      "effects": {
+       "stability": -9,
+       "ego": -5
+      },
+      "text": "The review found nothing wrong, then RFK Jr. announced it anyway, with the jug. The water has been nicknamed 'the situation'."
+     }
+    ]
+   },
+   {
+    "label": "Tell him to announce it on cable",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "stability": 8,
+       "ego": 3
+      },
+      "text": "Cable news loved it. The announcement was about hydration and was well received. The chart won an award, somehow."
+     },
+     {
+      "effects": {
+       "stability": 5,
+       "ego": -3
+      },
+      "text": "The announcement went out, the chart went viral and a county in Ohio banned tap water by mistake. It was reversed on Tuesday."
+     },
+     {
+      "effects": {
+       "stability": -12
+      },
+      "text": "The announcement was about fluoride, the chart was upside down and half the country is now boiling its tea. Three agencies are 'looking into it'."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore it",
+   "text": "RFK Jr. has told a reporter 'you will not believe what is in the pipes'. The reporter is now holding a jug.",
+   "blowback": [
+    {
+     "effects": {
+      "stability": -8
+     },
+     "text": "Remember RFK Jr.'s water announcement? A county has started its own tap standard. It involves a jug, and so do the fines."
+    },
+    {
+     "effects": {
+      "ego": -5,
+      "stability": -9
+     },
+     "text": "Remember the water briefing? It got into the news cycle and a state now sells its own bottled tap water. Prices are alarming."
+    },
+    {
+     "effects": {},
+     "text": "Remember RFK Jr. and the water? The jug broke. The chart went to a drawer. The pipes carried on regardless."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-giuliani-wrong-venue",
+  "title": "Giuliani Holds a Press Event in a Car Park",
+  "text": "Rudy Giuliani is giving an urgent press conference on your behalf. It is in a car park behind a landscaping firm. A lawnmower is in the background, and it is on.",
+  "choices": [
+   {
+    "label": "Send a fixer to move him",
+    "cost": 1,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 6,
+       "stability": 4
+      },
+      "text": "The fixer got Rudy into a proper room and a microphone that worked. The lawnmower was thanked and paid. The press thought it was cute."
+     },
+     {
+      "effects": {
+       "stability": 5,
+       "ego": -3
+      },
+      "text": "Rudy moved, but he took the lawnmower, and the press hall is now a landscaping showroom. His message was calm."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "The fixer walked into the wrong car park. Both are now at the landscaper's. A photo of the two of them with a lawnmower has gone global."
+     }
+    ]
+   },
+   {
+    "label": "Say it was a bold choice of venue",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 4,
+       "stability": 6
+      },
+      "text": "Your 'bold venue' line made the car park a landmark. Tourists took selfies and the landscaper got a franchise offer."
+     },
+     {
+      "effects": {
+       "ego": 4,
+       "stability": -4
+      },
+      "text": "The line held for a day, but Rudy's remarks were still odd, and the lawnmower is now a meme with a verified badge."
+     },
+     {
+      "effects": {
+       "stability": -12
+      },
+      "text": "Rudy took it as endorsement and booked the car park for the whole month. The landscaper has sent an invoice."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore it",
+   "text": "Rudy is still talking in the car park. The lawnmower has been joined by a leaf blower. A reporter is on a bench.",
+   "blowback": [
+    {
+     "effects": {
+      "ego": -3,
+      "stability": -5
+     },
+     "text": "Remember Rudy's car park press conference? A court has read the transcript aloud, with the lawnmower sound effects."
+    },
+    {
+     "effects": {
+      "ego": -6,
+      "stability": -8
+     },
+     "text": "Remember Giuliani in the car park? The landscaper has filed a defamation claim. The leaf blower is a witness."
+    },
+    {
+     "effects": {},
+     "text": "Remember Rudy and the lawnmower? Someone turned it off. The story ended there, thankfully."
+    }
+   ]
+  }
+ }
+]

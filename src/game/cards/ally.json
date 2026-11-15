@@ -1,0 +1,854 @@
+[
+  {
+    "id": "ally-nato-tracker",
+    "kind": "briefing",
+    "title": "NATO Spending Spreadsheet",
+    "text": "A colour-coded chart of which allies have reached 5 percent of GDP. Nobody has. Several are shaded a hopeful green.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Read every row",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You learned that 3.5 plus 1.5 equals 5. You asked for the number to be bigger."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The chart went unread. Allies kept promising and you kept believing."
+    },
+    "inspiredBy": "NATO allies pledged 5 percent of GDP on defence by 2035 at the June 2025 Hague summit."
+  },
+  {
+    "id": "ally-greenland-group",
+    "kind": "briefing",
+    "title": "Greenland Working Group Minutes",
+    "text": "Forty pages of minutes from talks with Denmark and Greenland. The word \"purchase\" appears zero times. The word \"no\" appears often.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Read the minutes",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You finished. The island remains an island, and it remains not for sale."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The minutes stayed in the folder. The working group kept working without you."
+    },
+    "inspiredBy": "US, Danish and Greenlandic officials held working-group talks on Greenland from January 2026."
+  },
+  {
+    "id": "ally-usmca-binder",
+    "kind": "briefing",
+    "title": "Trade Pact Review Binder",
+    "text": "The review of the North American trade pact arrives as three binders, a flowchart and a glossary. Staff recommend the glossary first.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Study the flowchart",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You traced a car part across three borders. It crossed seven times and got more expensive."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The binder gathered dust. The trade pact review went on without a view from the top."
+    },
+    "inspiredBy": "The US declined in July 2026 to extend the USMCA in its current form during the joint review."
+  },
+  {
+    "id": "ally-embassy-cables",
+    "kind": "briefing",
+    "title": "Cables From Embassies",
+    "text": "A stack of reports from ambassadors, many of them acting, some of them also acting as the cleaner. Each ends with a polite request for staff.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Read the cables",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You learned that embassies exist in places you had only seen on tariff charts."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The cables went unread. Several embassies sent them again, louder."
+    },
+    "inspiredBy": "State Department cuts and a 2025 reorganisation reduced diplomatic staff and strained embassies."
+  },
+  {
+    "id": "ally-aid-audit",
+    "kind": "briefing",
+    "title": "Foreign Aid Wind-Down Report",
+    "text": "A report on which overseas programmes were cancelled, which were restored, and which no one can find. Appendix C is a shrug.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Go through the appendices",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You found one programme that worked. It had been cancelled twice and reinstated once."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The report went unread. The shrug in Appendix C stayed unresolved."
+    },
+    "inspiredBy": "The administration dismantled USAID in 2025, with programmes cancelled and some later restored."
+  },
+  {
+    "id": "ally-g20-logistics",
+    "kind": "briefing",
+    "title": "G20 Host Logistics Brief",
+    "text": "The US hosts the G20 in December 2026 and staff want to discuss seating, motorcades, and which country gets the good chair. Your resort is mentioned eleven times.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Review the seating plan",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You approved a seating plan. Nobody sat next to the empty South Africa chair."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The seating plan stayed undecided. Several leaders were seated near a fire exit."
+    },
+    "inspiredBy": "The US holds the 2026 G20 presidency, with the summit planned at a Doral golf resort in December."
+  },
+  {
+    "id": "ally-qatar-jet",
+    "kind": "decision",
+    "title": "A Very Large Gift Jet",
+    "text": "A friendly government offers a luxury jumbo jet, free, no strings, definitely not a strings thing. Lawyers have used the word \"emoluments\" twice.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Politely pay for it",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You offered to pay. The donor was baffled. Your lawyers brought a cake."
+      },
+      {
+        "label": "Accept the jet, wave from the stairs",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You accepted. The jet is lovely and the hearing is scheduled."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The offer sat on your desk. The jet is still parked, looking expectant."
+    },
+    "inspiredBy": "Qatar offered a Boeing 747 for use as Air Force One in May 2025, prompting ethics objections."
+  },
+  {
+    "id": "ally-korea-crown",
+    "kind": "decision",
+    "title": "Gift Crown, Slightly Used",
+    "text": "A visiting ally presents a gold replica of an ancient royal crown. Protocol says it goes in the archive. The mirror says otherwise.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Send it to the archive",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The crown went to the archive. You asked if it could be seen from there."
+      },
+      {
+        "label": "Try it on in the corridor",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You tried it on. It fit perfectly, which is the problem."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The crown stayed in its box. The box got a plaque."
+    },
+    "inspiredBy": "South Korea gave a replica gold crown at the APEC summit in October 2025."
+  },
+  {
+    "id": "ally-swiss-gold",
+    "kind": "decision",
+    "title": "Executives Bring A Gold Bar",
+    "text": "Business leaders from a tariffed country arrive with a gold bar and a luxury watch. They say it is \"just a token\". It is exactly the shape of a token.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Log it with the ethics office",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The gifts were logged. An ethics lawyer held the bar and looked wistful."
+      },
+      {
+        "label": "Put the bar on the Resolute desk",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "The bar looked wonderful. The tariff rate went down eleven points."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The gold sat on the desk. The tariff talks sat next to it."
+    },
+    "inspiredBy": "Swiss business leaders gave Trump a gold bar and watch in August 2025 after US tariffs hit Switzerland."
+  },
+  {
+    "id": "ally-board-of-peace",
+    "kind": "decision",
+    "title": "The Board Of Peace",
+    "text": "A new international council would be chaired by you, with permanent seats for a mere billion dollars. The charter is short. Your title is long.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Hand it to an independent body",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You shared the chair. The charter now has footnotes and a vice chair."
+      },
+      {
+        "label": "Chair it yourself, permanently",
+        "effects": {
+          "ego": 7,
+          "stability": -7
+        },
+        "result": "You are chair for life. Several allies asked politely if they could not."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The charter stayed on your desk. The board met anyway and elected no one."
+    },
+    "inspiredBy": "Trump launched a Board of Peace in January 2026 with a $1 billion price for permanent membership."
+  },
+  {
+    "id": "ally-panama-ports",
+    "kind": "decision",
+    "title": "The Canal Handover Idea",
+    "text": "An aide suggests a calm arrangement with Panama over canal ports. You prefer the version with a flag, a parade, and your name on a lock.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Negotiate on port ownership",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "A calm deal was made. Ships went through. Nobody was named after anyone."
+      },
+      {
+        "label": "Demand the canal back, loudly",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You demanded it. Panama said no in two languages and sent a map."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The canal question floated unanswered, like a very large boat."
+    },
+    "inspiredBy": "Trump pressed Panama over the canal and its ports from his January 2025 inauguration."
+  },
+  {
+    "id": "ally-ankara-f35",
+    "kind": "decision",
+    "title": "Fighter Jet For A Fan",
+    "text": "A NATO ally you like would love some fighter jets. Another ally would love you not to. The sales brochure is shiny and says \"friendship\" twice.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Seek an allied consensus",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You consulted. The allies agreed on a ratio of three objections to one hint."
+      },
+      {
+        "label": "Announce the sale on the spot",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You announced it. Two allies learned about it from the television."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The jets stayed in the hangar. The brochure was reprinted."
+    },
+    "inspiredBy": "Trump said at the July 2026 Ankara NATO summit that Turkey could return to the F-35 programme."
+  },
+  {
+    "id": "ally-spain-penalty",
+    "kind": "decision",
+    "title": "Spain Has Not Paid",
+    "text": "One ally has declined the new 5 percent target. An adviser proposes a quiet, measured conversation. You propose a tariff with a name.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Hold a quiet conversation",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The conversation was calm. Spain said \"next year\" in several tenses."
+      },
+      {
+        "label": "Threaten Spain with tariffs",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You threatened Spain. Spain responded with a long lunch and no change."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The spending gap went unaddressed. Spain stayed on the shady side of the chart."
+    },
+    "inspiredBy": "Trump criticised Spain for refusing the 5 percent NATO spending target in 2025 and 2026."
+  },
+  {
+    "id": "ally-g20-exclusion",
+    "kind": "decision",
+    "title": "Who Gets Invited To G20",
+    "text": "You are hosting the G20, which means you pick the guest list. A country you dislike is on the guest list of a group that exists to include it.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Keep the usual invitations",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You kept the list. The seating chart stayed the same. Nobody wrote a speech."
+      },
+      {
+        "label": "Strike a country from the list",
+        "effects": {
+          "ego": 7,
+          "stability": -7
+        },
+        "result": "You struck it. The host list is now shorter and your grudge is longer."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The guest list remained unsigned. Forty envelopes sat unlicked."
+    },
+    "inspiredBy": "Trump said South Africa would not be invited to the 2026 G20 after the US boycotted its 2025 summit."
+  },
+  {
+    "id": "ally-eu-energy",
+    "kind": "decision",
+    "title": "The Big European Deal",
+    "text": "A trade deal with Europe awaits signature. It has a 15 percent tariff, a promise of 750 billion dollars of energy, and a very vague word: \"framework\".",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Get the numbers in writing",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You asked for the numbers in writing. Brussels sent a larger document."
+      },
+      {
+        "label": "Declare the biggest deal ever",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You announced a landmark deal. Europe spent the weekend reading it."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The deal stayed unsigned. Europe kept buying gas, and counting."
+    },
+    "inspiredBy": "The US and EU reached the Turnberry trade framework in July 2025 with a 15 percent tariff."
+  },
+  {
+    "id": "ally-reagan-ad",
+    "kind": "call",
+    "title": "Ontario Ran An Ad",
+    "text": "A provincial leader aired a television ad quoting a former president against tariffs. An aide says the talks could continue. You say they could not.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Keep the talks going",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You stayed at the table. The ad ran another week, in your honour."
+      },
+      {
+        "label": "Cancel all talks, immediately",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You cancelled them. Canada watched the ad again on purpose."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The ad kept running. The talks lost the thread."
+    },
+    "inspiredBy": "Trump ended Canada trade talks in October 2025 after an Ontario anti-tariff ad quoting Ronald Reagan."
+  },
+  {
+    "id": "ally-fifty-first",
+    "kind": "call",
+    "title": "The Fifty-First State Call",
+    "text": "A prime minister is on the line about tariffs. You would like to talk about statehood, stars on the flag and how nicely a map would look.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Stick to tariffs",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You discussed tariffs. The prime minister thanked you and sighed in French."
+      },
+      {
+        "label": "Pitch statehood again",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You pitched it. The prime minister said \"no\" the way an adult does."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You never called back. Canada took it as a refusal and a relief."
+    },
+    "inspiredBy": "Trump repeatedly floated making Canada the 51st state through 2025."
+  },
+  {
+    "id": "ally-mexico-strikes",
+    "kind": "call",
+    "title": "The No Strikes Call",
+    "text": "A president calls to say Mexico will fight cartels on its own, thank you, and would rather not have your drones overhead. You have quite a lot of drones.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Agree to joint operations",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You agreed to share intelligence. A general looked relieved, then suspicious."
+      },
+      {
+        "label": "Threaten land strikes in public",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You threatened strikes on camera. Mexico pointed at its sovereignty and a map."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The call went to voicemail. The drones kept flying."
+    },
+    "inspiredBy": "Trump repeatedly threatened strikes on cartels on Mexican soil; Mexico refused in 2025 and 2026."
+  },
+  {
+    "id": "ally-rutte-daddy",
+    "kind": "call",
+    "title": "A Flattering NATO Chief",
+    "text": "The NATO chief calls to say you will be an enormous success, and mentions that other leaders call you \"daddy\". The memo says this is a trick. It works.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Thank him and ask for spending",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You asked for spending. He said yes to everything, in a tone you did not notice."
+      },
+      {
+        "label": "Believe every word",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You believed it all. The communique was the length of a postcard."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You never called back. The NATO chief wrote the flattery in the communique anyway."
+    },
+    "inspiredBy": "NATO chief Mark Rutte flattered Trump around the June 2025 summit and used the word \"daddy\"."
+  },
+  {
+    "id": "ally-macron-tariff",
+    "kind": "call",
+    "title": "A Prime Minister Of Wine",
+    "text": "The French president wants to talk tariffs on wine and everything else, before the dinner. You want to talk about the dinner.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Offer a measured tariff pause",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You paused the tariffs. The French president said \"merci\" like a threat."
+      },
+      {
+        "label": "Threaten tariffs on his champagne",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You threatened champagne. France stocked up on it and sent the invoice."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The call went unanswered. A pallet of wine started a retaliation list."
+    },
+    "inspiredBy": "Trump threatened new tariffs on France around the June 2026 G7 summit."
+  },
+  {
+    "id": "ally-danish-pm",
+    "kind": "call",
+    "title": "Denmark Is On Line One",
+    "text": "The Danish prime minister is calling about the island, again. She will say the word \"no\" many times, kindly. You will say \"ice\" many times.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Discuss defence cooperation",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You discussed radars. It was dull and she said it was the best call of her year."
+      },
+      {
+        "label": "Make an offer for the island",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You made an offer. The offer was \"no\", but from your side."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "You skipped the call. Denmark noted that you had skipped it and issued a statement."
+    },
+    "inspiredBy": "Trump kept pressing Denmark to cede control of Greenland through 2025 and 2026."
+  },
+  {
+    "id": "ally-zelensky-call",
+    "kind": "call",
+    "title": "Security Guarantees, Again",
+    "text": "The Ukrainian president wants security guarantees and a map that agrees with him. Your advisers want a ceasefire by Friday. You want applause.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Back a ceasefire with guarantees",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You backed guarantees. The map shrugged, but a bit less than before."
+      },
+      {
+        "label": "Demand a deal by Friday",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You demanded Friday. Friday arrived. Nothing else did."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The call was missed. The map went on being a map."
+    },
+    "inspiredBy": "Trump pressed Ukraine and Russia for a peace deal repeatedly in 2025 and 2026."
+  },
+  {
+    "id": "ally-saudi-prince",
+    "kind": "call",
+    "title": "A Crown Prince With A Number",
+    "text": "A crown prince offers an investment so large it needs a new unit. He mentions it casually, like a sandwich order. He does not mention human rights.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Ask about the human rights file",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You asked. The pledge went down slightly and the sandwiches stayed."
+      },
+      {
+        "label": "Cheer the trillion",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You cheered. The number grew again by the time you hung up."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The call was missed. The number was announced anyway."
+    },
+    "inspiredBy": "Saudi Arabia pledged hundreds of billions in US investment in 2025, later raised to near a trillion."
+  },
+  {
+    "id": "ally-japan-pm",
+    "kind": "call",
+    "title": "A Prime Minister Takes A Bow",
+    "text": "A new prime minister calls to pledge 550 billion dollars of investment and to say how many times she admired you. Both numbers are large.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Ask for the investment details",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You asked. She sent a binder with a plan and several friendly footnotes."
+      },
+      {
+        "label": "Say you are very proud of her",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You said it. She said it back, with a gift."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The call went to voicemail. The prime minister left a very long, warm message."
+    },
+    "inspiredBy": "Japan pledged $550 billion in US investment in a 2025 trade deal; its new PM met Trump in Tokyo in October 2025."
+  },
+  {
+    "id": "ally-un-escalator",
+    "kind": "press",
+    "title": "The UN Escalator Incident",
+    "text": "At the UN, the escalator stopped, the teleprompter stuck, and you have been asked to say a few words about it. A reporter has a microphone and a follow-up.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say it was a technical glitch",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You blamed a glitch. The UN said the escalator was not asked about your speech."
+      },
+      {
+        "label": "Call it a sabotage plot",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You called for an investigation. Someone sent a janitor in a very small sweater."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You said nothing. The escalator story ran for three days."
+    },
+    "inspiredBy": "Trump said in September 2025 that a UN escalator and teleprompter failed during his visit."
+  },
+  {
+    "id": "ally-g7-early",
+    "kind": "press",
+    "title": "Leaving The Summit Early",
+    "text": "You are leaving a G7 early. A reporter asks if it was about the mood, the meeting or the lunch. A helicopter is waiting.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Stay and finish the session",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You stayed. The leaders were thrilled, the lunch was fine and the helicopter was bored."
+      },
+      {
+        "label": "Leave early, praise yourself",
+        "effects": {
+          "ego": 7,
+          "stability": -7
+        },
+        "result": "You left. The communique was written without you and with your name in it."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "You went to the helicopter. The G7 went on, politely refusing to mention you."
+    },
+    "inspiredBy": "Trump left the June 2025 G7 summit in Canada early, citing events in the Middle East."
+  },
+  {
+    "id": "ally-davos-speech",
+    "kind": "press",
+    "title": "The Davos Speech",
+    "text": "You are addressing rich people in the Alps. They want to hear about economic cooperation. You have prepared a section on an island in the Arctic.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Stick to economic points",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You stayed on message. The audience took notes, then went to a skiing event."
+      },
+      {
+        "label": "Talk about the island for forty minutes",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You spoke about the island. The audience bought a few maps."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You did not speak. The Alps carried on, unbothered."
+    },
+    "inspiredBy": "Trump addressed Davos in January 2026 and used the speech to press for control of Greenland."
+  },
+  {
+    "id": "ally-windsor-banquet",
+    "kind": "press",
+    "title": "The Windsor Banquet Toast",
+    "text": "A state banquet at a royal castle. A reporter asks for your thoughts on the day. The King has a very long sword and a very short patience.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Thank the host with grace",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You thanked him gracefully. The King nodded with the restraint of a monument."
+      },
+      {
+        "label": "Mention the size of the castle",
+        "effects": {
+          "ego": 7,
+          "stability": -7
+        },
+        "result": "You said it was big, but yours was bigger. The room studied the tablecloth."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "You spoke to no one. A footman refilled everything, in silence."
+    },
+    "inspiredBy": "Trump made a state visit to the UK in September 2025 with a banquet at Windsor Castle."
+  },
+  {
+    "id": "ally-versailles-dinner",
+    "kind": "press",
+    "title": "Dinner At Versailles",
+    "text": "You are dining in a palace of mirrors and gold, hosted by a president. A reporter asks if the palace is a rival to your resort. It is.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Praise the host and the palace",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You praised the palace. The gold lasted the whole dinner."
+      },
+      {
+        "label": "Say yours is better, with more gold",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You said yours was better. A mirror caught the expression of the host."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You skipped questions. The mirrors reflected your empty chair."
+    },
+    "inspiredBy": "Trump dined with the French president at the Palace of Versailles after the June 2026 G7 summit."
+  },
+  {
+    "id": "ally-nobel-question",
+    "kind": "press",
+    "title": "The Peace Prize Question",
+    "text": "A reporter asks whether you deserve the Nobel Peace Prize. You do, in your view. Several foreign leaders have said it too, in public, with enthusiasm.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say the work matters more",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You said the work mattered. The reporter asked if you meant it. You did, a bit."
+      },
+      {
+        "label": "List the wars you ended",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You listed eight wars. A fact-checker wrote down eight question marks."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You did not answer. The foreign leaders kept nominating you in public."
+    },
+    "inspiredBy": "Foreign leaders publicly nominated Trump for the Nobel Peace Prize through 2025 and he repeatedly said he deserved it."
+  }
+]

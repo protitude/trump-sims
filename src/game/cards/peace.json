@@ -1,0 +1,846 @@
+[
+  {
+    "id": "peace-map-revision",
+    "kind": "briefing",
+    "title": "Territory Map, Fourth Revision",
+    "text": "Aides present a peace framework with a map. The lines have been redrawn so often that the paper is now mostly marker.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Study the map",
+        "effects": {
+          "stability": 9,
+          "ego": -4
+        },
+        "result": "You studied the borders for an hour. Nobody can tell you which line is current, but you nodded at all of them."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The map went unread. A fifth revision arrived anyway, with a new color of marker."
+    },
+    "inspiredBy": "Reports in late 2025 of a rapidly revised multi-point Ukraine peace framework."
+  },
+  {
+    "id": "peace-hormuz-shipping",
+    "kind": "briefing",
+    "title": "Strait Shipping Lanes",
+    "text": "A navy analyst explains a narrow waterway, its tolls and who may sail through it. You are asked to hold the pointer.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Follow the lanes",
+        "effects": {
+          "stability": 8,
+          "ego": -3
+        },
+        "result": "You learned that the strait is narrow, important and not available for naming rights."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The shipping brief was skipped. Tankers waited in a long, patient line for guidance."
+    },
+    "inspiredBy": "Spring 2026 talks with Iran about reopening the Strait of Hormuz and banning tolls."
+  },
+  {
+    "id": "peace-rare-earth-primer",
+    "kind": "briefing",
+    "title": "Rare Earths for Beginners",
+    "text": "A trade official walks you through magnets, mining and export controls. The word 'rare' is used to hold your interest.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Take notes",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You now understand why a one-year pause on export controls counts as a breakthrough. Your notes say 'magnets: big'."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The primer went unread. The truce's expiry date moved closer without comment."
+    },
+    "inspiredBy": "The October 2025 Busan summit truce pausing China's rare earth export controls for a year."
+  },
+  {
+    "id": "peace-oil-after-caracas",
+    "kind": "briefing",
+    "title": "Who Runs What, Now",
+    "text": "A thick binder explains the transition, the oil contracts and who answers the phones. Slide four is titled 'We are running it'.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Read the binder",
+        "effects": {
+          "stability": 8,
+          "ego": -4
+        },
+        "result": "You learned that 'running' a country involves paperwork, and that nobody has found the stapler."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The binder stayed shut. The transition plan was cited by three people who had also not read it."
+    },
+    "inspiredBy": "January 2026 statements that the US would 'run' Venezuela during a transition."
+  },
+  {
+    "id": "peace-ceasefire-phases",
+    "kind": "briefing",
+    "title": "Phase Two Flowchart",
+    "text": "A diplomat unrolls a flowchart of ceasefire phases, boards and technocratic committees. Your name appears on the first box and is circled twice.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Trace the arrows",
+        "effects": {
+          "stability": 10,
+          "ego": -5
+        },
+        "result": "You followed every arrow. Several lead back to a box marked 'to be determined', which you declined to rename."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The flowchart was folded away. Phase two continued to be described as 'imminent'."
+    },
+    "inspiredBy": "The 2025 to 2026 phased Gaza ceasefire plan and its oversight board."
+  },
+  {
+    "id": "peace-nk-dossier",
+    "kind": "briefing",
+    "title": "Pyongyang Reading Pack",
+    "text": "An analyst offers a dossier on a reclusive nuclear state. It is mostly text. The photo of you shaking hands is on page ninety.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Read to page ninety",
+        "effects": {
+          "stability": 8,
+          "ego": -2
+        },
+        "result": "You read the whole dossier and found the handshake photo. You also learned things about missiles, which was not the plan."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The dossier went unopened. It was filed under 'future summit, possibly'."
+    },
+    "inspiredBy": "Early 2026 remarks that Trump expects to meet North Korea's leader again."
+  },
+  {
+    "id": "peace-war-powers-memo",
+    "kind": "briefing",
+    "title": "Legal Memo on Authorizations",
+    "text": "Counsel delivers a memo on what Congress must approve and what it merely needs to be told about. It uses the phrase 'notwithstanding' eleven times.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Read all of it",
+        "effects": {
+          "stability": 9,
+          "ego": -5
+        },
+        "result": "You read the memo. It concludes that the Senate would like to be asked first, which you found surprising."
+      }
+    ],
+    "ignore": {
+      "stability": -7,
+      "text": "The memo went unread. A war powers resolution advanced, and nobody had prepared a comment."
+    },
+    "inspiredBy": "January 2026 Senate war powers votes after the operation in Venezuela."
+  },
+  {
+    "id": "peace-dept-of-war-letterhead",
+    "kind": "decision",
+    "title": "New Stationery Order",
+    "text": "The Pentagon has a new secondary name, and a printing contractor needs a decision on letterhead, signs and seventeen thousand lanyards.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Ask Congress, as the law requires",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "Congress has been asked. Several hearings are scheduled. The lanyards remain blank, which is the most accurate thing printed so far."
+      },
+      {
+        "label": "Print it in gold, order double",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "The lanyards say WAR in gold foil. Half the staff adopted them with enthusiasm. The other half asked about the law."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The stationery order stalled. Two rival signs now hang above the same door."
+    },
+    "inspiredBy": "The September 2025 order styling the Defense Department as the Department of War."
+  },
+  {
+    "id": "peace-alaska-seating",
+    "kind": "decision",
+    "title": "Summit Seating Chart",
+    "text": "Protocol needs an arrangement for the Alaska meeting. The red carpet is cleared, the bomber flyover is booked and the table question is open.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Standard table, standard agenda",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "A normal table was set with a normal agenda. The flyover was cancelled. The briefing staff nearly wept with relief."
+      },
+      {
+        "label": "Longer carpet, louder flyover",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The carpet now reaches the horizon. Both delegations arrived to applause and left without a deal, but with very good photos."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "The seating chart was never approved. Both delegations arrived and queued politely for the same chair."
+    },
+    "inspiredBy": "The August 2025 Alaska summit with a red carpet welcome and military flyover."
+  },
+  {
+    "id": "peace-board-chair-for-life",
+    "kind": "decision",
+    "title": "Board Charter, Article One",
+    "text": "Lawyers draft the charter for a new international peace board. Article one lists the chair as you, with a blank line for the end date.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Add a term limit",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The chair now serves a fixed term. Several member states relaxed visibly, and the gavel was taken away for polishing."
+      },
+      {
+        "label": "Leave the blank line blank",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The line stays blank. Members noticed that the gavel is larger than the other chairs' gavels. There are no other gavels."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The charter went unsigned. The board met anyway and elected an empty chair, then argued about whose it was."
+    },
+    "inspiredBy": "January 2026 launch of Trump's Board of Peace for Gaza, with Trump as chair."
+  },
+  {
+    "id": "peace-trophy-shelf",
+    "kind": "decision",
+    "title": "Trophy Shelf Allocation",
+    "text": "A football federation has presented a peace trophy, and the Oval Office is short on shelf space. Staff want a ruling on where it goes.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Put it in a display case",
+        "effects": {
+          "stability": 4,
+          "ego": -2
+        },
+        "result": "The trophy sits in a modest case in a corridor. It was described as 'not a Nobel' by a staffer, quietly, in a closet."
+      },
+      {
+        "label": "Clear the mantel for it",
+        "effects": {
+          "ego": 5,
+          "stability": -4
+        },
+        "result": "The trophy now holds the mantel, lit from three angles. A reporter asked if it was the Nobel. You did not answer the question."
+      }
+    ],
+    "ignore": {
+      "stability": -2,
+      "text": "The trophy sat in a box beside the desk. The box got a nameplate."
+    },
+    "inspiredBy": "December 2025, when FIFA's president presented Trump with an inaugural peace prize."
+  },
+  {
+    "id": "peace-accord-naming",
+    "kind": "decision",
+    "title": "What to Call the Deal",
+    "text": "Negotiators have a draft agreement with a neutral title. A speechwriter proposes that it carry your name, in the interest of clarity.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Keep the neutral title",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "The agreement kept its plain title. Both sides signed quickly, mostly in relief that nobody would need to say your name in a toast."
+      },
+      {
+        "label": "Call it the Trump Accord",
+        "effects": {
+          "ego": 5,
+          "stability": -7
+        },
+        "result": "The title is now your name. The other party asked for a footnote with a different name. The footnote is larger than the agreement."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The deal had no name by deadline. Three nicknames circulated, all of them yours."
+    },
+    "inspiredBy": "Peace agreements in 2025 that Trump announced as his own achievements."
+  },
+  {
+    "id": "peace-signing-pen",
+    "kind": "decision",
+    "title": "Choice of Signing Pen",
+    "text": "A regional leader will host a peace signing. Protocol offers a plain pen, or a ceremonial one three feet long that must be held with both hands.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Use the plain pen",
+        "effects": {
+          "stability": 8,
+          "ego": -3
+        },
+        "result": "The ceremony ran on time. The giant pen was passed to a museum, where it remains the largest object in the case."
+      },
+      {
+        "label": "Take the three-foot pen",
+        "effects": {
+          "ego": 6,
+          "stability": -5
+        },
+        "result": "Your signature covered two pages and a table. Cameras loved it. The other signatories needed a stepladder to reach the line."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The pen question was left open. The signing started late while two aides argued over a ballpoint."
+    },
+    "inspiredBy": "The October 2025 Gaza peace summit and signing ceremony in Egypt."
+  },
+  {
+    "id": "peace-golden-fleet",
+    "kind": "decision",
+    "title": "Class of Battleship",
+    "text": "Naval planners need a name for a proposed new warship class. Their working title is 'Trump-class', in gold, with a statue on the bow.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Send it to a naming committee",
+        "effects": {
+          "stability": 9,
+          "ego": -4
+        },
+        "result": "The committee is now working on it. The navy was delighted, mostly because committees take years and budgets take longer."
+      },
+      {
+        "label": "Approve Trump-class",
+        "effects": {
+          "ego": 7,
+          "stability": -6
+        },
+        "result": "The class is named. Sailors report that the gold paint is hard to keep from chipping. A tug is being renamed in solidarity."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The naming request lapsed. The warships stayed unnamed, and one was called Hull Number Four."
+    },
+    "inspiredBy": "December 2025 announcement of a planned 'Trump-class' battleship fleet."
+  },
+  {
+    "id": "peace-dome-branding",
+    "kind": "decision",
+    "title": "Missile Shield Branding",
+    "text": "A defense contractor presents a missile shield concept. Engineers want to talk costs. Marketing wants to talk about the golden dome and the logo.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Review the cost estimates",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "The cost estimates were reviewed. They had several more zeros than the logo, which was returned for gold edges."
+      },
+      {
+        "label": "Approve the logo first",
+        "effects": {
+          "ego": 4,
+          "stability": -5
+        },
+        "result": "The logo was approved in four minutes. The cost review is scheduled after the unveiling, which will be held under an actual gold dome."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The shield proposal stalled. The contractor sent a larger logo as a reminder."
+    },
+    "inspiredBy": "The 2025 Golden Dome missile defense initiative announced by the administration."
+  },
+  {
+    "id": "peace-generals-summit",
+    "kind": "decision",
+    "title": "All Generals, One Room, Short Notice",
+    "text": "The defense secretary proposes to summon every general and admiral to a single base for a speech. Travel costs are already a rounding error to someone.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Do it by video link",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "Generals logged in from forty time zones. The connection dropped during the applause, which was statistically the most honest part."
+      },
+      {
+        "label": "Fill the hall, bring flags",
+        "effects": {
+          "ego": 4,
+          "stability": -5
+        },
+        "result": "The hall was full, silent and very tall. Nobody clapped until a staffer clapped first, which was noted by several people for the record."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The speech was never scheduled. The generals stayed at their posts, vaguely uneasy about why."
+    },
+    "inspiredBy": "The September 30, 2025 address to hundreds of generals and admirals at Quantico."
+  },
+  {
+    "id": "peace-eight-wars",
+    "kind": "press",
+    "title": "How Many Wars Did You Settle",
+    "text": "A reporter asks you to list the wars you have settled. You have been saying eight. Staff have a laminated list and it is not unanimous.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Read the laminated list",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "You read out the list. Several items were described by the other parties as 'a pause'. You thanked them for the clarification."
+      },
+      {
+        "label": "\"Eight. Maybe nine. Ask me again\"",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "The number rose by one while the reporter was asking a follow-up. Aides added a ninth line in pencil and hoped no one would ask which."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You skipped the question. The count was announced on your behalf, in a font that kept growing."
+    },
+    "inspiredBy": "2025 to 2026 repeated claims that Trump had 'settled eight wars'."
+  },
+  {
+    "id": "peace-two-weeks-presser",
+    "kind": "press",
+    "title": "The Two-Week Timeline",
+    "text": "A reporter asks when you will decide on the next step in a long negotiation. Your usual answer is 'two weeks'. They have started a countdown clock.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Give a real date",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You gave a date. Calendars were checked. Everyone looked at the date as if it might bite."
+      },
+      {
+        "label": "\"Two weeks. Maybe less\"",
+        "effects": {
+          "ego": 4,
+          "stability": -4
+        },
+        "result": "The clock restarted. Reporters noted that it has restarted before. You said the clock is also a very good clock."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You skipped the question. The countdown clock got a sponsor."
+    },
+    "inspiredBy": "Recurring 2025 'two weeks' deadlines Trump set for Russia and Iran decisions."
+  },
+  {
+    "id": "peace-no-deal-until-deal",
+    "kind": "press",
+    "title": "Post-Summit Press Conference",
+    "text": "A summit ended with warm handshakes and no agreement. Reporters are waiting to ask what, precisely, was achieved.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Admit there is no deal yet",
+        "effects": {
+          "stability": 6,
+          "ego": -5
+        },
+        "result": "'No deal until there's a deal,' you said. It was a clean sentence and nobody could find anything wrong with it, which unsettled the room."
+      },
+      {
+        "label": "Call it a 10 out of 10",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "You scored the summit a ten. The foreign press asked who the judges were. You said you were all of them."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You left without questions. The summit was reviewed by everyone but you."
+    },
+    "inspiredBy": "The August 2025 Alaska summit press remarks, 'there's no deal until there's a deal'."
+  },
+  {
+    "id": "peace-obama-ten-seconds",
+    "kind": "press",
+    "title": "The Predecessor Comparison",
+    "text": "A reporter wonders if you still think the Nobel committee treats you unfairly compared with a predecessor who won early.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say the process is theirs",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "You said the committee decides for itself. You said it in a voice that suggested you were reading someone else's note."
+      },
+      {
+        "label": "\"He got it in ten seconds\"",
+        "effects": {
+          "ego": 7,
+          "stability": -5
+        },
+        "result": "You gave a timed comparison. The stopwatch you borrowed from a reporter is now in your pocket."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You dodged the question. A late-night host answered it, with a stopwatch."
+    },
+    "inspiredBy": "2025 remarks that Trump would have won the Nobel 'in ten seconds' if named Obama."
+  },
+  {
+    "id": "peace-nobel-snub-aftermath",
+    "kind": "press",
+    "title": "The Nobel Announcement",
+    "text": "The prize was announced and went to someone else. Reporters want a reaction, and the Oval Office has been ready with a statement since August.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Congratulate the winner",
+        "effects": {
+          "stability": 6,
+          "ego": -5
+        },
+        "result": "You offered warm words for the winner. Aides filed the August statement under 'contingency, extremely detailed'."
+      },
+      {
+        "label": "Blame the committee's country",
+        "effects": {
+          "ego": 4,
+          "stability": -7
+        },
+        "result": "You pointed at a small, cold country. Its prime minister said, politely and twice, that she does not run the committee."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You skipped the announcement. The medal went to someone else, and the August statement was quietly sent anyway."
+    },
+    "inspiredBy": "October 2025, when the Nobel Peace Prize went to another laureate and Trump complained."
+  },
+  {
+    "id": "peace-kim-meeting-question",
+    "kind": "press",
+    "title": "Will You Meet Him Again",
+    "text": "Asked about another meeting with a reclusive leader, you say you expect one. His sister's office says no messages were ever exchanged.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "\"No date yet\"",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You said nothing had been scheduled. A diplomat nearby stopped holding her breath, then resumed when you smiled."
+      },
+      {
+        "label": "\"We get along. Great relationship\"",
+        "effects": {
+          "ego": 5,
+          "stability": -4
+        },
+        "result": "You described the relationship in glowing terms. The other side described it in none. Both statements were filed for the museum."
+      }
+    ],
+    "ignore": {
+      "stability": -2,
+      "text": "You skipped the question. Several analysts began guessing at the venue, mostly golf clubs."
+    },
+    "inspiredBy": "Early 2026 comments that Trump expects to meet Kim Jong Un and a denial from Pyongyang."
+  },
+  {
+    "id": "peace-putin-long-call",
+    "kind": "call",
+    "title": "The Two-Hour Call",
+    "text": "A rival president wants to talk for as long as it takes. Two hours later, the plan is to talk again and to describe the call as 'excellent'.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Keep it to thirty minutes",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You hung up on time. Your counterpart noted that your schedule was tighter than his, and that was his whole message."
+      },
+      {
+        "label": "Stay on, order lunch",
+        "effects": {
+          "ego": 4,
+          "stability": -6
+        },
+        "result": "The call ran past lunch, dinner and two allied phone calls waiting in line. The word 'excellent' was used eleven times."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You missed the call. A statement said it went very well, anyway."
+    },
+    "inspiredBy": "May 2025, when Trump and Putin spoke for over two hours without a ceasefire deal."
+  },
+  {
+    "id": "peace-zelensky-guarantees",
+    "kind": "call",
+    "title": "A President Wants Guarantees",
+    "text": "Ukraine's president calls to ask for security guarantees, in writing, on proper paper. He suggests wording and a jacket.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Agree to review a draft",
+        "effects": {
+          "stability": 6,
+          "ego": -4
+        },
+        "result": "You asked for the draft. The draft arrived with eleven names for the guarantees and none of them were yours."
+      },
+      {
+        "label": "Ask about the jacket instead",
+        "effects": {
+          "ego": 3,
+          "stability": -6
+        },
+        "result": "You asked about the jacket for a long time. The president admitted the jacket was not on the agenda and noted that nothing else was."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "You didn't return the call. A European leader called three times to make up for it, at length."
+    },
+    "inspiredBy": "Late 2025 meetings between Trump and Ukraine's president over security guarantees."
+  },
+  {
+    "id": "peace-xi-truce-call",
+    "kind": "call",
+    "title": "A Call From Beijing",
+    "text": "China's president phones about the trade truce. He is pleased with it and would like the expiry date to be, ideally, someday.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Agree to extend the truce",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "The truce got another two months. Both leaders called it a great friendship, and both aides checked the calendar again."
+      },
+      {
+        "label": "Propose a bigger deal, bigger pens",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You proposed a historic agreement with unusually large pens. The call ended with polite interest and a very short note."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You missed the call. The truce's expiry date was quietly circled in red by someone."
+    },
+    "inspiredBy": "The Busan truce of October 2025 and later extension talks with China's president."
+  },
+  {
+    "id": "peace-norway-call",
+    "kind": "call",
+    "title": "Norway Would Like to Clarify",
+    "text": "Norway's prime minister calls to explain, again, that the Nobel committee is independent and that she cannot award you anything.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Thank her for clarifying",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "You thanked her. She seemed relieved the call went well, and you did not mention the medal for four whole minutes."
+      },
+      {
+        "label": "Ask if she can 'make a call'",
+        "effects": {
+          "ego": 4,
+          "stability": -5
+        },
+        "result": "You asked her to make a call to Oslo. She said that she was in Oslo. You asked again, more slowly."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You skipped the call. Norway's explanation was published, and it was a little longer than before."
+    },
+    "inspiredBy": "October 2025, when Norway's prime minister said the Nobel Committee is independent of government."
+  },
+  {
+    "id": "peace-pakistan-mediator",
+    "kind": "call",
+    "title": "The Mediator Calls In",
+    "text": "A mediating country's leader calls with progress on talks. He also mentions, in passing, that he has put your name forward for an award.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Focus on the talks",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "You asked about the talks first. The mediator reported steady progress, a preliminary text and some very nice tea."
+      },
+      {
+        "label": "Ask about the award first",
+        "effects": {
+          "ego": 4,
+          "stability": -4
+        },
+        "result": "You asked about the award for ten minutes. The talks were described as 'still alive', which someone wrote down."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You missed the call. The mediator sent a text, and a second one, politely asking about the first."
+    },
+    "inspiredBy": "2025 nominations of Trump for the Nobel by several governments, and mediation in Iran talks in 2026."
+  },
+  {
+    "id": "peace-ally-board-seat",
+    "kind": "call",
+    "title": "An Ally Calls About Membership",
+    "text": "An allied prime minister is unhappy that your new peace board was not coordinated with him. He is also, reluctantly, going to join it.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Offer a say in the agenda",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "He got a seat and a say. The agenda is now seven pages long, and your own agenda item is on page one."
+      },
+      {
+        "label": "Remind him who chairs it",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You reminded him who chairs it, twice. He joined anyway, warmly, in the tone of a man signing an electric bill."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You left the call unanswered. A second ally was told to wait, and joined the waiting."
+    },
+    "inspiredBy": "January 2026 reports that Israel first criticized, then joined, the Board of Peace."
+  },
+  {
+    "id": "peace-machado-medal",
+    "kind": "call",
+    "title": "A Gift Medal From a Laureate",
+    "text": "A Nobel laureate from a country you recently handled offers to give you her medal. A lawyer recalls that the prize cannot be transferred.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Accept it as a keepsake",
+        "effects": {
+          "stability": 4,
+          "ego": -2
+        },
+        "result": "You took it as a thank-you gift. A committee noted the prize remains hers, and you said you knew that, mostly."
+      },
+      {
+        "label": "Announce you now hold the prize",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "You said the prize is now yours. Oslo replied that a medal and a prize are different things, in a very short press release."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You didn't take the call. The medal went to a box labelled 'sensitive', beside an unmarked second box."
+    },
+    "inspiredBy": "January 2026, when Venezuela's opposition leader gave Trump her Nobel medal."
+  },
+  {
+    "id": "peace-envoy-moscow",
+    "kind": "call",
+    "title": "The Envoy Reports From Moscow",
+    "text": "Your envoy calls after a long meeting with a rival president. He is thrilled. He cannot say exactly what was agreed, only that tea was involved.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Ask for the notes in writing",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "The envoy promised written notes. They arrived with six pages of tea and one of substance, which you declared a good ratio."
+      },
+      {
+        "label": "\"Tell the press it's close\"",
+        "effects": {
+          "ego": 4,
+          "stability": -5
+        },
+        "result": "'Closer than ever,' you told the press. The other side called a press conference to say it was also standing in the same place."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You didn't take the call. The envoy briefed the wrong person, who was thrilled too."
+    },
+    "inspiredBy": "December 2025 meetings between a US envoy and Russia's president on a new peace proposal."
+  }
+]

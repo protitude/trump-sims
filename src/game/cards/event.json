@@ -1,0 +1,862 @@
+[
+  {
+    "id": "event-seating-plan",
+    "kind": "briefing",
+    "title": "State Banquet Seating Plan",
+    "text": "Protocol staff walk you through the seating chart for a state banquet. You are seated at the head table in every version, which they find odd to confirm.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Review the chart and nod",
+        "effects": {
+          "stability": 8,
+          "ego": -3
+        },
+        "result": "Forty guests placed. Nobody is next to the person they feud with. You were still next to the dessert."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "No seating plan. Two ambassadors share a chair and a grudge."
+    },
+    "inspiredBy": "State banquet, King Charles hosting at Windsor Castle, September 2025."
+  },
+  {
+    "id": "event-parade-rehearsal",
+    "kind": "briefing",
+    "title": "Parade Rehearsal Briefing",
+    "text": "Army logisticians explain tank weights, road surfaces and rain plans for a birthday parade. There is a slide titled \"Do Not Drive Tanks On Grass\".",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Sit through all 90 slides",
+        "effects": {
+          "stability": 9,
+          "ego": -4
+        },
+        "result": "The tanks will stay on the road. You asked twice if the road could be gold."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "Rehearsal skipped. A tank is parked on a lawn on principle."
+    },
+    "inspiredBy": "Army 250th birthday parade in Washington on June 14, 2025, Trump's birthday."
+  },
+  {
+    "id": "event-olympics-task-force",
+    "kind": "briefing",
+    "title": "Olympics Task Force Meeting",
+    "text": "You chair the Olympics task force. The agenda covers visas, transit and security. Your item, \"Who gets the big medal\", is item 41.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Stay for items 1 through 40",
+        "effects": {
+          "stability": 8,
+          "ego": -3
+        },
+        "result": "Visa lanes were approved. Item 41 was deferred to a subcommittee of one."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "No meeting held. An athlete is stuck at a gate holding a javelin."
+    },
+    "inspiredBy": "Trump named himself chair of the White House task force on the 2028 LA Olympics, August 2025."
+  },
+  {
+    "id": "event-freedom-250-committee",
+    "kind": "briefing",
+    "title": "Freedom 250 Planning Committee",
+    "text": "A committee reviews a year of anniversary events: a fair, a fight, fireworks, a parade. Someone asks whether any are not about you. Silence.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Approve the calendar quietly",
+        "effects": {
+          "stability": 9,
+          "ego": -4
+        },
+        "result": "The anniversary has a calendar. A rival committee also has a calendar. They overlap."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "No calendar. The nation turns 250 on a Tuesday with nothing planned."
+    },
+    "inspiredBy": "Freedom 250, a White House-backed group, organising America's 250th anniversary events in 2026."
+  },
+  {
+    "id": "event-world-cup-visa-logistics",
+    "kind": "briefing",
+    "title": "World Cup Visa Logistics",
+    "text": "Officials brief you on visas, fan travel and security for sixteen host cities. Every slide asks you to be calm about something.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Take notes, ask no trophies",
+        "effects": {
+          "stability": 8,
+          "ego": -2
+        },
+        "result": "Fans can arrive. Stadiums can open. You asked if the trophy could stay."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "Nobody planned the entry lines. A fan queues since last Thursday."
+    },
+    "inspiredBy": "Preparations and visa concerns ahead of the 2026 FIFA World Cup hosted by the US, Canada and Mexico."
+  },
+  {
+    "id": "event-penny-question",
+    "kind": "decision",
+    "title": "The Penny Question",
+    "text": "The Treasury says each penny costs more than a cent to make. An aide suggests retiring it. You suggest putting your face on the next coin.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Sign the order to stop minting",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The penny is retired. Change is now a matter of opinion."
+      },
+      {
+        "label": "Demand a coin with your face",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "A $250 coin with your profile is announced. It is worth less than the metal."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "No decision. The penny keeps losing money at a steady, patriotic pace."
+    },
+    "inspiredBy": "Treasury moved to end penny production after a 2025 order citing production costs."
+  },
+  {
+    "id": "event-daylight-clocks",
+    "kind": "decision",
+    "title": "Daylight Saving Time",
+    "text": "Congress has sent a bill ending clock changes. One adviser wants it signed quietly. Another wants a ceremony where you move the clock yourself.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Sign it with a short statement",
+        "effects": {
+          "stability": 5,
+          "ego": -2
+        },
+        "result": "Clocks will stop changing. Nobody is certain which time they chose."
+      },
+      {
+        "label": "Hold a ceremony with a giant clock",
+        "effects": {
+          "ego": 4,
+          "stability": -4
+        },
+        "result": "You moved a giant clock by hand. It is now 3 p.m. forever, per the clock."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "Unsigned. The country changes the clocks again and blames you for the lost hour."
+    },
+    "inspiredBy": "The House passed a bill for year-round daylight saving time in July 2026, after Trump urged action."
+  },
+  {
+    "id": "event-smithsonian-review",
+    "kind": "decision",
+    "title": "Smithsonian Content Review",
+    "text": "Aides propose a review of museum exhibits before the anniversary. You want the dinosaur wing renamed. The dinosaurs have not asked for it.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Order a measured, public review",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "A review began. Historians wrote a thirty-page reply. Nobody finished it."
+      },
+      {
+        "label": "Order exhibits to \"show only winners\"",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "The museum now shows only winners. The dinosaur exhibit is empty and defensive."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "Review unstarted. A curator quietly rewords a label and hopes."
+    },
+    "inspiredBy": "White House review of Smithsonian exhibits ahead of the 250th anniversary, announced August 2025."
+  },
+  {
+    "id": "event-arch-design",
+    "kind": "decision",
+    "title": "The Triumphal Arch",
+    "text": "Architects bring three arch designs for the capital. All are tasteful. The fourth, drawn by you on a napkin, is taller than the Lincoln Memorial.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Pick a modest, buildable arch",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "A reasonable arch was approved. It stands at only 200 feet. You sulked."
+      },
+      {
+        "label": "Choose the napkin arch",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "The napkin arch is approved. Engineers have started drinking."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "No arch. The traffic circle stays an arch-free, joyless disk."
+    },
+    "inspiredBy": "Trump's proposed 250-foot triumphal arch in Washington, a scaled-down replica shown at the 2026 State Fair."
+  },
+  {
+    "id": "event-kennedy-name",
+    "kind": "decision",
+    "title": "Name on the Center",
+    "text": "The board of the performing arts center votes to add your name. Lawyers point out a law says it is named after a different president. They sound tired.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Table the renaming for review",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The sign stayed as it was. Lawyers have a rare weekend off."
+      },
+      {
+        "label": "Order the new letters installed",
+        "effects": {
+          "ego": 5,
+          "stability": -7
+        },
+        "result": "Gold letters went up overnight. A court clerk is reading the statute aloud."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "Unresolved. Two signs hang in a lobby and one ladder is missing."
+    },
+    "inspiredBy": "Kennedy Center board added Trump's name to the building in December 2025 despite legal doubts."
+  },
+  {
+    "id": "event-anniversary-coin",
+    "kind": "decision",
+    "title": "The 250th Coin",
+    "text": "The Mint offers a commemorative coin for the anniversary. Designers propose an eagle. You propose a bigger eagle with your hair.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Approve the eagle",
+        "effects": {
+          "stability": 5,
+          "ego": -2
+        },
+        "result": "An eagle coin shipped. It has no hair. Collectors are fine."
+      },
+      {
+        "label": "Insist on the hairy eagle",
+        "effects": {
+          "ego": 4,
+          "stability": -5
+        },
+        "result": "The eagle now has a pompadour. Coin collectors are weeping into magnifying glasses."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "No coin is minted. The anniversary has no pocket change."
+    },
+    "inspiredBy": "Commemorative US coin plans for the 250th anniversary, with a proposed design featuring Trump reported in 2025."
+  },
+  {
+    "id": "event-park-pass",
+    "kind": "decision",
+    "title": "The Park Pass",
+    "text": "The Interior department prepares next year's national park pass. A rule asks for a landscape photo. You suggest your portrait instead.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Print the canyon photo",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The pass shows a canyon. The canyon asked for nothing."
+      },
+      {
+        "label": "Put your face on the pass",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "Rangers now check passes bearing your face. Bears were unavailable for comment."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "Pass delayed. The park gate stays up, and so does the attendant's hand."
+    },
+    "inspiredBy": "The 2026 national parks annual pass was reported to feature Trump's image, December 2025."
+  },
+  {
+    "id": "event-garden-heroes",
+    "kind": "decision",
+    "title": "Garden of Heroes",
+    "text": "Planners are casting statues for a national garden of heroes. There is a budget for 250 figures. You have personally proposed 11 of yourself.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Hold the number at 250 historical figures",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "A list was published. You were at number 249, begrudgingly."
+      },
+      {
+        "label": "Add statues of yourself in every pose",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "A statue stands in each pose. In one you are riding a moose."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "No garden. The statues stay in a warehouse and complain."
+    },
+    "inspiredBy": "The National Garden of American Heroes planned as part of the 250th anniversary, announced 2025."
+  },
+  {
+    "id": "event-university-compact",
+    "kind": "decision",
+    "title": "The University Compact",
+    "text": "The department offers colleges a compact: follow its priorities, get funding. A dean calls it a hostage letter. You call it a great deal.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Negotiate the compact with the deans",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "A softer compact emerged. Everyone hated it a little, as is proper."
+      },
+      {
+        "label": "Demand every college sign by Friday",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "Nine signed. One replied with a tweet longer than the compact."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "No compact. A seminar gets funded and starts asking questions."
+    },
+    "inspiredBy": "The administration offered universities a funding compact in October 2025, which several rejected."
+  },
+  {
+    "id": "event-ballroom-donors",
+    "kind": "decision",
+    "title": "Ballroom Donor Wall",
+    "text": "The new White House ballroom is funded by donors. Staff want a plain plaque. You want gold letters and a section called \"Friends of the Ballroom\".",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Allow a plain plaque",
+        "effects": {
+          "stability": 5,
+          "ego": -2
+        },
+        "result": "A plaque reads: \"Thank You.\" It is a little embarrassing."
+      },
+      {
+        "label": "Commission the gold donor wall",
+        "effects": {
+          "ego": 4,
+          "stability": -5
+        },
+        "result": "The wall is 40 feet of gold. Donors are checking for typos in their names."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "No thank-you is issued. A donor sends a pointed, polite email."
+    },
+    "inspiredBy": "White House ballroom construction funded by private donors and companies, from 2025."
+  },
+  {
+    "id": "event-ufc-lawn",
+    "kind": "press",
+    "title": "Cage on the South Lawn",
+    "text": "A fight card is staged on the lawn for your birthday. The ring is in the Rose Garden. Staff ask where the fans park.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Keep it tidy and ticketed",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "The fights ended on time. The grass lost. The cage was gone by Monday."
+      },
+      {
+        "label": "Enter the cage in a robe",
+        "effects": {
+          "ego": 7,
+          "stability": -5
+        },
+        "result": "You walked in with entrance music. Fighters waited. The robe was gold, naturally."
+      }
+    ],
+    "ignore": {
+      "stability": -6,
+      "text": "The fight went on anyway. A bleacher section sinks into the lawn."
+    },
+    "inspiredBy": "UFC Freedom 250 card on the White House South Lawn, June 2026, tied to the birthday and the 250th."
+  },
+  {
+    "id": "event-peace-prize",
+    "kind": "press",
+    "title": "The Peace Prize",
+    "text": "A football body hands you an oversized gold trophy for peace. The room claps. A reporter asks how many wars this covers. You start counting.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Accept it and thank the room",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You said thank you. The trophy sits in a corner. Peace broke out near the vending machine."
+      },
+      {
+        "label": "Say you deserve three more",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You said it should come with a seat on the board. The room clapped slowly."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You skipped the ceremony. The trophy stays in a vault, polished, unclaimed."
+    },
+    "inspiredBy": "FIFA gave Trump its first peace prize at the World Cup draw at the Kennedy Center, December 2025."
+  },
+  {
+    "id": "event-birthday-parade",
+    "kind": "press",
+    "title": "The Birthday Parade",
+    "text": "Tanks roll down the avenue on your birthday. Thousands march. Rain approaches. A reporter asks if this is about you.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Salute the troops and keep it short",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "You saluted for four minutes and sat down. The tanks seemed almost disappointed."
+      },
+      {
+        "label": "Take the review stand for two hours",
+        "effects": {
+          "ego": 7,
+          "stability": -5
+        },
+        "result": "You waved for two hours. The tanks circled. Rain won in the end."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "No parade. Tanks stay home and the avenue keeps its patience."
+    },
+    "inspiredBy": "Army 250th birthday parade held on June 14, 2025, the day Trump turned 79."
+  },
+  {
+    "id": "event-state-fair",
+    "kind": "press",
+    "title": "The State Fair Opening",
+    "text": "A fair on the Mall offers a Ferris wheel and a pavilion per state. Eleven states did not send exhibits. You want a bigger arch at the gate.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Cut the ribbon and shake hands",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The fair opened. You rode the wheel. The fair was open to all, and the dinosaurs were free."
+      },
+      {
+        "label": "Add a giant arch and a bigger Ferris wheel",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "The arch now blocks the wheel. A tourist is selling shade."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "Fair opens unattended. A funnel cake becomes the guest of honor."
+    },
+    "inspiredBy": "The Great American State Fair on the National Mall, June to July 2026, run by Freedom 250."
+  },
+  {
+    "id": "event-honors-host",
+    "kind": "press",
+    "title": "Hosting the Honors",
+    "text": "You are asked to host a televised arts gala. Staff suggest letting the honorees speak. You suggest forty minutes about the honoree, you.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Stay brief and honour the honorees",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The honorees spoke. The audience clapped. You applauded, quietly, from the box."
+      },
+      {
+        "label": "Make the gala about your taste",
+        "effects": {
+          "ego": 5,
+          "stability": -6
+        },
+        "result": "Your taste ran 40 minutes. Ratings fell. A ballerina took notes."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You never showed. A tuxedo hangs, unused, and a program lists your name."
+    },
+    "inspiredBy": "Trump hosted the Kennedy Center Honors for the first time as president, December 2025."
+  },
+  {
+    "id": "event-super-bowl",
+    "kind": "press",
+    "title": "The Big Game Box",
+    "text": "You are invited to the championship game. Security says a stadium visit disrupts a city. The seat is excellent, you say.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Watch from the Oval",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You watched from home and the city kept its roads. The wings were fine."
+      },
+      {
+        "label": "Sit in the stadium and wave",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You waved. The camera cut away twice. A nacho vendor was not told."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "No answer. The league holds a seat and tells the cameras it is empty."
+    },
+    "inspiredBy": "Trump attended the Super Bowl in New Orleans in February 2025, the first sitting president to do so."
+  },
+  {
+    "id": "event-trophy-oval",
+    "kind": "press",
+    "title": "The Trophy Question",
+    "text": "A world club champion team gives you its trophy in the Oval. Cameras ask where it goes afterward. You say \"here\".",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Return the trophy to the team",
+        "effects": {
+          "stability": 5,
+          "ego": -2
+        },
+        "result": "The trophy went home. The Oval felt emptier and the sofa less shiny."
+      },
+      {
+        "label": "Keep it on the desk",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "The trophy sits on the desk. The team has a replica and a small grudge."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "Nobody asked. The trophy sits, gleaming, in an awkward silence."
+    },
+    "inspiredBy": "Trump held the Club World Cup trophy in the Oval Office, July 2025, and a replica was later produced."
+  },
+  {
+    "id": "event-ryder-cup",
+    "kind": "press",
+    "title": "Ryder Cup Cameo",
+    "text": "The golf team contest is on. A reporter notes you might appear. The crowd, mostly golf fans, hopes you won't.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Tweet support and stay home",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You posted from home. The team played in peace, and the putts were quiet."
+      },
+      {
+        "label": "Fly in and stand near the tee",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You stood near the tee. The crowd said things. A caddie hid a laugh."
+      }
+    ],
+    "ignore": {
+      "stability": -5,
+      "text": "You were absent. The crowd was fine and the team played a decent game."
+    },
+    "inspiredBy": "Trump attended the Ryder Cup at Bethpage, New York, in September 2025."
+  },
+  {
+    "id": "event-egg-roll",
+    "kind": "press",
+    "title": "The Egg Roll Lawn",
+    "text": "Thousands of kids and their parents come for the annual egg roll. A reporter asks about the economy. A child asks for a bunny.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Read a book to the children",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The kids listened. The bunny stayed. The reporter asked about eggs, as one does."
+      },
+      {
+        "label": "Take questions about your poll numbers",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "Poll numbers were discussed among eggs. A child filed a complaint."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The egg roll went ahead without you. A bunny was left holding the program."
+    },
+    "inspiredBy": "The annual White House Easter Egg Roll, held again in April 2025 with Trump present."
+  },
+  {
+    "id": "event-commencement",
+    "kind": "press",
+    "title": "The Commencement Speech",
+    "text": "Graduates await a speech about resilience and service. Your draft is about your approval ratings. The dean is holding a pen and a sigh.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Speak briefly about service",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The speech was brief. The graduates threw their caps in the air. Mostly upward."
+      },
+      {
+        "label": "Speak for an hour on yourself",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "The hour had slides. The graduates left with degrees and new reading lists."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The podium stayed empty. Graduates became a little more independent."
+    },
+    "inspiredBy": "Trump gave commencement addresses to military academies and universities in 2025 and 2026."
+  },
+  {
+    "id": "event-king-office",
+    "kind": "call",
+    "title": "Palace Calling",
+    "text": "A monarch's household calls about a banquet visit. They ask about dietary needs, protocol and tone. You ask about the gold and the horses.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Ask only about protocol",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "Protocol was agreed. The household praised your calm. You asked for a longer carriage."
+      },
+      {
+        "label": "Ask for the biggest carriage",
+        "effects": {
+          "ego": 7,
+          "stability": -5
+        },
+        "result": "A very large carriage was found. The palace said \"of course\", twice."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You did not answer. A footman holds the line until closing time."
+    },
+    "inspiredBy": "Trump's second state visit to the UK, hosted by King Charles at Windsor Castle, September 2025."
+  },
+  {
+    "id": "event-fifa-host-cities",
+    "kind": "call",
+    "title": "The Federation Calls",
+    "text": "The football federation president says a host city has lighting issues. He hints a visit might help. You hint that the city might lose a match.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Reassure him, schedule a site check",
+        "effects": {
+          "stability": 9,
+          "ego": -3
+        },
+        "result": "A check was scheduled. The lights work. The city kept its match and its pride."
+      },
+      {
+        "label": "Threaten to move the match",
+        "effects": {
+          "ego": 7,
+          "stability": -5
+        },
+        "result": "You moved nothing. Three mayors called. One cried a little."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You never called back. A stadium is left in the dark, with hopeful ushers."
+    },
+    "inspiredBy": "Trump said World Cup matches could be moved from cities he called unsafe, 2025."
+  },
+  {
+    "id": "event-ufc-encore",
+    "kind": "call",
+    "title": "The Fight Boss",
+    "text": "The fight promoter says the lawn show cost him a fortune. He says he cannot do it again. You ask about a troops card, with you in the ring.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Thank him and drop the encore",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "He sounded relieved. A fight for troops was floated, with you in the crowd."
+      },
+      {
+        "label": "Ask for a second White House fight",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "He said \"never again\", twice. You suggested the Rose Garden."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "You never rang back. He enjoyed the quiet and a long lunch."
+    },
+    "inspiredBy": "UFC's president said the White House fight \"will never happen again\" because of cost, June 2026."
+  },
+  {
+    "id": "event-la28-chair",
+    "kind": "call",
+    "title": "The Olympics Chair",
+    "text": "The Los Angeles Games chair calls about a medal ceremony plan. You ask who hangs the medals. She says athletes decide. You ask again.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Agree to a ceremonial role only",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You agreed to a ceremonial role. The chair wrote it down in pencil."
+      },
+      {
+        "label": "Ask to hand out every medal",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "Two thousand medals, you said. The chair put you on hold for ten minutes."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "Missed call. The chair emails the schedule. It includes a seat for you, at the back."
+    },
+    "inspiredBy": "Trump chairs the White House task force on the 2028 Los Angeles Olympics, created August 2025."
+  },
+  {
+    "id": "event-nfl-commish",
+    "kind": "call",
+    "title": "The League Commissioner",
+    "text": "The football commissioner calls about a stadium deal. You ask for the stadium to carry your name. He asks about the parking.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Back the deal without strings",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The deal moved ahead. The parking lot is named after nobody, which is progress."
+      },
+      {
+        "label": "Demand the naming rights",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You said no name, no deal. The commissioner said he would consult the entire league."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "No callback. The deal sits in a drawer, with three binders and a mascot."
+    },
+    "inspiredBy": "Trump pressed the NFL team in Washington to restore its old name or lose a stadium deal, July 2025."
+  }
+]
