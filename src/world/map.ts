@@ -200,7 +200,7 @@ export function guestSpot(taken: Tile[]): Tile {
 // ---------- Idle scenes ----------
 
 /** What the president drifts into when left standing about. */
-export type IdleKind = 'press' | 'briefing' | 'dictate' | 'toilet' | 'nap';
+export type IdleKind = 'press' | 'briefing' | 'dictate' | 'toilet' | 'nap' | 'cart';
 
 const inRoom = (t: Tile, name: string): boolean => {
   const r = ROOMS.find((room) => room.name === name)!.rect;
@@ -209,9 +209,12 @@ const inRoom = (t: Tile, name: string): boolean => {
 
 /** The idle scene that suits where he is standing, if any. */
 export function idleKindAt(place: Place, p: Point): IdleKind | null {
-  // The whole club is out of doors, so the press can always find him there.
-  if (place === 'maralago') return 'press';
   const t = tileAt(p);
+  // On the grass with nobody watching, he takes the cart out.
+  const g = GOLF[place].rect;
+  if (t[0] >= g.x && t[0] < g.x + g.w && t[1] >= g.y && t[1] < g.y + g.h) return 'cart';
+  // The rest of the club is out of doors, so the press can always find him there.
+  if (place === 'maralago') return 'press';
   if (inRoom(t, 'RESIDENCE')) return 'toilet';
   if (inRoom(t, 'OVAL OFFICE')) return 'dictate';
   if (inRoom(t, 'CABINET ROOM')) return 'nap';
@@ -220,7 +223,7 @@ export function idleKindAt(place: Place, p: Point): IdleKind | null {
 }
 
 /** Where he walks to for an idle scene, and the exact pixel he sits (or stands) at. */
-export const IDLE_SEATS: Record<Exclude<IdleKind, 'press'>, { tile: Tile; seat: Point; facing: 1 | -1; stand?: boolean }> = {
+export const IDLE_SEATS: Record<Exclude<IdleKind, 'press' | 'cart'>, { tile: Tile; seat: Point; facing: 1 | -1; stand?: boolean }> = {
   // Behind the podium, looking out over the chairs.
   briefing: { tile: [60, 4], seat: { x: 61 * T, y: 5 * T - 1 }, facing: 1, stand: true },
   // Behind the desk, tucked against its back edge.
@@ -231,9 +234,25 @@ export const IDLE_SEATS: Record<Exclude<IdleKind, 'press'>, { tile: Tile; seat: 
   nap: { tile: [46, 6], seat: { x: 46 * T + 2, y: 7 * T - 1 }, facing: 1 },
 };
 
-/** The aide takes dictation in front of the desk, and uses the Oval Office door. */
+/** The aide takes dictation in front of the desk. */
 export const AIDE_SPOT: Tile = [26, 9];
-export const OVAL_DOOR: Tile = [28, 17];
+
+/** The one room the aide may not enter. */
+export const inCabinetRoom = (p: Point): boolean => inRoom(tileAt(p), 'CABINET ROOM');
+
+/** The stretch of corridor outside the Cabinet Room door, where she waits it out. */
+export const AIDE_PACE: [Tile, Tile] = [
+  [43, 20],
+  [50, 20],
+];
+
+/** The golf in each place, and the loop the cart is driven round on it, in pixels. */
+const GOLF: Record<Place, WorldObject> = { dc: byId('golf'), maralago: byId('mal-golf') };
+export function cartLoop(place: Place): { cx: number; cy: number; rx: number; ry: number } {
+  const r = GOLF[place].rect;
+  const ry = (r.h * T) / 2 - 24;
+  return { cx: (r.x + r.w / 2) * T, cy: (r.y + r.h / 2) * T + 8, rx: Math.min((r.w * T) / 2 - 40, ry * 1.8), ry };
+}
 
 // ---------- Collision grid ----------
 

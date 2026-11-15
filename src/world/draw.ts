@@ -27,6 +27,19 @@ export interface Idle {
   t: number;
 }
 
+export interface Aide extends Actor {
+  /**
+   * What she is doing: trailing him, shut out of the Cabinet Room, taking
+   * dictation at the desk, running after the golf cart, or at the bedside.
+   */
+  mode: 'follow' | 'barred' | 'dictate' | 'chase' | 'bedside';
+  /** Seconds until she next works out where he has got to. */
+  think: number;
+  /** Which end of the corridor she is pacing toward, and whether she has started. */
+  pace: 0 | 1;
+  pacing: boolean;
+}
+
 export interface Npc extends Actor {
   key: string;
   cardId: string;
@@ -44,6 +57,8 @@ export interface Activity {
   t: number;
   dur: number;
   sleep?: boolean;
+  /** Tonight's affirmations, read out at the bedside. */
+  lines?: string[];
   /** A flight: taking off from the object, or coming in to land on it. */
   flight?: 'out' | 'in';
   /** Which animation to play: an action id, a category, or "duty-<kind>". */
@@ -67,10 +82,10 @@ export interface Sim {
   npcs: Npc[];
   activity: Activity | null;
   idle: Idle | null;
-  /** Natalie Harp, while she is in the Oval Office taking dictation. */
-  aide: (Actor & { leaving: boolean }) | null;
+  /** Natalie Harp, who is never more than a step behind him. */
+  aide: Aide;
   floats: Float[];
-  /** Object id or npc key under the pointer. */
+  /** Object id or npc key under the pointer, or 'aide' for Natalie. */
   hover: string | null;
   time: number;
   /** 0..1 blackout used when sleeping. */
@@ -1050,6 +1065,108 @@ function emojiAt(c: Ctx, emoji: string, x: number, y: number, size: number, alph
 const POSTS = ['SAD!', 'WITCH HUNT', 'TREMENDOUS', 'FAKE!', 'WINNING!!!', 'MANY PEOPLE'];
 const CROWD_SHIRTS = ['#b3282d', '#3b4f8f', '#e9e2d0', '#56627a'];
 
+/** Bedtime: a short settle, then one affirmation after another. */
+const AFFIRM_START = 0.2;
+const AFFIRM_EVERY = 1.75;
+
+/** A speech balloon with wrapped text, its tail pointing down at (x, y). */
+function speech(c: Ctx, text: string, x: number, y: number, alpha: number): void {
+  if (alpha <= 0) return;
+  c.font = `700 11px ${FONT}`;
+  const lines: string[] = [];
+  let line = '';
+  for (const word of text.split(' ')) {
+    const longer = line ? `${line} ${word}` : word;
+    if (line && c.measureText(longer).width > 150) {
+      lines.push(line);
+      line = word;
+    } else line = longer;
+  }
+  lines.push(line);
+  const w = Math.max(...lines.map((l) => c.measureText(l).width)) + 18;
+  const h = lines.length * 14 + 10;
+  c.globalAlpha = alpha;
+  c.fillStyle = '#fff6fb';
+  rr(c, x - w / 2, y - h, w, h, 8);
+  c.fill();
+  c.beginPath();
+  c.moveTo(x - 6, y - 1);
+  c.lineTo(x - 2, y + 8);
+  c.lineTo(x + 5, y - 1);
+  c.fill();
+  c.fillStyle = '#3a2233';
+  c.textAlign = 'center';
+  c.textBaseline = 'middle';
+  lines.forEach((l, i) => c.fillText(l, x, y - h + 12 + i * 14));
+  c.globalAlpha = 1;
+}
+
+const SOBS = ['*sob*', 'SIR?', '*sniff*', 'HE NEEDS ME', '*sob*', 'IS IT OVER YET?', 'I HAVE HIS PRINTOUTS', '*wail*'];
+const CHASE = ['WAIT FOR ME, SIR!', 'SIR! SIR!', 'YOUR PRINTOUTS, SIR!', 'SO FAST, SIR!', 'COMING, SIR!'];
+const JOYRIDE = ['BEST DRIVER', 'VROOM', 'NO SPEED LIMIT', 'KEEP UP, NATALIE', 'TREMENDOUS HANDLING'];
+
+/** The golf cart, drawn in two passes so that he sits inside it. */
+function golfCart(c: Ctx, x: number, y: number, facing: 1 | -1, time: number, front: boolean): void {
+  c.save();
+  c.translate(x, y - Math.abs(Math.sin(time * 14)) * 1.2);
+  c.scale(facing, 1);
+  if (!front) {
+    c.fillStyle = 'rgba(0,0,0,0.25)';
+    c.beginPath();
+    c.ellipse(0, 2, 34, 8, 0, 0, Math.PI * 2);
+    c.fill();
+    // Seat back, and the bag of clubs behind it.
+    c.fillStyle = '#c9c2b5';
+    rr(c, -22, -44, 8, 30, 3);
+    c.fill();
+    c.fillStyle = '#7a4a2a';
+    rr(c, -34, -46, 10, 32, 4);
+    c.fill();
+    c.strokeStyle = '#d7dbe2';
+    c.lineWidth = 2;
+    c.beginPath();
+    c.moveTo(-31, -46);
+    c.lineTo(-33, -58);
+    c.moveTo(-27, -46);
+    c.lineTo(-26, -60);
+    c.stroke();
+  } else {
+    // Body, roof and wheels, over his legs.
+    c.fillStyle = '#f4f1ea';
+    rr(c, -36, -24, 68, 18, 6);
+    c.fill();
+    c.fillStyle = GOLD;
+    c.fillRect(-34, -14, 64, 3);
+    c.strokeStyle = '#8d939e';
+    c.lineWidth = 2.5;
+    c.beginPath();
+    c.moveTo(-24, -24);
+    c.lineTo(-24, -76);
+    c.moveTo(24, -24);
+    c.lineTo(18, -76);
+    // Steering column.
+    c.moveTo(22, -24);
+    c.lineTo(15, -36);
+    c.stroke();
+    c.fillStyle = '#f4f1ea';
+    rr(c, -30, -81, 56, 6, 3);
+    c.fill();
+    c.fillStyle = '#1b1f2e';
+    for (const wx of [-22, 20]) {
+      c.beginPath();
+      c.arc(wx, -4, 7, 0, Math.PI * 2);
+      c.fill();
+    }
+    c.fillStyle = '#c9c9c4';
+    for (const wx of [-22, 20]) {
+      c.beginPath();
+      c.arc(wx, -4, 3, 0, Math.PI * 2);
+      c.fill();
+    }
+  }
+  c.restore();
+}
+
 /** Draws whatever the president is busy doing, on top of the scene. */
 function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
   const act = sim.activity;
@@ -1260,7 +1377,61 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
       break;
     }
     case 'sleep': {
-      for (let j = 0; j < 3; j++) risingText(c, 'Z', p.x - 30 - j * 8, p.y - 40, (t + j * 0.5) % 1.5, 1.5, 14 + j * 4, '#ffffff');
+      // Tucked in: head on the pillow, hands holding the top of the comforter.
+      const hx = cx;
+      const hy = r.y + 18;
+      const breath = Math.sin(sim.time * 2.2) * 1.5;
+      c.fillStyle = 'rgba(0,0,0,0.16)';
+      rr(c, cx - 15, r.y + 31, 34, r.h - 50, 13);
+      c.fill();
+      c.fillStyle = GOLD_LIGHT;
+      rr(c, cx - 17 - breath / 2, r.y + 28, 34 + breath, r.h - 50, 13);
+      c.fill();
+      c.fillStyle = '#f2a35e';
+      c.beginPath();
+      c.arc(cx - 12, r.y + 31, 4, 0, Math.PI * 2);
+      c.arc(cx + 12, r.y + 31, 4, 0, Math.PI * 2);
+      c.fill();
+      c.beginPath();
+      c.arc(hx, hy, 10, 0, Math.PI * 2);
+      c.fill();
+      c.fillStyle = '#f2c230';
+      c.beginPath();
+      c.arc(hx, hy - 2, 10.5, Math.PI, 0);
+      c.fill();
+      c.beginPath();
+      c.ellipse(hx + 5, hy - 10, 11, 5, -0.25, 0, Math.PI * 2);
+      c.fill();
+      // Eyes shut, and a very contented smile.
+      c.strokeStyle = '#1b1f2e';
+      c.lineWidth = 1.5;
+      c.lineCap = 'round';
+      c.beginPath();
+      c.moveTo(hx - 6, hy + 1);
+      c.lineTo(hx - 2, hy + 1);
+      c.moveTo(hx + 2, hy + 1);
+      c.lineTo(hx + 6, hy + 1);
+      c.stroke();
+      c.beginPath();
+      c.arc(hx, hy + 3, 4, 0.25, Math.PI - 0.25);
+      c.stroke();
+
+      const aide = sim.aide;
+      if (aide.path.length > 0) {
+        // He will not close his eyes until she is there.
+        driftingText(c, 'NATALIE!', hx + 24, hy - 14, sim.time % 1.4, 1.4, 12, '#ffffff');
+        break;
+      }
+      const lines = act.lines ?? [];
+      const n = Math.floor((t - AFFIRM_START) / AFFIRM_EVERY);
+      const age = t - AFFIRM_START - n * AFFIRM_EVERY;
+      if (t >= AFFIRM_START && n < lines.length) {
+        const alpha = clamp01(Math.min(age / 0.2, (AFFIRM_EVERY - age) / 0.25));
+        speech(c, lines[n], aide.x + 6, aide.y - 92, alpha);
+        // Each one lands.
+        emojiAt(c, '💛', hx + 16 + Math.sin(age * 5) * 4, hy - 12 - age * 22, 12, 1 - age / AFFIRM_EVERY);
+      }
+      if (n >= lines.length) for (let j = 0; j < 3; j++) risingText(c, 'Z', hx + 18 + j * 8, hy - 8, (t + j * 0.5) % 1.5, 1.5, 12 + j * 4, '#ffffff');
       break;
     }
   }
@@ -1375,8 +1546,7 @@ function drawIdle(c: Ctx, sim: Sim): void {
     }
     case 'dictate': {
       const aide = sim.aide;
-      const ready = aide && !aide.leaving && aide.path.length === 0;
-      if (!aide || !ready) {
+      if (aide.mode !== 'dictate' || aide.path.length > 0) {
         // Waiting for her: he drums on the soda button.
         driftingText(c, 'NATALIE!', p.x + 10, p.y - 72, t % 1.4, 1.4, 12, '#ffffff');
         break;
@@ -1402,6 +1572,14 @@ function drawIdle(c: Ctx, sim: Sim): void {
         const which = Math.floor((t + j * 0.6) / 1.8) * 3 + j;
         emojiAt(c, SCROLL[which % SCROLL.length], hx + 8 + j * 9 + Math.sin(age * 4 + j) * 4, hy - 14 - age * 30, 11, 1 - age / 1.8);
       }
+      break;
+    }
+    case 'cart': {
+      // Joyriding, with Natalie in pursuit.
+      const aide = sim.aide;
+      risingText(c, JOYRIDE[Math.floor(t / 2.6) % JOYRIDE.length], p.x, p.y - 100, t % 2.6, 1.6, 11, '#ffffff');
+      risingText(c, CHASE[Math.floor((t + 1.3) / 2.6) % CHASE.length], aide.x, aide.y - 92, (t + 1.3) % 2.6, 1.6, 10, GOLD_LIGHT);
+      emojiAt(c, '💦', aide.x - aide.facing * 14, aide.y - 56 + Math.sin(sim.time * 12) * 2, 11);
       break;
     }
     case 'nap': {
@@ -1602,12 +1780,31 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
       },
     });
   }
-  const aide = s.place === 'dc' ? sim.aide : null;
-  if (aide) {
+  const aide = sim.aide;
+  // She is aboard too while a flight is in the air.
+  if (!sim.activity?.flight) {
     standing.push({
       y: aide.y,
       draw: () => {
-        person(c, aide, { suit: '#f4f1ea', skin: '#f0c9a8', hair: '#e8cf7a', long: true }, 0);
+        const sobbing = aide.mode === 'barred';
+        person(c, aide, { suit: '#f4f1ea', skin: '#f0c9a8', hair: '#e8cf7a', long: true }, sobbing ? Math.abs(Math.sin(sim.time * 9)) * 2 : 0);
+        if (sobbing) {
+          // Shut out of the Cabinet Room: tears, and a great deal of noise.
+          c.fillStyle = '#7fc4ff';
+          for (let j = 0; j < 4; j++) {
+            const age = (sim.time * 1.6 + j * 0.25) % 1;
+            const side = j % 2 ? 1 : -1;
+            c.globalAlpha = 1 - age;
+            c.beginPath();
+            c.arc(aide.x + side * (7 + age * 12), aide.y - 46 + age * age * 30, 2.2, 0, Math.PI * 2);
+            c.fill();
+          }
+          c.globalAlpha = 1;
+          emojiAt(c, '😭', aide.x, aide.y - 96 + Math.sin(sim.time * 6) * 2, 16);
+          risingText(c, SOBS[Math.floor(sim.time / 1.6) % SOBS.length], aide.x + 34, aide.y - 60, sim.time % 1.6, 1.4, 10, '#bfe0ff');
+        }
+        // Her name shows only under the pointer.
+        if (sim.hover !== 'aide') return;
         c.font = `700 9px ${FONT}`;
         const w = c.measureText('Natalie Harp').width + 10;
         c.fillStyle = 'rgba(10,15,31,0.8)';
@@ -1620,9 +1817,16 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   const act = sim.activity;
   const idle = sim.idle && !sim.idle.walking ? sim.idle.kind : null;
   // He is aboard while a flight is in the air.
-  if (!act?.flight) standing.push({
+  // Nor is he standing about while he is in bed.
+  if (!act?.flight && !act?.sleep) standing.push({
     y: sim.pres.y,
     draw: () => {
+      if (idle === 'cart') {
+        golfCart(c, sim.pres.x, sim.pres.y, sim.pres.facing, sim.time, false);
+        person(c, { ...sim.pres, y: sim.pres.y - 10 }, { suit: '#1d2a52', skin: '#f2a35e', hair: '#f2c230', tie: '#d9282f', swoosh: true }, 0);
+        golfCart(c, sim.pres.x, sim.pres.y, sim.pres.facing, sim.time, true);
+        return;
+      }
       const bob = act ? Math.abs(Math.sin(sim.time * 8)) * 3 : idle === 'press' || idle === 'briefing' ? Math.abs(Math.sin(sim.time * 5)) * 1.5 : 0;
       if (idle === 'dictate') {
         // The chair behind the desk.
@@ -1644,8 +1848,8 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
 
   // Above-head status for the president.
   const p = sim.pres;
-  if (act?.flight) {
-    // Nothing over his head: he is on board.
+  if (act?.flight || act?.sleep) {
+    // Nothing over his head: he is on board, or in bed.
   } else if (act) {
     bubble(c, p.x, p.y - 84, act.emoji);
     const w = 54;

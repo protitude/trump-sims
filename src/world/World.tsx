@@ -6,8 +6,9 @@ import { guestById } from '../game/guests.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
 import { Blocks, Fx } from '../ui.tsx';
 import { drawWorld, hitRectPx } from './draw.ts';
-import type { Actor, Npc, Sim } from './draw.ts';
-import { AIDE_SPOT, BEDS, CLUB_GATE, IDLE_SEATS, OVAL_DOOR, arrival, exists, guestSpot, idleKindAt, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
+import type { Actor, Aide, Npc, Sim } from './draw.ts';
+import { nextAffirmations } from './affirmations.ts';
+import { AIDE_PACE, AIDE_SPOT, BEDS, CLUB_GATE, IDLE_SEATS, arrival, cartLoop, inCabinetRoom, exists, guestSpot, idleKindAt, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
 import { T } from './map.ts';
 import type { Point, Tile } from './map.ts';
 
@@ -28,6 +29,17 @@ type Menu = Target & { sx: number; sy: number };
 
 const PRESIDENT_SPEED = 340;
 const VISITOR_SPEED = 210;
+/** Natalie keeps up, just. Pacing the corridor she drags her feet; on the grass the cart outruns her. */
+const AIDE_SPEED = 300;
+const AIDE_PACE_SPEED = 100;
+const AIDE_CHASE_SPEED = 150;
+const AIDE_BEDTIME_SPEED = 420;
+/** How close she stands to him. */
+const AIDE_GAP = 44;
+/** Radians a second round the golf course. */
+const CART_SPIN = 2;
+/** Seconds of affirmations before the lights go out. */
+const BEDTIME_SECONDS = 8;
 /** Seconds of standing about before he finds something to do by himself. */
 const IDLE_AFTER = 30;
 /** How long an activity takes to watch, by its cost in time blocks. */
@@ -91,6 +103,11 @@ function advance(a: Actor, speed: number, dt: number): void {
   }
 }
 
+/** Natalie, one step behind and to the side of the tile given. */
+function aideAt(tile: Tile): Aide {
+  return { ...tileCenter(nearestFree([tile[0] + 2, tile[1] + 1])), path: [], facing: -1, walk: 0, mode: 'follow', think: 0, pace: 0, pacing: false };
+}
+
 function createSim(place: Place): Sim {
   const start = tileCenter(BEDS[place].spot);
   return {
@@ -98,7 +115,7 @@ function createSim(place: Place): Sim {
     npcs: [],
     activity: null,
     idle: null,
-    aide: null,
+    aide: aideAt(BEDS[place].spot),
     floats: [],
     hover: null,
     time: 0,
@@ -158,7 +175,11 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
     const kind = idleKindAt(stateRef.current.place, sim.pres);
     if (!kind) return;
     sim.idle = { kind, walking: kind !== 'press', t: 0 };
-    if (kind !== 'press') sim.pres.path = findPath(sim.pres, IDLE_SEATS[kind].tile);
+    if (kind === 'cart') {
+      // The cart is waiting at the right-hand end of its loop.
+      const loop = cartLoop(stateRef.current.place);
+      sim.pres.path = findPath(sim.pres, tileAt({ x: loop.cx + loop.rx, y: loop.cy }));
+    } else if (kind !== 'press') sim.pres.path = findPath(sim.pres, IDLE_SEATS[kind].tile);
   };
 
   /** Any instruction snaps him out of it. */
@@ -167,11 +188,68 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
     if (!sim.idle) return;
     sim.idle = null;
     sim.pres.seated = false;
-    if (sim.aide && !sim.aide.leaving) {
-      sim.aide.leaving = true;
-      sim.aide.path = findPath(sim.aide, OVAL_DOOR);
-    }
   };
+
+  /** Natalie Harp goes wherever he goes, except the Cabinet Room. */
+  function updateAide(dt: number) {
+    const a = sim.aide;
+    const p = sim.pres;
+    const place = stateRef.current.place;
+    const idle = sim.idle && !sim.idle.walking ? sim.idle.kind : null;
+    const mode: Aide['mode'] = sim.activity?.sleep
+      ? 'bedside'
+      : idle === 'dictate'
+        ? 'dictate'
+        : idle === 'cart'
+          ? 'chase'
+          : place === 'dc' && inCabinetRoom(p)
+            ? 'barred'
+            : 'follow';
+    if (mode !== a.mode) {
+      a.mode = mode;
+      a.think = 0;
+      a.pacing = false;
+      a.path = mode === 'bedside' ? findPath(a, BEDS[place].spot) : mode === 'dictate' ? findPath(a, AIDE_SPOT) : [];
+    }
+    const gap = Math.hypot(p.x - a.x, p.y - a.y);
+    let speed = AIDE_SPEED;
+    switch (mode) {
+      case 'follow':
+        a.think -= dt;
+        if (a.think <= 0 && gap > (p.path.length > 0 ? AIDE_GAP : AIDE_GAP + 16)) {
+          a.path = findPath(a, tileAt(p));
+          a.think = 0.3;
+        }
+        // On the last straight to him, stop a polite step short.
+        if (a.path.length <= 1 && gap < AIDE_GAP) a.path = [];
+        break;
+      case 'barred':
+        // Shut out: to the corridor, then up and down outside the door.
+        if (a.path.length === 0) {
+          if (a.pacing) a.pace = a.pace === 0 ? 1 : 0;
+          else if (Math.hypot(tileCenter(AIDE_PACE[a.pace]).x - a.x, tileCenter(AIDE_PACE[a.pace]).y - a.y) < T) a.pacing = true;
+          a.path = findPath(a, AIDE_PACE[a.pace]);
+        }
+        if (a.pacing) speed = AIDE_PACE_SPEED;
+        break;
+      case 'chase':
+        // Straight at the cart, which is always somewhere else by the time she gets there.
+        a.path = gap > 30 ? [{ x: p.x, y: p.y }] : [];
+        speed = AIDE_CHASE_SPEED;
+        break;
+      case 'bedside':
+        speed = AIDE_BEDTIME_SPEED;
+        break;
+      case 'dictate':
+        break;
+    }
+    advance(a, speed, dt);
+    if (a.path.length === 0) {
+      // The bed is to the left of where she stands; otherwise she watches him.
+      if (mode === 'bedside') a.facing = -1;
+      else if (mode !== 'barred') a.facing = p.x >= a.x ? 1 : -1;
+    }
+  }
 
   const walkTo = (tile: Tile, target: Target | null) => {
     setMenu(null);
@@ -187,8 +265,10 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
   const bedtime = useRef(false);
 
   const sleep = () => {
-    perform('Sleeping', '💤', 1.8, () => callbacks.current.onEndMonth(), { anim: 'sleep' });
+    // Tucked in, with Natalie at the bedside telling him what he needs to hear.
+    perform('Sleeping', '💤', BEDTIME_SECONDS, () => callbacks.current.onEndMonth(), { anim: 'sleep', objectId: BEDS[stateRef.current.place].id });
     sim.activity!.sleep = true;
+    sim.activity!.lines = nextAffirmations(4);
   };
 
   /** Starts a timed activity. `scene` picks the animation drawn while it runs. */
@@ -227,18 +307,14 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       advance(sim.pres, PRESIDENT_SPEED, dt);
       for (const n of sim.npcs) advance(n, VISITOR_SPEED, dt);
       sim.npcs = sim.npcs.filter((n) => !(n.leaving && n.path.length === 0));
-      if (sim.aide) {
-        advance(sim.aide, VISITOR_SPEED, dt);
-        if (sim.aide.path.length === 0) {
-          if (sim.aide.leaving) sim.aide = null;
-          else sim.aide.facing = sim.pres.x >= sim.aide.x ? 1 : -1;
-        }
-      }
+      updateAide(dt);
 
       if (sim.activity) {
-        sim.activity.t += dt;
+        // Bedtime does not start until Natalie has reached the bedside.
+        if (!(sim.activity.sleep && sim.aide.path.length > 0)) sim.activity.t += dt;
         const part = sim.activity.t / sim.activity.dur;
-        if (sim.activity.sleep) sim.fade = Math.min(1, part);
+        // The lights go down for the affirmations, then out.
+        if (sim.activity.sleep) sim.fade = Math.max(0.35 * Math.min(1, sim.activity.t / 0.8), 1 - (sim.activity.dur - sim.activity.t) / 0.8);
         // Flights black out as they leave and clear as they come in, hiding the change of scene.
         else if (sim.activity.flight === 'out') sim.fade = Math.max(0, Math.min(1, (part - 0.7) / 0.3));
         else if (sim.activity.flight === 'in') sim.fade = Math.max(0, 1 - part / 0.35);
@@ -266,18 +342,26 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       const idle = sim.idle;
       if (idle?.walking) {
         if (sim.pres.path.length === 0) {
-          // Arrived: sit down (or take the podium), and at the desk send for Natalie.
-          const seat = IDLE_SEATS[idle.kind as Exclude<typeof idle.kind, 'press'>];
-          Object.assign(sim.pres, seat.seat, { facing: seat.facing, seated: !seat.stand });
           idle.walking = false;
-          if (idle.kind === 'dictate') {
-            sim.aide ??= { ...tileCenter(OVAL_DOOR), path: [], facing: -1, walk: 0, leaving: false };
-            sim.aide.leaving = false;
-            sim.aide.path = findPath(sim.aide, AIDE_SPOT);
+          if (idle.kind === 'cart') {
+            // Arrived at the cart: climb in.
+            sim.pres.seated = true;
+          } else {
+            // Arrived: sit down (or take the podium). At the desk, Natalie comes round to take dictation.
+            const seat = IDLE_SEATS[idle.kind as Exclude<typeof idle.kind, 'press' | 'cart'>];
+            Object.assign(sim.pres, seat.seat, { facing: seat.facing, seated: !seat.stand });
           }
         }
       } else if (idle) {
         idle.t += dt;
+        if (idle.kind === 'cart') {
+          // Round and round the course.
+          const loop = cartLoop(stateRef.current.place);
+          const angle = idle.t * CART_SPIN;
+          sim.pres.x = loop.cx + Math.cos(angle) * loop.rx;
+          sim.pres.y = loop.cy + Math.sin(angle) * loop.ry;
+          sim.pres.facing = Math.sin(angle) > 0 ? -1 : 1;
+        }
       } else if (
         !sim.activity &&
         !targetRef.current &&
@@ -381,7 +465,8 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
     if (state.place === lastPlace.current) return;
     lastPlace.current = state.place;
     endIdle();
-    sim.aide = null;
+    // Natalie came too.
+    sim.aide = aideAt(arrival(state));
     Object.assign(sim.pres, tileCenter(arrival(state)), { path: [] });
     targetRef.current = null;
     // Arriving by air, as opposed to a new game: watch it come in to land.
@@ -445,8 +530,12 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
   };
 
   const onPointerMove = (e: PointerEvent) => {
-    const found = hit(worldPoint(e));
-    sim.hover = found?.key ?? null;
+    const p = worldPoint(e);
+    const found = hit(p);
+    // Natalie cannot be clicked, but pointing at her says who she is.
+    const a = sim.aide;
+    const onAide = !sim.activity?.flight && Math.abs(p.x - a.x) < 20 && p.y > a.y - 70 && p.y < a.y + 8;
+    sim.hover = found?.key ?? (onAide ? 'aide' : null);
     canvasRef.current!.style.cursor = found ? 'pointer' : 'default';
   };
 
