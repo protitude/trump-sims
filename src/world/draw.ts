@@ -33,7 +33,7 @@ export interface Aide extends Actor {
    * dictation at the desk, running after the golf cart, or at the bedside.
    */
   mode: 'follow' | 'barred' | 'dictate' | 'chase' | 'bedside';
-  /** Seconds until she next works out where he has got to. */
+  /** Seconds until she next works out where he has gotten to. */
   think: number;
   /** Which end of the corridor she is pacing toward, and whether she has started. */
   pace: 0 | 1;

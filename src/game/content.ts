@@ -94,7 +94,7 @@ const BASE_DUTIES: DutyCard[] = [
         result: 'Decisions were made. Several departments now know what they are doing.',
       },
       {
-        label: 'Go round the table for compliments',
+        label: 'Go around the table for compliments',
         effects: { ego: 6, stability: -3 },
         result: 'Each secretary praised you in turn. The Secretary of Energy cried. Nothing else occurred.',
       },

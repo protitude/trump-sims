@@ -1,5 +1,5 @@
 // What Natalie tells him at bedtime. A few each night, dealt from a shuffled
-// deck so that none comes round again until all the others have been said.
+// deck so that none comes around again until all the others have been said.
 
 export const AFFIRMATIONS: string[] = [
   "You're the best president",
@@ -39,9 +39,9 @@ export const AFFIRMATIONS: string[] = [
   "Your hair is magnificent",
   "Nobody can see how the hair works",
   "The wind was never a problem",
-  "That's your natural colour",
+  "That's your natural color",
   "The tan looks completely natural",
-  "Orange is a very presidential colour",
+  "Orange is a very presidential color",
   "You don't look a day over 50",
   "You look younger than Barron",
   "You have the body of an athlete",
@@ -75,7 +75,7 @@ export const AFFIRMATIONS: string[] = [
   "Your gut knows more than their brains",
   "You were right about everything",
   "You've never been wrong, not once",
-  "You've never needed to apologise",
+  "You've never needed to apologize",
   "You've never had to ask for forgiveness",
   "You're the most humble person in the world",
   "Nobody is more modest than you",
@@ -240,7 +240,7 @@ export const AFFIRMATIONS: string[] = [
   "The tie is exactly the right length",
   "The suit fits perfectly",
   "The hat looks good on you",
-  "Red is your colour",
+  "Red is your color",
   "Your signature is very powerful",
   "Nobody signs an executive order like you",
   "The Sharpie is mightier than the pen",
@@ -423,7 +423,7 @@ export const AFFIRMATIONS: string[] = [
   "Your face would look good on every bill",
   "The dollar would be worth more with your name on it",
   "The airport sounds better with your name",
-  "The arts centre sounds better with your name",
+  "The arts center sounds better with your name",
   "Tuesday could do with a rename",
   "The month named after you will be the best month",
   "Everything you touch turns to gold, sometimes literally",

@@ -246,7 +246,7 @@ export const AIDE_PACE: [Tile, Tile] = [
   [50, 20],
 ];
 
-/** The golf in each place, and the loop the cart is driven round on it, in pixels. */
+/** The golf in each place, and the loop the cart is driven around on it, in pixels. */
 const GOLF: Record<Place, WorldObject> = { dc: byId('golf'), maralago: byId('mal-golf') };
 export function cartLoop(place: Place): { cx: number; cy: number; rx: number; ry: number } {
   const r = GOLF[place].rect;

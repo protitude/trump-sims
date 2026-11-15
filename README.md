@@ -13,7 +13,7 @@ The game runs on two meters, and either one can end it.
 | **Ego** | Every month, automatically. Faster the more monuments you own. | You do vanity projects. | **Full Depression.** You go to bed and do not get up. |
 | **World Stability** | Every month, and whenever you ignore or botch the job. | You do the job properly. | **World War III.** |
 
-Both draw on the same budget: **5 time blocks a month**. Every block spent in a budget meeting is a block not spent gilding the carpet, and the other way round.
+Both draw on the same budget: **5 time blocks a month**. Every block spent in a budget meeting is a block not spent gilding the carpet, and the other way around.
 
 - Lean entirely into vanity and the world falls apart within a few months.
 - Do nothing but the job and the world thrives, while you sink into a depression that ends the game just as surely.
@@ -80,7 +80,7 @@ Two guests are waiting at Mar-a-Lago every month: tech bosses and media people, 
 - **Send them away.** No time, −2 Ego.
 - **The catch.** Each bribe has a 10% chance of leaking, rolled in secret when you take it. A leak becomes news one to six months later (in the final month at the latest) and takes back three times the Ego and Stability the bribe gave: a deal worth +8 Ego and +10 Stability comes back as −24 and −30. You keep the coin.
 
-The guests are parodies under made-up names. There are 26, in `src/game/cards/guests.json`; they come round again once all have visited.
+The guests are parodies under made-up names. There are 26, in `src/game/cards/guests.json`; they come around again once all have visited.
 
 ### Consequences
 

@@ -36,7 +36,7 @@ const AIDE_CHASE_SPEED = 150;
 const AIDE_BEDTIME_SPEED = 420;
 /** How close she stands to him. */
 const AIDE_GAP = 44;
-/** Radians a second round the golf course. */
+/** Radians a second around the golf course. */
 const CART_SPIN = 2;
 /** Seconds of affirmations before the lights go out. */
 const BEDTIME_SECONDS = 15;
@@ -347,7 +347,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
             // Arrived at the cart: climb in.
             sim.pres.seated = true;
           } else {
-            // Arrived: sit down (or take the podium). At the desk, Natalie comes round to take dictation.
+            // Arrived: sit down (or take the podium). At the desk, Natalie comes around to take dictation.
             const seat = IDLE_SEATS[idle.kind as Exclude<typeof idle.kind, 'press' | 'cart'>];
             Object.assign(sim.pres, seat.seat, { facing: seat.facing, seated: !seat.stand });
           }

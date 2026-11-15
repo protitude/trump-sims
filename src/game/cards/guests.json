@@ -63,10 +63,10 @@
   "id": "guest-leather-jensen",
   "kind": "ceo",
   "title": "Leather Jacket Jensen",
-  "text": "Would like an export licence to sell chips to one small country. He will not say which. The jacket stays on in the Florida heat. The coin is already in your wallet.",
+  "text": "Would like an export license to sell chips to one small country. He will not say which. The jacket stays on in the Florida heat. The coin is already in your wallet.",
   "effects": { "ego": 6, "stability": 9, "coin": 5 },
-  "result": "The licence is granted. Chip stocks soared and Jensen signed a waiter's shirt on the way out.",
-  "exposed": "Leaked: the small country was not small. The export licence and the coin purchase share a date and a dinner table.",
+  "result": "The license is granted. Chip stocks soared and Jensen signed a waiter's shirt on the way out.",
+  "exposed": "Leaked: the small country was not small. The export license and the coin purchase share a date and a dinner table.",
   "inspiredBy": "Jensen Huang"
  },
  {
@@ -96,7 +96,7 @@
   "text": "Wants a promise of no rules for AI, ever, in writing. He has written a nine-thousand-word manifesto about it and will read it aloud unless you take the coin.",
   "effects": { "ego": 5, "stability": 6, "coin": 4 },
   "result": "No rules, in writing. Marc did not read the manifesto. Investors are thrilled, and so is the table.",
-  "exposed": "Leaked: the no-rules pledge was drafted by Venture Marc's own lawyers and paid for in coin. He has published a second manifesto in his defence.",
+  "exposed": "Leaked: the no-rules pledge was drafted by Venture Marc's own lawyers and paid for in coin. He has published a second manifesto in his defense.",
   "inspiredBy": "Marc Andreessen"
  },
  {
