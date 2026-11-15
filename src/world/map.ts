@@ -1,9 +1,9 @@
-import type { DutyKind, Place } from '../game/types.ts';
+import type { DutyKind, GameState, Place, Vehicle } from '../game/types.ts';
 
 // The world is a grid of 20px tiles holding two separate places. Washington
 // fills the top: the White House (four rooms over a corridor) with the South
 // Lawn below it. Mar-a-Lago sits further down the grid, cut off by blocked
-// tiles, and is reached only by plane. Everything here is measured in tiles
+// tiles, and is reached only by air. Everything here is measured in tiles
 // unless a name says "px".
 
 export const T = 20;
@@ -59,6 +59,8 @@ export interface WorldObject {
   place?: Place;
   /** Furniture that is only scenery. */
   inert?: boolean;
+  /** Vanity action that must be done before this exists at all. */
+  needs?: string;
   special?: 'bed';
 }
 
@@ -96,7 +98,7 @@ export const OBJECTS: WorldObject[] = [
   { id: 'podium', name: 'Podium', kind: 'podium', rect: { x: 60, y: 5, w: 2, h: 2 }, spot: [60, 7], actions: [], blocking: true, inert: true },
 
   // South Lawn: garden, then two rows of building lots, then the showgrounds.
-  { id: 'garden', name: 'Rose Garden', kind: 'garden', rect: { x: 6, y: 25, w: 9, h: 5 }, spot: [10, 30], actions: ['gild-garden'], blocking: true },
+  { id: 'garden', name: 'Rose Garden', kind: 'garden', rect: { x: 6, y: 25, w: 9, h: 5 }, spot: [10, 30], actions: ['gild-garden', 'build-helipad', 'gild-helicopter', 'trip-maralago-heli'], blocking: true },
   { id: 'plot-arch', name: 'Triumphal Arch', kind: 'plot', rect: { x: 18, y: 27, w: 6, h: 5 }, spot: [21, 32], actions: ['build-arch'], blocking: true },
   { id: 'plot-statue', name: '90-Foot Gold Statue', kind: 'plot', rect: { x: 29, y: 27, w: 4, h: 5 }, spot: [31, 32], actions: ['build-statue'], blocking: true },
   { id: 'plot-mountain', name: 'Your Face On The Mountain', kind: 'plot', rect: { x: 38, y: 27, w: 7, h: 5 }, spot: [41, 32], actions: ['build-mountain'], blocking: true },
@@ -118,13 +120,27 @@ export const OBJECTS: WorldObject[] = [
   { id: 'mal-pool', name: 'Pool', kind: 'pool', rect: { x: 35, y: 62, w: 10, h: 7 }, spot: [34, 65], actions: [], blocking: true, inert: true, place: 'maralago' },
   { id: 'mal-golf', name: 'The Course', kind: 'malgolf', rect: { x: 5, y: 76, w: 18, h: 8 }, spot: [14, 80], actions: ['resort-golf'], blocking: false, place: 'maralago' },
   { id: 'mal-plane', name: 'The Plane', kind: 'plane', rect: { x: 29, y: 80, w: 15, h: 6 }, spot: [36, 79], actions: ['trip-home'], blocking: true, place: 'maralago' },
+  { id: 'mal-helipad', name: 'Helipad', kind: 'helipad', rect: { x: 37, y: 72, w: 5, h: 5 }, spot: [39, 77], actions: ['trip-home-heli'], blocking: true, place: 'maralago', needs: 'build-helipad' },
 ];
 
 const byId = (id: string) => OBJECTS.find((o) => o.id === id)!;
 
-/** The bed that ends the month, and where the plane drops you, in each place. */
+/** The bed that ends the month in each place. */
 export const BEDS: Record<Place, WorldObject> = { dc: byId('bed'), maralago: byId('mal-bed') };
-export const ARRIVALS: Record<Place, Tile> = { dc: byId('plane').spot, maralago: byId('mal-plane').spot };
+const ARRIVALS: Record<Vehicle, Record<Place, Tile>> = {
+  plane: { dc: byId('plane').spot, maralago: byId('mal-plane').spot },
+  heli: { dc: byId('garden').spot, maralago: byId('mal-helipad').spot },
+};
+
+/** Where the president steps out after a trip. */
+export const arrival = (s: GameState): Tile => ARRIVALS[s.vehicle ?? 'plane'][s.place];
+
+/** True once the object has been built into the world. */
+export const exists = (o: WorldObject, s: GameState): boolean => !o.needs || Boolean(s.done[o.needs]);
+
+/** What the object is called now; the Rose Garden does not stay one. */
+export const objectName = (o: WorldObject, s: GameState): string =>
+  o.id === 'garden' && s.done['build-helipad'] ? 'Helipad' : o.name;
 
 /** Where visitors wait. The president stands two tiles to their left. */
 const ZONES: Record<'cabinet' | 'press' | 'oval', Tile[]> = {
@@ -241,7 +257,7 @@ function clearLine(a: Point, b: Point): boolean {
   const dy = b.y - a.y;
   const len = Math.hypot(dx, dy);
   if (len === 0) return true;
-  // Check the centre line and both shoulders so corners are not clipped.
+  // Check the center line and both shoulders so corners are not clipped.
   const nx = (-dy / len) * 7;
   const ny = (dx / len) * 7;
   const steps = Math.ceil(len / 6);

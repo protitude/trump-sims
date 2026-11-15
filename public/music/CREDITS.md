@@ -1,6 +1,6 @@
 # Music credits
 
-All six tracks are from OpenGameArt.org and are released under CC0 1.0 (public domain dedication), as stated in the licence field of each track's page (checked 2026-11-14; "Lofi again" checked 2026-11-15). CC0 does not require credit; it is given here anyway.
+All six tracks are from OpenGameArt.org and are released under CC0 1.0 (public domain dedication), as stated in the license field of each track's page (checked 2026-11-14; "Lofi again" checked 2026-11-15). CC0 does not require credit; it is given here anyway.
 
 | File | Track | Author | Source |
 |---|---|---|---|

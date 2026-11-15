@@ -33,7 +33,7 @@ export const TUNING = {
   /** Chance of a chaos event at the start of any month. */
   chaosChance: 0.1,
   chaosPerYear: 2,
-  /** Odds of a good, mixed or bad outcome: favourable choice, then deflection. */
+  /** Odds of a good, mixed or bad outcome: favorable choice, then deflection. */
   chaosOdds: [
     [0.6, 0.25, 0.15],
     [0.3, 0.3, 0.4],
@@ -223,7 +223,7 @@ function rollChaos(s: GameState): void {
 }
 
 /**
- * Answers the chaos event. 0 is the favourable choice, 1 the deflection.
+ * Answers the chaos event. 0 is the favorable choice, 1 the deflection.
  * The outcome is rolled here, so the player cannot know it in advance.
  * Ignoring does nothing now and comes back later in the same year.
  */
@@ -332,12 +332,14 @@ export function vanityEgo(s: GameState, action: VanityAction): number {
   return Math.round(ego * (boost?.times ?? 1));
 }
 
-export type VanityAvailability = 'ok' | 'done' | 'locked' | 'no-time' | 'away';
+export type VanityAvailability = 'ok' | 'done' | 'locked' | 'no-time' | 'away' | 'no-ride';
 
 export function vanityStatus(s: GameState, action: VanityAction): VanityAvailability {
   if (!action.repeatable && s.done[action.id]) return 'done';
   if ((action.place ?? 'dc') !== s.place) return 'away';
   if (action.requires && !s.done[action.requires]) return 'locked';
+  // The way home is whatever you flew out in; the other one is still in Washington.
+  if (action.travelTo === 'dc' && (action.vehicle ?? 'plane') !== (s.vehicle ?? 'plane')) return 'no-ride';
   if (action.cost > s.blocks) return 'no-time';
   return 'ok';
 }
@@ -394,7 +396,10 @@ export function doVanity(state: GameState, actionId: string): GameState {
   apply(s, { ego, stability: action.stability, gold: action.gold, names: action.names });
   s.done[action.id] = (s.done[action.id] ?? 0) + 1;
   if (action.category === 'build' || action.category === 'rename') s.monuments += 1;
-  if (action.travelTo) s.place = action.travelTo;
+  if (action.travelTo) {
+    s.place = action.travelTo;
+    s.vehicle = action.vehicle ?? 'plane';
+  }
   log(s, action.result, 'ego');
 
   count(s, action.category);

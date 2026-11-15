@@ -39,7 +39,7 @@
     ],
     "ignore": {
       "stability": -18,
-      "text": "Airlines cancelled the entire holiday season as a courtesy."
+      "text": "Airlines canceled the entire holiday season as a courtesy."
     },
     "inspiredBy": "Flight cuts and delays caused by air traffic staffing during the 2025 shutdown."
   },
@@ -100,7 +100,7 @@
           "stability": 9,
           "ego": -7
         },
-        "result": "You approved the rehiring memo. It is titled \"Restoring Efficiency\". Nobody laughed on camera."
+        "result": "You approved the rehiring memo. It is titled \"Restoring Efficiency.\" Nobody laughed on camera."
       }
     ],
     "ignore": {
@@ -200,8 +200,8 @@
   {
     "id": "crisis-canadaad",
     "kind": "crisis",
-    "title": "CRISIS: Neighbour Hangs Up",
-    "text": "A trade call with your northern neighbour ended when a television ad annoyed you. The neighbour is now also annoyed. So is every border town.",
+    "title": "CRISIS: Neighbor Hangs Up",
+    "text": "A trade call with your northern neighbor ended when a television ad annoyed you. The neighbor is now also annoyed. So is every border town.",
     "cost": 3,
     "options": [
       {
@@ -210,7 +210,7 @@
           "stability": 9,
           "ego": -7
         },
-        "result": "You called back and apologised without using the word. The neighbour returned your calls and your lumber."
+        "result": "You called back and apologized without using the word. The neighbor returned your calls and your lumber."
       }
     ],
     "ignore": {
@@ -223,7 +223,7 @@
     "id": "crisis-coffee",
     "kind": "crisis",
     "title": "CRISIS: Breakfast Prices Spike",
-    "text": "Tariffs on coffee and beef are now showing up in the one place you cannot gild: the breakfast table. Aides are calling it a \"temporary adjustment\".",
+    "text": "Tariffs on coffee and beef are now showing up in the one place you cannot gild: the breakfast table. Aides are calling it a \"temporary adjustment.\"",
     "cost": 3,
     "options": [
       {
@@ -237,7 +237,7 @@
     ],
     "ignore": {
       "stability": -18,
-      "text": "The nation switched to hot water and rumours."
+      "text": "The nation switched to hot water and rumors."
     },
     "inspiredBy": "The 2025 tariffs on Brazilian goods and the later exemptions on coffee and beef."
   },
@@ -245,7 +245,7 @@
     "id": "crisis-fed",
     "kind": "crisis",
     "title": "CRISIS: Central Bank Standoff",
-    "text": "You and the central bank are not speaking. Rates are a mood now. Markets are checking whether the independent bit is still independent.",
+    "text": "You and the central bank are not speaking. Rates are a mood now. Markets are checking whether the independent part is still independent.",
     "cost": 3,
     "options": [
       {
@@ -289,7 +289,7 @@
     "id": "crisis-india",
     "kind": "crisis",
     "title": "CRISIS: The Quad Turns Quiet",
-    "text": "High tariffs on a large Asian partner have made a joint summit awkward. The empty chairs are being described as \"scheduling\".",
+    "text": "High tariffs on a large Asian partner have made a joint summit awkward. The empty chairs are being described as \"scheduling.\"",
     "cost": 3,
     "options": [
       {
@@ -298,7 +298,7 @@
           "stability": 10,
           "ego": -7
         },
-        "result": "You made a phone call that included the word \"partner\". The chairs filled up. No one thanked you."
+        "result": "You made a phone call that included the word \"partner.\" The chairs filled up. No one thanked you."
       }
     ],
     "ignore": {
@@ -320,14 +320,14 @@
           "stability": 9,
           "ego": -8
         },
-        "result": "You said you wanted \"a framework\". Nobody knew what it meant, but the polite country relaxed."
+        "result": "You said you wanted \"a framework.\" Nobody knew what it meant, but the polite country relaxed."
       }
     ],
     "ignore": {
       "stability": -18,
       "text": "The island formally declared itself not for sale."
     },
-    "inspiredBy": "The January 2026 row between the US and Denmark over Greenland."
+    "inspiredBy": "The January 2026 dispute between the US and Denmark over Greenland."
   },
   {
     "id": "crisis-ovalrow",
@@ -377,7 +377,7 @@
     "id": "hybrid-fifa",
     "kind": "hybrid",
     "title": "OPPORTUNITY: The Peace Prize That Isn't Nobel",
-    "text": "A football body has a new trophy and one obvious winner. It also needs you to host a draw and sign an agreement on visas.",
+    "text": "A soccer body has a new trophy and one obvious winner. It also needs you to host a draw and sign an agreement on visas.",
     "cost": 3,
     "options": [
       {
@@ -422,7 +422,7 @@
     "id": "hybrid-route",
     "kind": "hybrid",
     "title": "OPPORTUNITY: Route 47",
-    "text": "Two neighbouring countries want a trade corridor and a peace paper. They have asked if it could carry your name on the road signs.",
+    "text": "Two neighboring countries want a trade corridor and a peace paper. They have asked if it could carry your name on the road signs.",
     "cost": 3,
     "options": [
       {
@@ -439,7 +439,7 @@
       "stability": 0,
       "text": "The road was named after a local bus."
     },
-    "inspiredBy": "The August 2025 Armenia and Azerbaijan peace declaration and the planned \"Trump Route\"."
+    "inspiredBy": "The August 2025 Armenia and Azerbaijan peace declaration and the planned \"Trump Route.\""
   },
   {
     "id": "hybrid-kennedy",
@@ -490,7 +490,7 @@
     "id": "hybrid-congo",
     "kind": "hybrid",
     "title": "OPPORTUNITY: The Institute Of Peace And You",
-    "text": "Two African neighbours want to sign a peace accord in Washington. The host building could use a nicer name, and you could use a building.",
+    "text": "Two African neighbors want to sign a peace accord in Washington. The host building could use a nicer name, and you could use a building.",
     "cost": 3,
     "options": [
       {
@@ -513,7 +513,7 @@
     "id": "hybrid-goldcard",
     "kind": "hybrid",
     "title": "OPPORTUNITY: The Gold Card",
-    "text": "A new residency scheme would raise money for the Treasury and arrive in a very shiny package. Aides say it is \"mostly legal\".",
+    "text": "A new residency program would raise money for the Treasury and arrive in a very shiny package. Aides say it is \"mostly legal.\"",
     "cost": 3,
     "options": [
       {
@@ -528,7 +528,7 @@
     ],
     "ignore": {
       "stability": 0,
-      "text": "The scheme was sold to a small island."
+      "text": "The program was sold to a small island."
     },
     "inspiredBy": "The September 2025 \"Gold Card\" visa executive order."
   },
@@ -536,7 +536,7 @@
     "id": "hybrid-banquet",
     "kind": "hybrid",
     "title": "OPPORTUNITY: Banquet At The Castle",
-    "text": "A monarch has invited you to a state visit with carriages, a banquet and a long speech in your honour. Some trade talks are attached.",
+    "text": "A monarch has invited you to a state visit with carriages, a banquet and a long speech in your honor. Some trade talks are attached.",
     "cost": 2,
     "options": [
       {
@@ -558,7 +558,7 @@
     "id": "hybrid-gulf",
     "kind": "hybrid",
     "title": "OPPORTUNITY: The Gulf Welcome Mat",
-    "text": "Three wealthy governments have laid out the red carpet and a series of investment pledges. One of them has a very large aeroplane.",
+    "text": "Three wealthy governments have laid out the red carpet and a series of investment pledges. One of them has a very large airplane.",
     "cost": 3,
     "options": [
       {
@@ -568,7 +568,7 @@
           "ego": 11,
           "gold": 2
         },
-        "result": "Real investment pledges, real handshakes and a real aeroplane. The aeroplane has a gold trim. You noticed."
+        "result": "Real investment pledges, real handshakes and a real airplane. The airplane has a gold trim. You noticed."
       }
     ],
     "ignore": {
@@ -581,7 +581,7 @@
     "id": "hybrid-kl",
     "kind": "hybrid",
     "title": "OPPORTUNITY: Peace In Kuala Lumpur",
-    "text": "Two southeast Asian neighbours are ready to stop a border spat. They want a famous guest at the signing. The venue has air conditioning.",
+    "text": "Two southeast Asian neighbors are ready to stop a border spat. They want a famous guest at the signing. The venue has air conditioning.",
     "cost": 2,
     "options": [
       {
@@ -693,7 +693,7 @@
     "id": "hybrid-kashmir",
     "kind": "hybrid",
     "title": "OPPORTUNITY: Credit For A Ceasefire",
-    "text": "Two nuclear neighbours stopped fighting on their own and are being very quiet about who helped. You offered to say it was you.",
+    "text": "Two nuclear neighbors stopped fighting on their own and are being very quiet about who helped. You offered to say it was you.",
     "cost": 2,
     "options": [
       {
@@ -702,12 +702,12 @@
           "stability": 6,
           "ego": 8
         },
-        "result": "A real ceasefire and a real phone call. You told the cameras you did it. The neighbours said \"mostly\"."
+        "result": "A real ceasefire and a real phone call. You told the cameras you did it. The neighbors said \"mostly.\""
       }
     ],
     "ignore": {
       "stability": 0,
-      "text": "The neighbours have asked for a footnote."
+      "text": "The neighbors have asked for a footnote."
     },
     "inspiredBy": "The May 2025 India and Pakistan ceasefire and the dispute over US credit."
   },
@@ -715,23 +715,23 @@
     "id": "hybrid-dome",
     "kind": "hybrid",
     "title": "OPPORTUNITY: A Dome Above It All",
-    "text": "A missile defence programme needs a name, a budget and a prominent supporter. The name on offer is shiny and has \"Golden\" in it.",
+    "text": "A missile defense program needs a name, a budget and a prominent supporter. The name on offer is shiny and has \"Golden\" in it.",
     "cost": 3,
     "options": [
       {
-        "label": "Launch the programme, with a speech",
+        "label": "Launch the program, with a speech",
         "effects": {
           "stability": 9,
           "ego": 10,
           "gold": 1
         },
-        "result": "A real defence programme and a real speech about gold. You spoke for forty minutes. The budget is a rumour."
+        "result": "A real defense program and a real speech about gold. You spoke for forty minutes. The budget is a rumor."
       }
     ],
     "ignore": {
       "stability": 0,
-      "text": "The dome was cancelled for lack of a dome."
+      "text": "The dome was canceled for lack of a dome."
     },
-    "inspiredBy": "The 2025 \"Golden Dome\" missile defence initiative announced by the White House."
+    "inspiredBy": "The 2025 \"Golden Dome\" missile defense initiative announced by the White House."
   }
 ]

@@ -61,7 +61,7 @@ const strategies: Record<string, Strategy> = {
   },
 };
 
-// How each bot answers a chaos event: the favourable choice, the deflection, or ignoring it.
+// How each bot answers a chaos event: the favorable choice, the deflection, or ignoring it.
 const chaosAnswer: Record<string, () => 0 | 1 | 'ignore'> = {
   'vanity-only': () => 1,
   'duty-only': () => 0,

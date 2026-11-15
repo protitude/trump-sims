@@ -47,7 +47,7 @@
     "id": "peace-rare-earth-primer",
     "kind": "briefing",
     "title": "Rare Earths for Beginners",
-    "text": "A trade official walks you through magnets, mining and export controls. The word 'rare' is used to hold your interest.",
+    "text": "A trade official walks you through magnets, mining and export controls. The word \"rare\" is used to hold your interest.",
     "cost": 2,
     "options": [
       {
@@ -56,7 +56,7 @@
           "stability": 9,
           "ego": -3
         },
-        "result": "You now understand why a one-year pause on export controls counts as a breakthrough. Your notes say 'magnets: big'."
+        "result": "You now understand why a one-year pause on export controls counts as a breakthrough. Your notes say \"magnets: big.\""
       }
     ],
     "ignore": {
@@ -69,7 +69,7 @@
     "id": "peace-oil-after-caracas",
     "kind": "briefing",
     "title": "Who Runs What, Now",
-    "text": "A thick binder explains the transition, the oil contracts and who answers the phones. Slide four is titled 'We are running it'.",
+    "text": "A thick binder explains the transition, the oil contracts and who answers the phones. Slide four is titled \"We are running it.\"",
     "cost": 2,
     "options": [
       {
@@ -78,14 +78,14 @@
           "stability": 8,
           "ego": -4
         },
-        "result": "You learned that 'running' a country involves paperwork, and that nobody has found the stapler."
+        "result": "You learned that \"running\" a country involves paperwork, and that nobody has found the stapler."
       }
     ],
     "ignore": {
       "stability": -6,
       "text": "The binder stayed shut. The transition plan was cited by three people who had also not read it."
     },
-    "inspiredBy": "January 2026 statements that the US would 'run' Venezuela during a transition."
+    "inspiredBy": "January 2026 statements that the US would \"run\" Venezuela during a transition."
   },
   {
     "id": "peace-ceasefire-phases",
@@ -100,12 +100,12 @@
           "stability": 10,
           "ego": -5
         },
-        "result": "You followed every arrow. Several lead back to a box marked 'to be determined', which you declined to rename."
+        "result": "You followed every arrow. Several lead back to a box marked \"to be determined,\" which you declined to rename."
       }
     ],
     "ignore": {
       "stability": -4,
-      "text": "The flowchart was folded away. Phase two continued to be described as 'imminent'."
+      "text": "The flowchart was folded away. Phase two continued to be described as \"imminent.\""
     },
     "inspiredBy": "The 2025 to 2026 phased Gaza ceasefire plan and its oversight board."
   },
@@ -127,7 +127,7 @@
     ],
     "ignore": {
       "stability": -3,
-      "text": "The dossier went unopened. It was filed under 'future summit, possibly'."
+      "text": "The dossier went unopened. It was filed under \"future summit, possibly.\""
     },
     "inspiredBy": "Early 2026 remarks that Trump expects to meet North Korea's leader again."
   },
@@ -135,7 +135,7 @@
     "id": "peace-war-powers-memo",
     "kind": "briefing",
     "title": "Legal Memo on Authorizations",
-    "text": "Counsel delivers a memo on what Congress must approve and what it merely needs to be told about. It uses the phrase 'notwithstanding' eleven times.",
+    "text": "Counsel delivers a memo on what Congress must approve and what it merely needs to be told about. It uses the phrase \"notwithstanding\" eleven times.",
     "cost": 2,
     "options": [
       {
@@ -196,7 +196,7 @@
           "stability": 9,
           "ego": -3
         },
-        "result": "A normal table was set with a normal agenda. The flyover was cancelled. The briefing staff nearly wept with relief."
+        "result": "A normal table was set with a normal agenda. The flyover was canceled. The briefing staff nearly wept with relief."
       },
       {
         "label": "Longer carpet, louder flyover",
@@ -209,7 +209,7 @@
     ],
     "ignore": {
       "stability": -5,
-      "text": "The seating chart was never approved. Both delegations arrived and queued politely for the same chair."
+      "text": "The seating chart was never approved. Both delegations arrived and lined up politely for the same chair."
     },
     "inspiredBy": "The August 2025 Alaska summit with a red carpet welcome and military flyover."
   },
@@ -247,7 +247,7 @@
     "id": "peace-trophy-shelf",
     "kind": "decision",
     "title": "Trophy Shelf Allocation",
-    "text": "A football federation has presented a peace trophy, and the Oval Office is short on shelf space. Staff want a ruling on where it goes.",
+    "text": "A soccer federation has presented a peace trophy, and the Oval Office is short on shelf space. Staff want a ruling on where it goes.",
     "cost": 1,
     "options": [
       {
@@ -256,7 +256,7 @@
           "stability": 4,
           "ego": -2
         },
-        "result": "The trophy sits in a modest case in a corridor. It was described as 'not a Nobel' by a staffer, quietly, in a closet."
+        "result": "The trophy sits in a modest case in a hallway. It was described as \"not a Nobel\" by a staffer, quietly, in a closet."
       },
       {
         "label": "Clear the mantel for it",
@@ -337,7 +337,7 @@
     "id": "peace-golden-fleet",
     "kind": "decision",
     "title": "Class of Battleship",
-    "text": "Naval planners need a name for a proposed new warship class. Their working title is 'Trump-class', in gold, with a statue on the bow.",
+    "text": "Naval planners need a name for a proposed new warship class. Their working title is \"Trump-class,\" in gold, with a statue on the bow.",
     "cost": 2,
     "options": [
       {
@@ -361,7 +361,7 @@
       "stability": -4,
       "text": "The naming request lapsed. The warships stayed unnamed, and one was called Hull Number Four."
     },
-    "inspiredBy": "December 2025 announcement of a planned 'Trump-class' battleship fleet."
+    "inspiredBy": "December 2025 announcement of a planned \"Trump-class\" battleship fleet."
   },
   {
     "id": "peace-dome-branding",
@@ -436,7 +436,7 @@
           "stability": 5,
           "ego": -4
         },
-        "result": "You read out the list. Several items were described by the other parties as 'a pause'. You thanked them for the clarification."
+        "result": "You read out the list. Several items were described by the other parties as \"a pause.\" You thanked them for the clarification."
       },
       {
         "label": "\"Eight. Maybe nine. Ask me again\"",
@@ -451,13 +451,13 @@
       "stability": -3,
       "text": "You skipped the question. The count was announced on your behalf, in a font that kept growing."
     },
-    "inspiredBy": "2025 to 2026 repeated claims that Trump had 'settled eight wars'."
+    "inspiredBy": "2025 to 2026 repeated claims that Trump had \"settled eight wars.\""
   },
   {
     "id": "peace-two-weeks-presser",
     "kind": "press",
     "title": "The Two-Week Timeline",
-    "text": "A reporter asks when you will decide on the next step in a long negotiation. Your usual answer is 'two weeks'. They have started a countdown clock.",
+    "text": "A reporter asks when you will decide on the next step in a long negotiation. Your usual answer is \"two weeks.\" They have started a countdown clock.",
     "cost": 1,
     "options": [
       {
@@ -481,7 +481,7 @@
       "stability": -3,
       "text": "You skipped the question. The countdown clock got a sponsor."
     },
-    "inspiredBy": "Recurring 2025 'two weeks' deadlines Trump set for Russia and Iran decisions."
+    "inspiredBy": "Recurring 2025 \"two weeks\" deadlines Trump set for Russia and Iran decisions."
   },
   {
     "id": "peace-no-deal-until-deal",
@@ -496,7 +496,7 @@
           "stability": 6,
           "ego": -5
         },
-        "result": "'No deal until there's a deal,' you said. It was a clean sentence and nobody could find anything wrong with it, which unsettled the room."
+        "result": "\"No deal until there's a deal,\" you said. It was a clean sentence and nobody could find anything wrong with it, which unsettled the room."
       },
       {
         "label": "Call it a 10 out of 10",
@@ -511,7 +511,7 @@
       "stability": -4,
       "text": "You left without questions. The summit was reviewed by everyone but you."
     },
-    "inspiredBy": "The August 2025 Alaska summit press remarks, 'there's no deal until there's a deal'."
+    "inspiredBy": "The August 2025 Alaska summit press remarks, \"there's no deal until there's a deal.\""
   },
   {
     "id": "peace-obama-ten-seconds",
@@ -541,7 +541,7 @@
       "stability": -3,
       "text": "You dodged the question. A late-night host answered it, with a stopwatch."
     },
-    "inspiredBy": "2025 remarks that Trump would have won the Nobel 'in ten seconds' if named Obama."
+    "inspiredBy": "2025 remarks that Trump would have won the Nobel \"in ten seconds\" if named Obama."
   },
   {
     "id": "peace-nobel-snub-aftermath",
@@ -556,7 +556,7 @@
           "stability": 6,
           "ego": -5
         },
-        "result": "You offered warm words for the winner. Aides filed the August statement under 'contingency, extremely detailed'."
+        "result": "You offered warm words for the winner. Aides filed the August statement under \"contingency, extremely detailed.\""
       },
       {
         "label": "Blame the committee's country",
@@ -607,7 +607,7 @@
     "id": "peace-putin-long-call",
     "kind": "call",
     "title": "The Two-Hour Call",
-    "text": "A rival president wants to talk for as long as it takes. Two hours later, the plan is to talk again and to describe the call as 'excellent'.",
+    "text": "A rival president wants to talk for as long as it takes. Two hours later, the plan is to talk again and to describe the call as \"excellent.\"",
     "cost": 1,
     "options": [
       {
@@ -624,7 +624,7 @@
           "ego": 4,
           "stability": -6
         },
-        "result": "The call ran past lunch, dinner and two allied phone calls waiting in line. The word 'excellent' was used eleven times."
+        "result": "The call ran past lunch, dinner and two allied phone calls waiting in line. The word \"excellent\" was used eleven times."
       }
     ],
     "ignore": {
@@ -637,7 +637,7 @@
     "id": "peace-zelensky-guarantees",
     "kind": "call",
     "title": "A President Wants Guarantees",
-    "text": "Ukraine's president calls to ask for security guarantees, in writing, on proper paper. He suggests wording and a jacket.",
+    "text": "Ukraine's president calls to ask for security guarantees, in writing, on official paper. He suggests wording and a jacket.",
     "cost": 1,
     "options": [
       {
@@ -709,7 +709,7 @@
         "result": "You thanked her. She seemed relieved the call went well, and you did not mention the medal for four whole minutes."
       },
       {
-        "label": "Ask if she can 'make a call'",
+        "label": "Ask if she can \"make a call\"",
         "effects": {
           "ego": 4,
           "stability": -5
@@ -744,7 +744,7 @@
           "ego": 4,
           "stability": -4
         },
-        "result": "You asked about the award for ten minutes. The talks were described as 'still alive', which someone wrote down."
+        "result": "You asked about the award for ten minutes. The talks were described as \"still alive,\" which someone wrote down."
       }
     ],
     "ignore": {
@@ -809,7 +809,7 @@
     ],
     "ignore": {
       "stability": -3,
-      "text": "You didn't take the call. The medal went to a box labelled 'sensitive', beside an unmarked second box."
+      "text": "You didn't take the call. The medal went to a box labeled \"sensitive,\" beside an unmarked second box."
     },
     "inspiredBy": "January 2026, when Venezuela's opposition leader gave Trump her Nobel medal."
   },
@@ -834,7 +834,7 @@
           "ego": 4,
           "stability": -5
         },
-        "result": "'Closer than ever,' you told the press. The other side called a press conference to say it was also standing in the same place."
+        "result": "\"Closer than ever,\" you told the press. The other side called a press conference to say it was also standing in the same place."
       }
     ],
     "ignore": {

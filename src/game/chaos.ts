@@ -21,7 +21,7 @@ export interface ChaosEvent {
   id: string;
   title: string;
   text: string;
-  /** The favourable choice first, then the deflection. */
+  /** The favorable choice first, then the deflection. */
   choices: [ChaosChoice, ChaosChoice];
   ignore: {
     label: string;

@@ -100,7 +100,7 @@
           "stability": 8,
           "ego": -3
         },
-        "result": "You now understand preemption. You still prefer the word \"winning\"."
+        "result": "You now understand preemption. You still prefer the word \"winning.\""
       }
     ],
     "ignore": {
@@ -171,7 +171,7 @@
     ],
     "ignore": {
       "stability": -6,
-      "text": "The licensing queue stayed long. The reactors stayed theoretical."
+      "text": "The licensing backlog stayed long. The reactors stayed theoretical."
     },
     "inspiredBy": "2025 executive orders to speed up nuclear reactor approvals."
   },
@@ -329,7 +329,7 @@
     "id": "sci-woke-ai",
     "kind": "decision",
     "title": "Neutral AI Order",
-    "text": "An adviser says government AI systems should be tested for accuracy, not ideology. A draft order calls an assistant \"too polite to you\".",
+    "text": "An adviser says government AI systems should be tested for accuracy, not ideology. A draft order calls an assistant \"too polite to you.\"",
     "cost": 1,
     "options": [
       {
@@ -501,7 +501,7 @@
     ],
     "ignore": {
       "stability": -4,
-      "text": "The site is half-built. A banner reads \"coming soon, and great\"."
+      "text": "The site is half-built. A banner reads \"coming soon, and great.\""
     },
     "inspiredBy": "2025 announcement of a TrumpRx drug price website."
   },
@@ -683,13 +683,13 @@
       "stability": -5,
       "text": "The speech was never written. You ad-libbed the weather."
     },
-    "inspiredBy": "September 2025 UN speech calling climate change a \"con job\"."
+    "inspiredBy": "September 2025 UN speech calling climate change a \"con job.\""
   },
   {
     "id": "sci-mri",
     "kind": "call",
     "title": "Doctor On The Line",
-    "text": "A doctor calls about the scan you had. Everything looks normal and she wants to explain in detail. You want to tell her it was \"amazing\".",
+    "text": "A doctor calls about the scan you had. Everything looks normal and she wants to explain in detail. You want to tell her it was \"amazing.\"",
     "cost": 1,
     "options": [
       {
@@ -706,7 +706,7 @@
           "ego": 5,
           "stability": -5
         },
-        "result": "You told the press it was \"perfect\", and the doctor winced politely."
+        "result": "You told the press it was \"perfect,\" and the doctor winced politely."
       }
     ],
     "ignore": {

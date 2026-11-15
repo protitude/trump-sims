@@ -1,7 +1,7 @@
 import { BLOCKS_PER_MONTH, mood } from '../game/engine.ts';
 import { vanityById } from '../game/content.ts';
 import type { DutyKind, GameState } from '../game/types.ts';
-import { OBJECTS, REGIONS, ROOMS, T, isWall } from './map.ts';
+import { OBJECTS, REGIONS, ROOMS, T, exists, isWall, objectName } from './map.ts';
 import type { Point, Rect, Tile, WorldObject } from './map.ts';
 
 // Everything on screen is drawn with canvas shapes; there are no image files.
@@ -351,6 +351,59 @@ function monument(c: Ctx, id: string, r: Rect, time: number): void {
 
 // ---------- Furniture and lawn objects ----------
 
+function landingPad(c: Ctx, cx: number, cy: number, radius: number): void {
+  c.strokeStyle = '#ffffff';
+  c.lineWidth = 3;
+  c.beginPath();
+  c.arc(cx, cy, radius, 0, Math.PI * 2);
+  c.stroke();
+  label(c, 'H', cx, cy + 2, 40, 'rgba(255,255,255,0.9)');
+}
+
+/** Seen from above, nose to the left. The rotor races while a flight is boarding. */
+function helicopter(c: Ctx, cx: number, cy: number, gilded: boolean, time: number): void {
+  const bx = cx - 8;
+  c.fillStyle = 'rgba(0,0,0,0.2)';
+  c.beginPath();
+  c.ellipse(bx + 6, cy + 10, 36, 16, 0, 0, Math.PI * 2);
+  c.fill();
+  // Tail boom, fin and tail rotor.
+  c.fillStyle = gilded ? GOLD_DARK : '#2f4a2c';
+  c.fillRect(bx + 20, cy - 3, 36, 6);
+  c.fillRect(bx + 52, cy - 11, 5, 22);
+  // Cabin: green below, white on top, like the real one. Or gold.
+  c.fillStyle = gilded ? goldFill(c, bx - 30, cy - 15, 60, 30) : '#3d5a3a';
+  c.beginPath();
+  c.ellipse(bx, cy, 30, 15, 0, 0, Math.PI * 2);
+  c.fill();
+  c.fillStyle = gilded ? GOLD_LIGHT : '#f4f6fa';
+  c.beginPath();
+  c.ellipse(bx + 2, cy, 19, 8, 0, 0, Math.PI * 2);
+  c.fill();
+  c.fillStyle = gilded ? '#fff4c2' : '#9db5dd';
+  c.beginPath();
+  c.ellipse(bx - 21, cy, 6, 9, 0, 0, Math.PI * 2);
+  c.fill();
+  // Main rotor.
+  const flying = currentAct?.anim?.includes('heli') ?? false;
+  const spin = time * (flying ? 26 : 1.2);
+  c.strokeStyle = gilded ? GOLD_DARK : '#22252d';
+  c.lineWidth = 4;
+  c.lineCap = 'round';
+  for (let i = 0; i < 2; i++) {
+    const a = spin + (i * Math.PI) / 2;
+    c.beginPath();
+    c.moveTo(bx - Math.cos(a) * 42, cy - Math.sin(a) * 42);
+    c.lineTo(bx + Math.cos(a) * 42, cy + Math.sin(a) * 42);
+    c.stroke();
+  }
+  c.lineCap = 'butt';
+  c.fillStyle = gilded ? GOLD : '#22252d';
+  c.beginPath();
+  c.arc(bx, cy, 4, 0, Math.PI * 2);
+  c.fill();
+}
+
 /** The activity in progress, shared with drawObject while a frame is drawn. */
 let currentAct: Activity | null = null;
 
@@ -539,6 +592,10 @@ function drawObject(c: Ctx, o: WorldObject, s: GameState, time: number, hovered:
           c.lineTo(r.x + r.w, y);
           c.stroke();
         }
+        if (did('build-helipad')) {
+          landingPad(c, cx, cy, 44);
+          helicopter(c, cx, cy, did('gild-helicopter'), time);
+        }
       } else {
         c.fillStyle = '#2f6a3a';
         rr(c, r.x, r.y, r.w, r.h, 10);
@@ -605,7 +662,21 @@ function drawObject(c: Ctx, o: WorldObject, s: GameState, time: number, hovered:
       label(c, 'PARADE', cx, r.y + 20, 11, '#5a5546');
       break;
     }
+    case 'helipad': {
+      c.fillStyle = '#6a6d76';
+      rr(c, r.x, r.y, r.w, r.h, 10);
+      c.fill();
+      landingPad(c, cx, cy, 44);
+      // The helicopter is only here if it brought you.
+      if (s.vehicle === 'heli') {
+        gilded = did('gild-helicopter');
+        helicopter(c, cx, cy, gilded, time);
+      }
+      break;
+    }
     case 'plane': {
+      // An empty runway at Mar-a-Lago if the helicopter brought you.
+      if (o.place === 'maralago' && s.vehicle === 'heli') break;
       gilded = did('gild-plane');
       const body = gilded ? goldFill(c, r.x, r.y, r.w, r.h) : '#f4f6fa';
       c.fillStyle = 'rgba(0,0,0,0.2)';
@@ -1228,12 +1299,12 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   // Fit the whole of the current place when there is room; otherwise follow
   // the president around it.
   const region = REGIONS[s.place];
-  const here = OBJECTS.filter((o) => (o.place ?? 'dc') === s.place);
+  const here = OBJECTS.filter((o) => (o.place ?? 'dc') === s.place && exists(o, s));
   const scale = Math.max(Math.min(viewW / region.w, viewH / region.h), 0.5);
   const visibleW = viewW / scale;
   const visibleH = viewH / scale;
-  const follow = (centre: number, visible: number, start: number, size: number) =>
-    visible >= size ? start + (size - visible) / 2 : Math.max(start, Math.min(start + size - visible, centre - visible / 2));
+  const follow = (center: number, visible: number, start: number, size: number) =>
+    visible >= size ? start + (size - visible) / 2 : Math.max(start, Math.min(start + size - visible, center - visible / 2));
   sim.cam = {
     x: follow(sim.pres.x, visibleW, region.x, region.w),
     y: follow(sim.pres.y - 30, visibleH, region.y, region.h),
@@ -1315,11 +1386,12 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   if (hovered) {
     const r = px(hovered.rect);
     c.font = `700 12px ${FONT}`;
-    const w = c.measureText(hovered.name).width + 16;
+    const name = objectName(hovered, s);
+    const w = c.measureText(name).width + 16;
     c.fillStyle = 'rgba(10,15,31,0.9)';
     rr(c, r.x + r.w / 2 - w / 2, r.y - 26, w, 20, 5);
     c.fill();
-    label(c, hovered.name, r.x + r.w / 2, r.y - 16, 12, '#ffffff');
+    label(c, name, r.x + r.w / 2, r.y - 16, 12, '#ffffff');
   }
 
   for (const f of sim.floats) {

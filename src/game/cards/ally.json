@@ -3,7 +3,7 @@
     "id": "ally-nato-tracker",
     "kind": "briefing",
     "title": "NATO Spending Spreadsheet",
-    "text": "A colour-coded chart of which allies have reached 5 percent of GDP. Nobody has. Several are shaded a hopeful green.",
+    "text": "A color-coded chart of which allies have reached 5 percent of GDP. Nobody has. Several are shaded a hopeful green.",
     "cost": 2,
     "options": [
       {
@@ -19,7 +19,7 @@
       "stability": -5,
       "text": "The chart went unread. Allies kept promising and you kept believing."
     },
-    "inspiredBy": "NATO allies pledged 5 percent of GDP on defence by 2035 at the June 2025 Hague summit."
+    "inspiredBy": "NATO allies pledged 5 percent of GDP on defense by 2035 at the June 2025 Hague summit."
   },
   {
     "id": "ally-greenland-group",
@@ -85,13 +85,13 @@
       "stability": -4,
       "text": "The cables went unread. Several embassies sent them again, louder."
     },
-    "inspiredBy": "State Department cuts and a 2025 reorganisation reduced diplomatic staff and strained embassies."
+    "inspiredBy": "State Department cuts and a 2025 reorganization reduced diplomatic staff and strained embassies."
   },
   {
     "id": "ally-aid-audit",
     "kind": "briefing",
     "title": "Foreign Aid Wind-Down Report",
-    "text": "A report on which overseas programmes were cancelled, which were restored, and which no one can find. Appendix C is a shrug.",
+    "text": "A report on which overseas programs were canceled, which were restored, and which no one can find. Appendix C is a shrug.",
     "cost": 2,
     "options": [
       {
@@ -100,14 +100,14 @@
           "stability": 9,
           "ego": -3
         },
-        "result": "You found one programme that worked. It had been cancelled twice and reinstated once."
+        "result": "You found one program that worked. It had been canceled twice and reinstated once."
       }
     ],
     "ignore": {
       "stability": -5,
       "text": "The report went unread. The shrug in Appendix C stayed unresolved."
     },
-    "inspiredBy": "The administration dismantled USAID in 2025, with programmes cancelled and some later restored."
+    "inspiredBy": "The administration dismantled USAID in 2025, with programs canceled and some later restored."
   },
   {
     "id": "ally-g20-logistics",
@@ -177,7 +177,7 @@
         "result": "The crown went to the archive. You asked if it could be seen from there."
       },
       {
-        "label": "Try it on in the corridor",
+        "label": "Try it on in the hallway",
         "effects": {
           "ego": 5,
           "stability": -5
@@ -195,7 +195,7 @@
     "id": "ally-swiss-gold",
     "kind": "decision",
     "title": "Executives Bring A Gold Bar",
-    "text": "Business leaders from a tariffed country arrive with a gold bar and a luxury watch. They say it is \"just a token\". It is exactly the shape of a token.",
+    "text": "Business leaders from a tariffed country arrive with a gold bar and a luxury watch. They say it is \"just a token.\" It is exactly the shape of a token.",
     "cost": 1,
     "options": [
       {
@@ -309,7 +309,7 @@
       "stability": -5,
       "text": "The jets stayed in the hangar. The brochure was reprinted."
     },
-    "inspiredBy": "Trump said at the July 2026 Ankara NATO summit that Turkey could return to the F-35 programme."
+    "inspiredBy": "Trump said at the July 2026 Ankara NATO summit that Turkey could return to the F-35 program."
   },
   {
     "id": "ally-spain-penalty",
@@ -339,7 +339,7 @@
       "stability": -5,
       "text": "The spending gap went unaddressed. Spain stayed on the shady side of the chart."
     },
-    "inspiredBy": "Trump criticised Spain for refusing the 5 percent NATO spending target in 2025 and 2026."
+    "inspiredBy": "Trump criticized Spain for refusing the 5 percent NATO spending target in 2025 and 2026."
   },
   {
     "id": "ally-g20-exclusion",
@@ -375,7 +375,7 @@
     "id": "ally-eu-energy",
     "kind": "decision",
     "title": "The Big European Deal",
-    "text": "A trade deal with Europe awaits signature. It has a 15 percent tariff, a promise of 750 billion dollars of energy, and a very vague word: \"framework\".",
+    "text": "A trade deal with Europe awaits signature. It has a 15 percent tariff, a promise of 750 billion dollars of energy, and a very vague word: \"framework.\"",
     "cost": 1,
     "options": [
       {
@@ -414,7 +414,7 @@
           "stability": 5,
           "ego": -3
         },
-        "result": "You stayed at the table. The ad ran another week, in your honour."
+        "result": "You stayed at the table. The ad ran another week, in your honor."
       },
       {
         "label": "Cancel all talks, immediately",
@@ -422,7 +422,7 @@
           "ego": 5,
           "stability": -5
         },
-        "result": "You cancelled them. Canada watched the ad again on purpose."
+        "result": "You canceled them. Canada watched the ad again on purpose."
       }
     ],
     "ignore": {
@@ -495,7 +495,7 @@
     "id": "ally-rutte-daddy",
     "kind": "call",
     "title": "A Flattering NATO Chief",
-    "text": "The NATO chief calls to say you will be an enormous success, and mentions that other leaders call you \"daddy\". The memo says this is a trick. It works.",
+    "text": "The NATO chief calls to say you will be an enormous success, and mentions that other leaders call you \"daddy.\" The memo says this is a trick. It works.",
     "cost": 1,
     "options": [
       {
@@ -519,7 +519,7 @@
       "stability": -4,
       "text": "You never called back. The NATO chief wrote the flattery in the communique anyway."
     },
-    "inspiredBy": "NATO chief Mark Rutte flattered Trump around the June 2025 summit and used the word \"daddy\"."
+    "inspiredBy": "NATO chief Mark Rutte flattered Trump around the June 2025 summit and used the word \"daddy.\""
   },
   {
     "id": "ally-macron-tariff",
@@ -559,7 +559,7 @@
     "cost": 1,
     "options": [
       {
-        "label": "Discuss defence cooperation",
+        "label": "Discuss defense cooperation",
         "effects": {
           "stability": 5,
           "ego": -3
@@ -572,7 +572,7 @@
           "ego": 5,
           "stability": -5
         },
-        "result": "You made an offer. The offer was \"no\", but from your side."
+        "result": "You made an offer. The offer was \"no,\" but from your side."
       }
     ],
     "ignore": {

@@ -40,7 +40,7 @@ Each month plays out like one day:
 | **Cabinet Room** | Aides wait here with briefings and decisions. The Constitution's display case can be gilded. |
 | **Press Room** | Reporters wait here. |
 | **South Lawn** | Seven construction lots in two rows (four monuments above, three buildings below), the Rose Garden, the putting green, the rally stage, the parade stand and the plane. |
-| **Mar-a-Lago** | A separate place, reached by clicking the plane. Golf, dinner on the patio, the playlist, the membership desk, a ballroom to re-gild, and a bed. |
+| **Mar-a-Lago** | A separate place, reached by clicking the plane (or the helicopter, once the Rose Garden is a helipad). Golf, dinner on the patio, the playlist, the membership desk, a ballroom to re-gild, and a bed. |
 
 Activities are animated. Golf has a swing and a ball that always goes in, rallies draw a bouncing crowd and confetti, parades send tanks down the avenue, monuments rise out of their lots behind scaffolding, renames get stamped, posts float up in capital letters, and the club members applaud dinner. Visitors get their own touches too: camera flashes for the press, "blah blah" for briefings, a red alert for a crisis.
 
@@ -66,7 +66,7 @@ Vanity is visible. Gilded things turn gold and sparkle, monuments rise on their 
 
 ### Trips to Mar-a-Lago
 
-Click the plane on the South Lawn to fly to Mar-a-Lago. The flight costs one time block each way.
+Click the plane on the South Lawn to fly to Mar-a-Lago. The flight costs one time block each way. Once the Rose Garden is gilded it can be turned into a helipad; the helicopter parked there can be gilded too, and flies to Mar-a-Lago in place of the plane. Whatever you flew out in is the way back.
 
 - **Why go.** Everything there feeds Ego better than its Washington equivalent, and it can all be repeated (with slowly fading returns).
 - **What it costs.** The job cannot follow you. Visitors keep waiting in Washington, and you cannot deal with any of them until you fly back. If you go to bed in Florida, everyone waiting that month is ignored.
@@ -74,7 +74,7 @@ Click the plane on the South Lawn to fly to Mar-a-Lago. The flight costs one tim
 
 ### Consequences
 
-Some choices come back. Tariff the penguins and, four months later, the penguins retaliate; escalate that and a nature documentary arrives. Appoint your caddie to run public health and you will hear about his first outbreak briefing. These visitors are labelled **Consequence** and open with a line reminding you what you did.
+Some choices come back. Tariff the penguins and, four months later, the penguins retaliate; escalate that and a nature documentary arrives. Appoint your caddie to run public health and you will hear about his first outbreak briefing. These visitors are labeled **Consequence** and open with a line reminding you what you did.
 
 - Most consequences follow the fun option, and are a harder version of the same mess.
 - A few follow the responsible option, and are rewards: the deputy you appointed delivers, the ally you reassured names a square after you.
@@ -101,7 +101,7 @@ The four years are not all alike. A strip under the top bar shows what is in for
 | July to Dec, Year 4 | Legacy Season | Big projects and renames give 30% more Ego; Ego drains 2 faster |
 | December, Year 4 | The Farewell Address | Set piece |
 
-Set pieces are extra visitors, labelled **Set piece**, on top of the usual three.
+Set pieces are extra visitors, labeled **Set piece**, on top of the usual three.
 
 ### Whims
 
@@ -113,11 +113,11 @@ At the start of any month there is a 10% chance that something simply happens: a
 
 A chaos event stops everything until you answer it. There are always three answers:
 
-- **The favourable one**, which costs one or two time blocks.
+- **The favorable one**, which costs one or two time blocks.
 - **The deflection**, which costs nothing.
 - **Ignoring it.**
 
-Nothing on the menu tells you what any of them will do. The result is rolled when you choose and shown afterwards, with its numbers. The favourable answer usually goes well (60% good, 25% mixed, 15% bad) and the deflection usually does not (30% good, 30% mixed, 40% bad), but either can go either way, and a bad result can hit both meters hard.
+Nothing on the menu tells you what any of them will do. The result is rolled when you choose and shown afterward, with its numbers. The favorable answer usually goes well (60% good, 25% mixed, 15% bad) and the deflection usually does not (30% good, 30% mixed, 40% bad), but either can go either way, and a bad result can hit both meters hard.
 
 Ignoring an event does nothing at the time. It comes back once or twice in later months of the same year, and that blowback is nearly always bad and sometimes severe. An event ignored in December comes back in January.
 
@@ -204,7 +204,7 @@ All the numbers that govern difficulty are in the `TUNING` object at the top of 
 | random | Clicks anything | World War III within about 4 months |
 | balanced | Feeds whichever meter is lower | Wins about 34% of games, usually lasting into Year 4 |
 
-The balanced bot is a fairly naive player, and it picks a whim at random and then ignores it. A person who chases whims collects several rewards a game that the bot mostly misses, so 34% for the bot should mean a hard but fair game for a person. That is an estimate from the simulator, not something tested widely with real players. The bots answer chaos events in a fixed way: the balanced bot always takes the favourable answer, which leaves its win rate unchanged at about 34%. Made to always deflect, it wins about 30%; made to always ignore, about 11% (17% if blowback only ever came once). The bots never fly to Mar-a-Lago, so the simulator says nothing about whether trips are too strong or too weak.
+The balanced bot is a fairly naive player, and it picks a whim at random and then ignores it. A person who chases whims collects several rewards a game that the bot mostly misses, so 34% for the bot should mean a hard but fair game for a person. That is an estimate from the simulator, not something tested widely with real players. The bots answer chaos events in a fixed way: the balanced bot always takes the favorable answer, which leaves its win rate unchanged at about 34%. Made to always deflect, it wins about 30%; made to always ignore, about 11% (17% if blowback only ever came once). The bots never fly to Mar-a-Lago, so the simulator says nothing about whether trips are too strong or too weak.
 
 The balance is very sensitive to the number of big projects and to `egoInflation`, so re-run the simulator after touching either. For reference: six projects at 0.25 gave the bot 29% wins; twelve projects at 0.25 gave 97%; seven projects at 0.26 gave 37%. Adding the calendar and whims made the game easier again (78% at 0.26), so the value is now 0.36.
 
@@ -216,7 +216,7 @@ The balance is very sensitive to the number of big projects and to `egoInflation
 - **Aides** who live in the building. You can delegate duties to them. The competent ones get credit, which drains your Ego until you fire them. The loyal ones are useless.
 - **Approval and impeachment** as a third way to lose.
 - **Multi-month construction**, with scaffolding going up over several turns.
-- **Proper art and sound.** Sprites in place of shapes, probably moving the drawing to Phaser at that point.
+- **Real art and sound.** Sprites in place of shapes, probably moving the drawing to Phaser at that point.
 - **A comedy and fact pass on the scenarios.** The news-based cards were drafted in bulk. Some punchlines are soft, and many `inspiredBy` notes were written from memory and have not been checked against sources.
 - **Visitors at Mar-a-Lago.** Members, donors and the occasional ambassador who has followed you down.
 

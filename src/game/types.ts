@@ -35,6 +35,8 @@ export type VanityCategory = 'build' | 'rename' | 'gild' | 'show' | 'trip' | 're
 
 export type Place = 'dc' | 'maralago';
 
+export type Vehicle = 'plane' | 'heli';
+
 export interface VanityAction {
   id: string;
   category: VanityCategory;
@@ -53,6 +55,8 @@ export interface VanityAction {
   place?: Place;
   /** Trips move the president here when they finish. */
   travelTo?: Place;
+  /** What a trip flies in. The plane unless stated. */
+  vehicle?: Vehicle;
   result: string;
 }
 
@@ -90,6 +94,8 @@ export interface GameState {
   crisisPending: boolean;
   /** Where the president is. Duties can only be done in Washington. */
   place: Place;
+  /** What the last trip flew in; it is the only way back. The plane if unset. */
+  vehicle?: Vehicle;
   /** Crisis and opportunity cards already seen, so none repeats. */
   usedSpecials: string[];
   /** Consequences of earlier choices, waiting for their month. */

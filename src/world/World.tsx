@@ -6,7 +6,7 @@ import type { DutyKind, GameState, Place } from '../game/types.ts';
 import { Blocks, Fx } from '../ui.tsx';
 import { drawWorld, hitRectPx } from './draw.ts';
 import type { Actor, Npc, Sim } from './draw.ts';
-import { ARRIVALS, BEDS, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
+import { BEDS, arrival, exists, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
 import { T } from './map.ts';
 import type { Point, Tile } from './map.ts';
 
@@ -48,6 +48,8 @@ const DUTY_EMOJI: Record<DutyKind, string> = {
 const VANITY_EMOJI: Record<string, string> = {
   build: '🏗️',
   trip: '✈️',
+  'trip-maralago-heli': '🚁',
+  'trip-home-heli': '🚁',
   resort: '🌴',
   'resort-golf': '⛳',
   'resort-dinner': '🍽️',
@@ -284,12 +286,12 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
     }
   }, [state.ego, state.stability, sim]);
 
-  // Stepping off the plane: appear at the arrival spot of the new place.
+  // Stepping off the plane or helicopter: appear at the arrival spot of the new place.
   const lastPlace = useRef(state.place);
   useEffect(() => {
     if (state.place === lastPlace.current) return;
     lastPlace.current = state.place;
-    Object.assign(sim.pres, tileCenter(ARRIVALS[state.place]), { path: [] });
+    Object.assign(sim.pres, tileCenter(arrival(state)), { path: [] });
     targetRef.current = null;
   }, [state.place, sim]);
 
@@ -334,7 +336,7 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
     }
     // Smallest object first, so the phone wins over the carpet behind it.
     const candidates = OBJECTS.filter((o) => {
-      if (o.inert || (o.place ?? 'dc') !== stateRef.current.place) return false;
+      if (o.inert || (o.place ?? 'dc') !== stateRef.current.place || !exists(o, stateRef.current)) return false;
       const r = hitRectPx(o);
       return p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h;
     }).sort((a, b) => a.rect.w * a.rect.h - b.rect.w * b.rect.h);
@@ -431,10 +433,12 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
       } else {
         body = (
           <>
-            <h3 className="menu-title">{object.kind === 'plot' ? 'Construction Site' : object.name}</h3>
+            <h3 className="menu-title">{object.kind === 'plot' ? 'Construction Site' : objectName(object, state)}</h3>
             {object.actions.map((id) => {
               const action = vanityById(id);
               const status = vanityStatus(state, action);
+              // Off the building lots, an option only appears once it is unlocked.
+              if (status === 'locked' && object.kind !== 'plot') return null;
               const note =
                 status === 'done'
                   ? 'Done.'
@@ -444,6 +448,10 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
                       ? 'Not enough time left this month.'
                       : status === 'away'
                         ? 'You are not there.'
+                        : status === 'no-ride'
+                          ? action.vehicle === 'heli'
+                            ? 'The helicopter is in Washington. You came by plane.'
+                            : 'The plane is in Washington. You came by helicopter.'
                         : action.text;
               return (
                 <button

@@ -13,7 +13,7 @@
        "ego": 9,
        "stability": 2
       },
-      "text": "Harp cheered up after a ten-minute chat and a printed photo of the ballroom. Staff morale is described as 'stable, with sparkle'."
+      "text": "Harp cheered up after a ten-minute chat and a printed photo of the ballroom. Staff morale is described as \"stable, with sparkle.\""
      },
      {
       "effects": {
@@ -40,7 +40,7 @@
        "ego": 8,
        "stability": 3
       },
-      "text": "Harp laughed, said 'yes, sir' and ran the day like a metronome. Staff now call this 'the tough love thing'."
+      "text": "Harp laughed, said \"yes, sir\" and ran the day like a metronome. Staff now call this \"the tough love thing.\""
      },
      {
       "effects": {
@@ -96,7 +96,7 @@
        "stability": 8,
        "ego": 3
       },
-      "text": "FEMA moved early, you gave a calm address, and the coast held. Pundits call it 'competent', then rest."
+      "text": "FEMA moved early, you gave a calm address, and the coast held. Pundits call it \"competent,\" then rest."
      },
      {
       "effects": {
@@ -121,7 +121,7 @@
       "effects": {
        "stability": 10
       },
-      "text": "DeSantis sorted it, the storm veered out to sea and you took credit for the weather. A ballroom segment aired at prime time."
+      "text": "DeSantis handled it, the storm veered out to sea and you took credit for the weather. A ballroom segment aired at prime time."
      },
      {
       "effects": {
@@ -141,7 +141,7 @@
   ],
   "ignore": {
    "label": "Ignore the storm",
-   "text": "The hurricane has moved up in the briefing from 'monitor' to 'watching closely'. Nobody has told you the second part.",
+   "text": "The hurricane has moved up in the briefing from \"monitor\" to \"watching closely.\" Nobody has told you the second part.",
    "blowback": [
     {
      "effects": {
@@ -166,7 +166,7 @@
  {
   "id": "chaos-donjr-oligarch",
   "title": "Don Jr. Takes More Russian Money",
-  "text": "Don Jr. has accepted another large cheque from a Russian oligarch, apparently for 'consulting'. The oligarch has also been consulting your schedule.",
+  "text": "Don Jr. has accepted another large check from a Russian oligarch, apparently for \"consulting.\" The oligarch has also been consulting your schedule.",
   "choices": [
    {
     "label": "Repay the oligarch, calm the press",
@@ -177,7 +177,7 @@
        "ego": 4,
        "stability": 6
       },
-      "text": "The money went back with a tidy letter, and the press cooled. Don Jr. was heard to say 'it was just a very nice vase'."
+      "text": "The money went back with a tidy letter, and the press cooled. Don Jr. was heard to say \"it was just a very nice vase.\""
      },
      {
       "effects": {
@@ -217,7 +217,7 @@
        "stability": -9,
        "ego": -5
       },
-      "text": "The Hunter line did not land. Newsrooms put the oligarch cheque and your deflection on the same graphic."
+      "text": "The Hunter line did not land. Newsrooms put the oligarch check and your deflection on the same graphic."
      }
     ]
    }
@@ -238,7 +238,7 @@
       "ego": -6,
       "stability": -8
      },
-     "text": "Remember the oligarch cheque? Two more have surfaced, along with a vase. Allies are now using the phrase 'family business'."
+     "text": "Remember the oligarch check? Two more have surfaced, along with a vase. Allies are now using the phrase \"family business.\""
     },
     {
      "effects": {},
@@ -261,7 +261,7 @@
        "ego": 9,
        "stability": 2
       },
-      "text": "Musk apologised, deleted the thread and called you 'a great guy, mostly'. Your standing in Silicon Valley has risen to 'not a pariah'."
+      "text": "Musk apologized, deleted the thread and called you \"a great guy, mostly.\" Your standing in Silicon Valley has risen to \"not a pariah.\""
      },
      {
       "effects": {
@@ -314,7 +314,7 @@
      "effects": {
       "ego": -8
      },
-     "text": "Remember the Musk feud? He has funded a new party called 'The Efficiency Party', with a logo that looks like a chainsaw."
+     "text": "Remember the Musk feud? He has funded a new party called \"The Efficiency Party,\" with a logo that looks like a chainsaw."
     },
     {
      "effects": {
@@ -333,7 +333,7 @@
  {
   "id": "chaos-truth-social-down",
   "title": "Truth Social Goes Down",
-  "text": "Truth Social has gone offline for all users. The error page is a picture of a very sad eagle. There is a rumour it is a server in someone's garage.",
+  "text": "Truth Social has gone offline for all users. The error page is a picture of a very sad eagle. There is a rumor it is a server in someone's garage.",
   "choices": [
    {
     "label": "Call in the engineers",
@@ -351,7 +351,7 @@
        "ego": 4,
        "stability": -4
       },
-      "text": "The site came back, but the 'who is reading' feature has also exposed that some followers are sixteen bots from one office."
+      "text": "The site came back, but the \"who is reading\" feature has also exposed that some followers are sixteen bots from one office."
      },
      {
       "effects": {
@@ -376,7 +376,7 @@
        "ego": 5,
        "stability": -3
       },
-      "text": "The rival site gave you a verified badge. Truth Social returned with an apology and a new colour scheme."
+      "text": "The rival site gave you a verified badge. Truth Social returned with an apology and a new color scheme."
      },
      {
       "effects": {
@@ -425,7 +425,7 @@
        "ego": 4,
        "stability": 6
       },
-      "text": "The review found the chat was only 'a bit loose'. Hegseth got a laminated card that says 'check the list'. Allies approved of the card."
+      "text": "The review found the chat was only \"a bit loose.\" Hegseth got a laminated card that says \"check the list.\" Allies approved of the card."
      },
      {
       "effects": {
@@ -451,7 +451,7 @@
        "ego": 5,
        "stability": 5
       },
-      "text": "The press ran out of steam after a two-day fight about the word 'witch'. Hegseth was awarded a medal that is also a coaster."
+      "text": "The press ran out of steam after a two-day fight about the word \"witch.\" Hegseth was awarded a medal that is also a coaster."
      },
      {
       "effects": {
@@ -465,7 +465,7 @@
        "stability": -9,
        "ego": -5
       },
-      "text": "The defence was shredded by a leaked screenshot that showed you asking 'is this the real one?' The editor has liked it."
+      "text": "The defense was shredded by a leaked screenshot that showed you asking \"is this the real one?\" The editor has liked it."
      }
     ]
    }
@@ -479,18 +479,18 @@
       "ego": -3,
       "stability": -5
      },
-     "text": "Remember the group chat with the editor? The Pentagon now holds its meetings in a car park, in whispers, on paper."
+     "text": "Remember the group chat with the editor? The Pentagon now holds its meetings in a parking lot, in whispers, on paper."
     },
     {
      "effects": {
       "ego": -6,
       "stability": -8
      },
-     "text": "Remember Hegseth's group chat? The editor has a book deal. It is called 'Thumbs Up' and it has a chapter on you."
+     "text": "Remember Hegseth's group chat? The editor has a book deal. It is called \"Thumbs Up\" and it has a chapter on you."
     },
     {
      "effects": {},
-     "text": "Remember the group chat? The editor left. He said the emojis were 'too upsetting'."
+     "text": "Remember the group chat? The editor left. He said the emojis were \"too upsetting.\""
     }
    ]
   }
@@ -509,14 +509,14 @@
        "stability": 9,
        "ego": 2
       },
-      "text": "Egg imports arrived, prices fell and a grateful nation made an omelette. You were described as 'adequately competent', a first."
+      "text": "Egg imports arrived, prices fell and a grateful nation made an omelette. You were described as \"adequately competent,\" a first."
      },
      {
       "effects": {
        "stability": 4,
        "ego": -4
       },
-      "text": "Prices fell, but the imported eggs are from a country you were rude to last week. The first box was labelled 'sorry'."
+      "text": "Prices fell, but the imported eggs are from a country you were rude to last week. The first box was labeled \"sorry.\""
      },
      {
       "effects": {
@@ -580,8 +580,8 @@
  },
  {
   "id": "chaos-fox-host-criticises",
-  "title": "A Fox News Host Criticises You",
-  "text": "A top Fox News host has spent four minutes on air saying you could have handled the week better. The word 'frankly' was used. A graphic appeared. It is not a good graphic.",
+  "title": "A Fox News Host Criticizes You",
+  "text": "A top Fox News host has spent four minutes on air saying you could have handled the week better. The word \"frankly\" was used. A graphic appeared. It is not a good graphic.",
   "choices": [
    {
     "label": "Invite the host for dinner",
@@ -592,7 +592,7 @@
        "ego": 8,
        "stability": 3
       },
-      "text": "Dinner went well. The host called you 'a statesman' on air and a golden spoon was involved. Your ratings are up."
+      "text": "Dinner went well. The host called you \"a statesman\" on air and a golden spoon was involved. Your ratings are up."
      },
      {
       "effects": {
@@ -617,14 +617,14 @@
       "effects": {
        "ego": 10
       },
-      "text": "Your live call was the highest-rated segment of the year. The host apologised, laughed and offered you a weekly slot."
+      "text": "Your live call was the highest-rated segment of the year. The host apologized, laughed and offered you a weekly slot."
      },
      {
       "effects": {
        "ego": 4,
        "stability": -4
       },
-      "text": "The call got ratings, but you said 'frankly' fourteen times. The host has started a counter on screen."
+      "text": "The call got ratings, but you said \"frankly\" fourteen times. The host has started a counter on screen."
      },
      {
       "effects": {
@@ -643,7 +643,7 @@
      "effects": {
       "ego": -8
      },
-     "text": "Remember the Fox host and the graphic? He has expanded it into a weekly series called 'Frankly'. Your poll numbers are the star."
+     "text": "Remember the Fox host and the graphic? He has expanded it into a weekly series called \"Frankly.\" Your poll numbers are the star."
     },
     {
      "effects": {
@@ -654,7 +654,7 @@
     },
     {
      "effects": {},
-     "text": "Remember the Fox host's segment? It was cancelled for a rerun of a cooking show. Nobody has mentioned it since."
+     "text": "Remember the Fox host's segment? It was canceled for a rerun of a cooking show. Nobody has mentioned it since."
     }
    ]
   }
@@ -662,17 +662,17 @@
  {
   "id": "chaos-greenland-incident",
   "title": "Greenland Incident",
-  "text": "A Danish ship, a US ship and a very confused seal are all in the same fjord. Denmark has used the word 'sovereign' four times, in writing, on stationery.",
+  "text": "A Danish ship, a US ship and a very confused seal are all in the same fjord. Denmark has used the word \"sovereign\" four times, in writing, on stationery.",
   "choices": [
    {
-    "label": "Send diplomats and apologise",
+    "label": "Send diplomats and apologize",
     "cost": 2,
     "outcomes": [
      {
       "effects": {
        "stability": 10
       },
-      "text": "The fjord was cleared with a handshake and a gift basket. The seal was relocated. Denmark called it 'a good week'."
+      "text": "The fjord was cleared with a handshake and a gift basket. The seal was relocated. Denmark called it \"a good week.\""
      },
      {
       "effects": {
@@ -705,7 +705,7 @@
        "stability": 5,
        "ego": -3
       },
-      "text": "Greenland polled at 'no thanks', but Iceland has offered to sell you a hill. Stocks are mixed."
+      "text": "Greenland polled at \"no thanks,\" but Iceland has offered to sell you a hill. Stocks are mixed."
      },
      {
       "effects": {
@@ -725,7 +725,7 @@
      "effects": {
       "stability": -8
      },
-     "text": "Remember the Greenland incident? A joint Nordic statement has put you in a paragraph with the word 'again'."
+     "text": "Remember the Greenland incident? A joint Nordic statement has put you in a paragraph with the word \"again.\""
     },
     {
      "effects": {
@@ -755,14 +755,14 @@
        "stability": 9,
        "ego": 2
       },
-      "text": "The correction landed fast, the markets recovered by close, and the intern was promoted to 'tariff proofreader'. Traders breathed out."
+      "text": "The correction landed fast, the markets recovered by close, and the intern was promoted to \"tariff proofreader.\" Traders breathed out."
      },
      {
       "effects": {
        "stability": 5,
        "ego": -3
       },
-      "text": "The markets steadied, but the correction listed a new typo. The tariff is now 'Ten percent, give or take'."
+      "text": "The markets steadied, but the correction listed a new typo. The tariff is now \"Ten percent, give or take.\""
      },
      {
       "effects": {
@@ -827,7 +827,7 @@
  {
   "id": "chaos-kanye-drops-by",
   "title": "Kanye West Drops By Unannounced",
-  "text": "Kanye West has arrived at the gate, in a hat, with a sample of something. He says it is a gift. The security team says it is a 'situation'.",
+  "text": "Kanye West has arrived at the gate, in a hat, with a sample of something. He says it is a gift. The security team says it is a \"situation.\"",
   "choices": [
    {
     "label": "Welcome him and hear him out",
@@ -838,7 +838,7 @@
        "ego": 8,
        "stability": 3
       },
-      "text": "Kanye played you the sample, it was a drumbeat and a compliment, and you left feeling great. Staff report an 'unexpected calm'."
+      "text": "Kanye played you the sample, it was a drumbeat and a compliment, and you left feeling great. Staff report an \"unexpected calm.\""
      },
      {
       "effects": {
@@ -863,7 +863,7 @@
       "effects": {
        "ego": 10
       },
-      "text": "You waved. He waved back, hat in hand, and left a thank-you card. The press called it 'oddly graceful'."
+      "text": "You waved. He waved back, hat in hand, and left a thank-you card. The press called it \"oddly graceful.\""
      },
      {
       "effects": {
@@ -900,7 +900,7 @@
     },
     {
      "effects": {},
-     "text": "Remember Kanye at the gate? He went home. The hat is still in the lost property cupboard."
+     "text": "Remember Kanye at the gate? He went home. The hat is still in the lost-and-found closet."
     }
    ]
   }
@@ -908,7 +908,7 @@
  {
   "id": "chaos-mtg-breaks-ranks",
   "title": "Marjorie Taylor Greene Breaks Ranks",
-  "text": "Marjorie Taylor Greene has just criticised you on live television, then called it 'tough love', then called it 'a podcast'. The caucus is looking at the carpet.",
+  "text": "Marjorie Taylor Greene has just criticized you on live television, then called it \"tough love,\" then called it \"a podcast.\" The caucus is looking at the carpet.",
   "choices": [
    {
     "label": "Meet her and listen",
@@ -919,20 +919,20 @@
        "ego": 4,
        "stability": 6
       },
-      "text": "She walked out saying she was 'heard' and gave a thumbs-up. The caucus relaxed. The carpet stopped being interesting."
+      "text": "She walked out saying she was \"heard\" and gave a thumbs-up. The caucus relaxed. The carpet stopped being interesting."
      },
      {
       "effects": {
        "stability": 5,
        "ego": -3
       },
-      "text": "The meeting settled her, but she asked for a favour. It involves a committee and a very large flag. Your base is split."
+      "text": "The meeting settled her, but she asked for a favor. It involves a committee and a very large flag. Your base is split."
      },
      {
       "effects": {
        "ego": -12
       },
-      "text": "The meeting leaked. She said you listened 'like a goldfish', and you have two new problems and a goldfish."
+      "text": "The meeting leaked. She said you listened \"like a goldfish,\" and you have two new problems and a goldfish."
      }
     ]
    },
@@ -945,7 +945,7 @@
        "ego": 5,
        "stability": 5
       },
-      "text": "The post sent her into a day-long rant that hurt her more than you. Allies have called it 'surprisingly effective'."
+      "text": "The post sent her into a day-long rant that hurt her more than you. Allies have called it \"surprisingly effective.\""
      },
      {
       "effects": {
@@ -973,14 +973,14 @@
       "ego": -3,
       "stability": -5
      },
-     "text": "Remember Greene breaking ranks? Three more members have joined her, and she is now running a small bloc called 'The Podcast'."
+     "text": "Remember Greene breaking ranks? Three more members have joined her, and she is now running a small bloc called \"The Podcast.\""
     },
     {
      "effects": {
       "ego": -6,
       "stability": -8
      },
-     "text": "Remember the Greene feud? She has organised a vote against you, and half the caucus attended the 'tough love' brunch."
+     "text": "Remember the Greene feud? She has organized a vote against you, and half the caucus attended the \"tough love\" brunch."
     },
     {
      "effects": {},
@@ -1003,21 +1003,21 @@
        "stability": 9,
        "ego": 2
       },
-      "text": "The plan was sensible after edits. The water got a stern label, the jug was retired and the chart was filed under 'friendly'."
+      "text": "The plan was sensible after edits. The water got a stern label, the jug was retired and the chart was filed under \"friendly.\""
      },
      {
       "effects": {
        "stability": 4,
        "ego": -4
       },
-      "text": "The plan passed, but the jug is now official government property and the chart has been reprinted in colour."
+      "text": "The plan passed, but the jug is now official government property and the chart has been reprinted in color."
      },
      {
       "effects": {
        "stability": -9,
        "ego": -5
       },
-      "text": "The review found nothing wrong, then RFK Jr. announced it anyway, with the jug. The water has been nicknamed 'the situation'."
+      "text": "The review found nothing wrong, then RFK Jr. announced it anyway, with the jug. The water has been nicknamed \"the situation.\""
      }
     ]
    },
@@ -1043,14 +1043,14 @@
       "effects": {
        "stability": -12
       },
-      "text": "The announcement was about fluoride, the chart was upside down and half the country is now boiling its tea. Three agencies are 'looking into it'."
+      "text": "The announcement was about fluoride, the chart was upside down and half the country is now boiling its tea. Three agencies are \"looking into it.\""
      }
     ]
    }
   ],
   "ignore": {
    "label": "Ignore it",
-   "text": "RFK Jr. has told a reporter 'you will not believe what is in the pipes'. The reporter is now holding a jug.",
+   "text": "RFK Jr. has told a reporter \"you will not believe what is in the pipes.\" The reporter is now holding a jug.",
    "blowback": [
     {
      "effects": {
@@ -1074,8 +1074,8 @@
  },
  {
   "id": "chaos-giuliani-wrong-venue",
-  "title": "Giuliani Holds a Press Event in a Car Park",
-  "text": "Rudy Giuliani is giving an urgent press conference on your behalf. It is in a car park behind a landscaping firm. A lawnmower is in the background, and it is on.",
+  "title": "Giuliani Holds a Press Event in a Parking Lot",
+  "text": "Rudy Giuliani is giving an urgent press conference on your behalf. It is in a parking lot behind a landscaping company. A lawnmower is in the background, and it is on.",
   "choices": [
    {
     "label": "Send a fixer to move him",
@@ -1086,7 +1086,7 @@
        "ego": 6,
        "stability": 4
       },
-      "text": "The fixer got Rudy into a proper room and a microphone that worked. The lawnmower was thanked and paid. The press thought it was cute."
+      "text": "The fixer got Rudy into a real room and a microphone that worked. The lawnmower was thanked and paid. The press thought it was cute."
      },
      {
       "effects": {
@@ -1099,7 +1099,7 @@
       "effects": {
        "ego": -12
       },
-      "text": "The fixer walked into the wrong car park. Both are now at the landscaper's. A photo of the two of them with a lawnmower has gone global."
+      "text": "The fixer walked into the wrong parking lot. Both are now at the landscaper's. A photo of the two of them with a lawnmower has gone global."
      }
     ]
    },
@@ -1112,7 +1112,7 @@
        "ego": 4,
        "stability": 6
       },
-      "text": "Your 'bold venue' line made the car park a landmark. Tourists took selfies and the landscaper got a franchise offer."
+      "text": "Your \"bold venue\" line made the parking lot a landmark. Tourists took selfies and the landscaper got a franchise offer."
      },
      {
       "effects": {
@@ -1125,28 +1125,28 @@
       "effects": {
        "stability": -12
       },
-      "text": "Rudy took it as endorsement and booked the car park for the whole month. The landscaper has sent an invoice."
+      "text": "Rudy took it as endorsement and booked the parking lot for the whole month. The landscaper has sent an invoice."
      }
     ]
    }
   ],
   "ignore": {
    "label": "Ignore it",
-   "text": "Rudy is still talking in the car park. The lawnmower has been joined by a leaf blower. A reporter is on a bench.",
+   "text": "Rudy is still talking in the parking lot. The lawnmower has been joined by a leaf blower. A reporter is on a bench.",
    "blowback": [
     {
      "effects": {
       "ego": -3,
       "stability": -5
      },
-     "text": "Remember Rudy's car park press conference? A court has read the transcript aloud, with the lawnmower sound effects."
+     "text": "Remember Rudy's parking lot press conference? A court has read the transcript aloud, with the lawnmower sound effects."
     },
     {
      "effects": {
       "ego": -6,
       "stability": -8
      },
-     "text": "Remember Giuliani in the car park? The landscaper has filed a defamation claim. The leaf blower is a witness."
+     "text": "Remember Giuliani in the parking lot? The landscaper has filed a defamation claim. The leaf blower is a witness."
     },
     {
      "effects": {},

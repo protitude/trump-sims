@@ -1,6 +1,6 @@
 import type { Effects } from './game/types.ts';
 
-/** Coloured chips showing what an action does to the meters. */
+/** Colored chips showing what an action does to the meters. */
 export function Fx({ effects }: { effects: Effects }) {
   const chips: { text: string; good: boolean }[] = [];
   const signed = (n: number) => (n > 0 ? `+${n}` : `−${Math.abs(n)}`);

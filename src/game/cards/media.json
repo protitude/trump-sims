@@ -3,7 +3,7 @@
     "id": "media-polling-deck",
     "kind": "briefing",
     "title": "Approval Ratings Presentation",
-    "text": "A pollster presents sixty slides of approval data. Every chart slopes the same way, and a staffer has labelled the axis \"Winning, mostly.\"",
+    "text": "A pollster presents sixty slides of approval data. Every chart slopes the same way, and a staffer has labeled the axis \"Winning, mostly.\"",
     "cost": 2,
     "options": [
       {
@@ -41,7 +41,7 @@
       "stability": -3,
       "text": "The credential policy sat in a drawer. A new reporter tried signing it with a crayon."
     },
-    "inspiredBy": "Defence Department press credential rules that major outlets refused to sign, October 2025."
+    "inspiredBy": "Defense Department press credential rules that major outlets refused to sign, October 2025."
   },
   {
     "id": "media-cpb-wind-down",
@@ -63,7 +63,7 @@
       "stability": -6,
       "text": "The memo was unread. A children's program ended on a cliffhanger."
     },
-    "inspiredBy": "Congress cancelled public broadcasting funding and the corporation began winding down, mid-2025."
+    "inspiredBy": "Congress canceled public broadcasting funding and the corporation began winding down, mid-2025."
   },
   {
     "id": "media-engagement-report",
@@ -211,7 +211,7 @@
     "id": "media-pool-takeover",
     "kind": "decision",
     "title": "Take Over the Pool Schedule",
-    "text": "The press association has traditionally chosen who joins the pool. You can now choose yourself, which would be your favourite kind of chart.",
+    "text": "The press association has traditionally chosen who joins the pool. You can now choose yourself, which would be your favorite kind of chart.",
     "cost": 1,
     "options": [
       {
@@ -355,13 +355,13 @@
       "stability": -2,
       "text": "You left the number unanswered. It was shown on a loop, with a downward arrow."
     },
-    "inspiredBy": "Recurring 2025 approval polling and the president disputing unfavourable polls."
+    "inspiredBy": "Recurring 2025 approval polling and the president disputing unfavorable polls."
   },
   {
     "id": "media-late-night-host",
     "kind": "press",
     "title": "Late-Night Host Monologue",
-    "text": "A late-night host has made a joke about you. You were not named but you recognised yourself, as one does.",
+    "text": "A late-night host has made a joke about you. You were not named but you recognized yourself, as one does.",
     "cost": 1,
     "options": [
       {
@@ -390,8 +390,8 @@
   {
     "id": "media-cancelled-show",
     "kind": "press",
-    "title": "Late-Night Show Cancelled",
-    "text": "A major late-night show has been cancelled. Reporters ask whether you had anything to do with it, which you did not and want credit for.",
+    "title": "Late-Night Show Canceled",
+    "text": "A major late-night show has been canceled. Reporters ask whether you had anything to do with it, which you did not and want credit for.",
     "cost": 1,
     "options": [
       {
@@ -415,7 +415,7 @@
       "stability": -3,
       "text": "You said nothing. The host's farewell special was seen by everyone."
     },
-    "inspiredBy": "CBS cancelled The Late Show; Trump celebrated on social media, July 2025."
+    "inspiredBy": "CBS canceled The Late Show; Trump celebrated on social media, July 2025."
   },
   {
     "id": "media-sixty-minutes",
@@ -721,7 +721,7 @@
     "id": "media-license-call",
     "kind": "call",
     "title": "The Broadcast License Call",
-    "text": "The communications regulator calls. A network aired something unkind, and he is wondering about licences. He would like you to be impressed.",
+    "text": "The communications regulator calls. A network aired something unkind, and he is wondering about licenses. He would like you to be impressed.",
     "cost": 1,
     "options": [
       {
@@ -745,7 +745,7 @@
       "stability": -5,
       "text": "The call went to voicemail. The regulator tweeted about it anyway."
     },
-    "inspiredBy": "FCC chair threatened broadcasters over content, with licence remarks and presidential support, 2025."
+    "inspiredBy": "FCC chair threatened broadcasters over content, with license remarks and presidential support, 2025."
   },
   {
     "id": "media-merger-call",

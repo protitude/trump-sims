@@ -19,7 +19,7 @@
    "stability": -4,
    "text": "The ballroom plans went unreviewed. The commission has sent a strongly worded calendar invite."
   },
-  "inspiredBy": "The planning commission took up the ballroom design in the autumn of 2025, after demolition began."
+  "inspiredBy": "The planning commission took up the ballroom design in the fall of 2025, after demolition began."
  },
  {
   "id": "house-hpa-tour-brief",
@@ -69,7 +69,7 @@
   "id": "house-ballroom-cost",
   "kind": "briefing",
   "title": "Cost Overrun Review",
-  "text": "A contractor walks you through a ballroom budget that grew from a number to a larger number. Spreadsheets have colour-coded tabs.",
+  "text": "A contractor walks you through a ballroom budget that grew from a number to a larger number. Spreadsheets have color-coded tabs.",
   "cost": 2,
   "options": [
    {
@@ -177,7 +177,7 @@
     "result": "The new members ask about proportion. A chandelier is shown a chair."
    },
    {
-    "label": "Appoint your favourite fans",
+    "label": "Appoint your favorite fans",
     "effects": {
      "ego": 5,
      "stability": -5
@@ -225,7 +225,7 @@
   "id": "house-donor-list",
   "kind": "decision",
   "title": "The Donor List",
-  "text": "Ethics staff ask for a list of who is paying for the ballroom. The donors prefer to appear in a large golden acknowledgement.",
+  "text": "Ethics staff ask for a list of who is paying for the ballroom. The donors prefer to appear in a large golden acknowledgment.",
   "cost": 1,
   "options": [
    {
@@ -315,7 +315,7 @@
   "id": "house-ethics-form",
   "kind": "decision",
   "title": "The Ethics Form",
-  "text": "An ethics lawyer has a gift disclosure form for a very large aircraft. The form has a box labelled foreign government.",
+  "text": "An ethics lawyer has a gift disclosure form for a very large aircraft. The form has a box labeled foreign government.",
   "cost": 1,
   "options": [
    {
@@ -387,7 +387,7 @@
     "result": "The facade is a facade again. A flag is back and quietly jubilant."
    },
    {
-    "label": "Order a banner five storeys tall",
+    "label": "Order a banner five stories tall",
     "effects": {
      "ego": 5,
      "stability": -5
@@ -452,7 +452,7 @@
      "ego": 5,
      "stability": -5
     },
-    "result": "The garden is now a patio. The roses are a rumour and a table decoration."
+    "result": "The garden is now a patio. The roses are a rumor and a table decoration."
    }
   ],
   "ignore": {
@@ -645,11 +645,11 @@
   "id": "house-tour-group",
   "kind": "press",
   "title": "Tour Group Complaint",
-  "text": "A tour group arrives to find the East Wing gone and the gift shop entrance a building site. The group has a guide and a grievance.",
+  "text": "A tour group arrives to find the East Wing gone and the gift shop entrance a construction site. The group has a guide and a grievance.",
   "cost": 1,
   "options": [
    {
-    "label": "Apologise and reroute them",
+    "label": "Apologize and reroute them",
     "effects": {
      "stability": 5,
      "ego": -3
@@ -795,7 +795,7 @@
   "id": "house-kennedy-artist",
   "kind": "call",
   "title": "An Artist Cancels",
-  "text": "A Kennedy Center performer calls to say she is cancelling because of the new name. She is polite and very firm.",
+  "text": "A Kennedy Center performer calls to say she is canceling because of the new name. She is polite and very firm.",
   "cost": 1,
   "options": [
    {
@@ -812,14 +812,14 @@
      "ego": 5,
      "stability": -5
     },
-    "result": "She cannot be fired from a show she cancelled. The headline wrote itself."
+    "result": "She cannot be fired from a show she canceled. The headline wrote itself."
    }
   ],
   "ignore": {
    "stability": -4,
    "text": "The performer left a voicemail. The orchestra took a vote."
   },
-  "inspiredBy": "Several artists cancelled Kennedy Center appearances after the board added the president's name in late 2025."
+  "inspiredBy": "Several artists canceled Kennedy Center appearances after the board added the president's name in late 2025."
  },
  {
   "id": "house-navy-ship",

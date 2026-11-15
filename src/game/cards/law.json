@@ -12,7 +12,7 @@
           "stability": 9,
           "ego": -4
         },
-        "result": "Refund process drafted. You asked twice whether 'refund' could be called 'a bonus.' It could not."
+        "result": "Refund process drafted. You asked twice whether \"refund\" could be called \"a bonus.\" It could not."
       }
     ],
     "ignore": {
@@ -69,7 +69,7 @@
     "id": "law-byrd-bath",
     "kind": "briefing",
     "title": "Byrd Bath",
-    "text": "The Senate parliamentarian reviews your giant bill line by line. Several favorite provisions are ruled extraneous. No one will say 'big' or 'beautiful'.",
+    "text": "The Senate parliamentarian reviews your giant bill line by line. Several favorite provisions are ruled extraneous. No one will say \"big\" or \"beautiful.\"",
     "cost": 2,
     "options": [
       {
@@ -91,7 +91,7 @@
     "id": "law-ballot-order-brief",
     "kind": "briefing",
     "title": "Injunction Reading Hour",
-    "text": "A deputy summarizes the ruling that halted your order on mail voting. The word 'exceeded' appears nineteen times.",
+    "text": "A deputy summarizes the ruling that halted your order on mail voting. The word \"exceeded\" appears nineteen times.",
     "cost": 2,
     "options": [
       {
@@ -100,7 +100,7 @@
           "stability": 8,
           "ego": -4
         },
-        "result": "Lawyers will appeal. The deputy now keeps a tally of 'exceeded' for the next hearing."
+        "result": "Lawyers will appeal. The deputy now keeps a tally of \"exceeded\" for the next hearing."
       }
     ],
     "ignore": {
@@ -187,7 +187,7 @@
     "id": "law-pardon-batch",
     "kind": "decision",
     "title": "Clemency Batch",
-    "text": "A list of thirty names awaits your approval, some with friends in high places. The pardon office has written 'vetted' above the list in pencil.",
+    "text": "A list of thirty names awaits your approval, some with friends in high places. The pardon office has written \"vetted\" above the list in pencil.",
     "cost": 1,
     "options": [
       {
@@ -316,7 +316,7 @@
           "stability": 6,
           "ego": -4
         },
-        "result": "The new tariffs are legal and small. You call them 'stronger,' and nobody knows in what sense."
+        "result": "The new tariffs are legal and small. You call them \"stronger,\" and nobody knows in what sense."
       },
       {
         "label": "Reimpose them under a new name",
@@ -376,7 +376,7 @@
           "stability": 6,
           "ego": -3
         },
-        "result": "The appeal is filed. The judge reads it on a weekend and says 'noted.'"
+        "result": "The appeal is filed. The judge reads it on a weekend and says \"noted.\""
       },
       {
         "label": "Denounce the judge online",
@@ -414,20 +414,20 @@
           "ego": 5,
           "stability": -4
         },
-        "result": "The hats sold out. Scholars have published four papers titled 'It Says Two.'"
+        "result": "The hats sold out. Scholars have published four papers titled \"It Says Two.\""
       }
     ],
     "ignore": {
       "stability": -2,
       "text": "The vendor made his own call. The hats are now collector items and a constitutional question."
     },
-    "inspiredBy": "In 2025 the president and allies floated a third term despite the 22nd Amendment, and 'Trump 2028' hats appeared."
+    "inspiredBy": "In 2025 the president and allies floated a third term despite the 22nd Amendment, and \"Trump 2028\" hats appeared."
   },
   {
     "id": "law-department-of-war",
     "kind": "decision",
     "title": "Rename The Department",
-    "text": "An order would rename the Department of Defense to 'Department of War'. Congress has not been consulted. A new sign is already in the shop.",
+    "text": "An order would rename the Department of Defense to \"Department of War.\" Congress has not been consulted. A new sign is already in the shop.",
     "cost": 1,
     "options": [
       {
@@ -444,14 +444,14 @@
           "ego": 6,
           "stability": -5
         },
-        "result": "The sign is up. The statute still says 'Defense,' and so does the stationery."
+        "result": "The sign is up. The statute still says \"Defense,\" and so does the stationery."
       }
     ],
     "ignore": {
       "stability": -3,
       "text": "The sign was hung without an order. The building is confused about itself."
     },
-    "inspiredBy": "In September 2025 the president signed an order allowing 'Department of War' as a secondary name for the Defense Department."
+    "inspiredBy": "In September 2025 the president signed an order allowing \"Department of War\" as a secondary name for the Defense Department."
   },
   {
     "id": "law-sotu-length",
@@ -487,7 +487,7 @@
     "id": "law-baby-accounts",
     "kind": "decision",
     "title": "Name The Savings Accounts",
-    "text": "The new child savings accounts need a name on the forms. Treasury suggests 'Child Savings Accounts.' A staffer slides over a draft that says something else.",
+    "text": "The new child savings accounts need a name on the forms. Treasury suggests \"Child Savings Accounts.\" A staffer slides over a draft that says something else.",
     "cost": 1,
     "options": [
       {
@@ -511,7 +511,7 @@
       "stability": -3,
       "text": "The forms were printed with a blank. Parents filled in their own names, loudly."
     },
-    "inspiredBy": "The 2025 tax and spending law created 'Trump Accounts' savings accounts for children."
+    "inspiredBy": "The 2025 tax and spending law created \"Trump Accounts\" savings accounts for children."
   },
   {
     "id": "law-scotus-disgrace",
@@ -526,7 +526,7 @@
           "stability": 6,
           "ego": -4
         },
-        "result": "A calm statement about 'reviewing options.' The press wrote it up as 'strange but calm.'"
+        "result": "A calm statement about \"reviewing options.\" The press wrote it up as \"strange but calm.\""
       },
       {
         "label": "Call the Court a disgrace",
@@ -541,7 +541,7 @@
       "stability": -4,
       "text": "No comment was given. Commentators wrote it for you."
     },
-    "inspiredBy": "After the February 2026 tariff ruling the president called the decision 'a disgrace'."
+    "inspiredBy": "After the February 2026 tariff ruling the president called the decision \"a disgrace.\""
   },
   {
     "id": "law-press-third-term",
@@ -559,7 +559,7 @@
         "result": "Clear and brief. Aides exchange looks as the segment ends."
       },
       {
-        "label": "Smile and say 'we'll see'",
+        "label": "Smile and say \"we'll see\"",
         "effects": {
           "ego": 6,
           "stability": -5
@@ -769,7 +769,7 @@
         "result": "Slower. Most remained unpardoned, but the fish merchant is mid-review."
       },
       {
-        "label": "Say 'pardon everyone'",
+        "label": "Say \"pardon everyone\"",
         "effects": {
           "ego": 6,
           "stability": -6
@@ -799,7 +799,7 @@
         "result": "The map stays as it was. State senators sent a modest fruit basket."
       },
       {
-        "label": "Threaten primaries for 'no' votes",
+        "label": "Threaten primaries for \"no\" votes",
         "effects": {
           "ego": 6,
           "stability": -7
@@ -826,7 +826,7 @@
           "stability": 4,
           "ego": -2
         },
-        "result": "Deferral granted by form letter. It began \"Dear Resident\", which stung."
+        "result": "Deferral granted by form letter. It began \"Dear Resident,\" which stung."
       },
       {
         "label": "Show up and ask to be foreman",
@@ -839,7 +839,7 @@
     ],
     "ignore": {
       "stability": -2,
-      "text": "A second summons arrived, in red ink. Then a third, addressed to \"Occupant\"."
+      "text": "A second summons arrived, in red ink. Then a third, addressed to \"Occupant.\""
     },
     "inspiredBy": "Presidents and former presidents have periodically been summoned for jury duty."
   }

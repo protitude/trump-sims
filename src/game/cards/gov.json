@@ -157,7 +157,7 @@
     "id": "gov-lease-review",
     "kind": "briefing",
     "title": "Lease Termination Review",
-    "text": "A real estate officer reviews hundreds of building leases that were cancelled, uncancelled and cancelled again. Some offices were still full of people.",
+    "text": "A real estate officer reviews hundreds of building leases that were canceled, uncanceled and canceled again. Some offices were still full of people.",
     "cost": 2,
     "options": [
       {
@@ -681,7 +681,7 @@
     "id": "gov-call-transport",
     "kind": "call",
     "title": "Call From Transport",
-    "text": "The transportation secretary reports that controllers are working overtime and that a runway is, technically, a car park. He wants an update.",
+    "text": "The transportation secretary reports that controllers are working overtime and that a runway is, technically, a parking lot. He wants an update.",
     "cost": 1,
     "options": [
       {

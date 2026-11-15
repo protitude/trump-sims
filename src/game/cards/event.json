@@ -25,7 +25,7 @@
     "id": "event-parade-rehearsal",
     "kind": "briefing",
     "title": "Parade Rehearsal Briefing",
-    "text": "Army logisticians explain tank weights, road surfaces and rain plans for a birthday parade. There is a slide titled \"Do Not Drive Tanks On Grass\".",
+    "text": "Army logisticians explain tank weights, road surfaces and rain plans for a birthday parade. There is a slide titled \"Do Not Drive Tanks On Grass.\"",
     "cost": 2,
     "options": [
       {
@@ -47,7 +47,7 @@
     "id": "event-olympics-task-force",
     "kind": "briefing",
     "title": "Olympics Task Force Meeting",
-    "text": "You chair the Olympics task force. The agenda covers visas, transit and security. Your item, \"Who gets the big medal\", is item 41.",
+    "text": "You chair the Olympics task force. The agenda covers visas, transit and security. Your item, \"Who gets the big medal,\" is item 41.",
     "cost": 2,
     "options": [
       {
@@ -85,7 +85,7 @@
       "stability": -5,
       "text": "No calendar. The nation turns 250 on a Tuesday with nothing planned."
     },
-    "inspiredBy": "Freedom 250, a White House-backed group, organising America's 250th anniversary events in 2026."
+    "inspiredBy": "Freedom 250, a White House-backed group, organizing America's 250th anniversary events in 2026."
   },
   {
     "id": "event-world-cup-visa-logistics",
@@ -105,7 +105,7 @@
     ],
     "ignore": {
       "stability": -4,
-      "text": "Nobody planned the entry lines. A fan queues since last Thursday."
+      "text": "Nobody planned the entry lines. A fan has been in line since last Thursday."
     },
     "inspiredBy": "Preparations and visa concerns ahead of the 2026 FIFA World Cup hosted by the US, Canada and Mexico."
   },
@@ -383,7 +383,7 @@
     "id": "event-ballroom-donors",
     "kind": "decision",
     "title": "Ballroom Donor Wall",
-    "text": "The new White House ballroom is funded by donors. Staff want a plain plaque. You want gold letters and a section called \"Friends of the Ballroom\".",
+    "text": "The new White House ballroom is funded by donors. Staff want a plain plaque. You want gold letters and a section called \"Friends of the Ballroom.\"",
     "cost": 1,
     "options": [
       {
@@ -443,7 +443,7 @@
     "id": "event-peace-prize",
     "kind": "press",
     "title": "The Peace Prize",
-    "text": "A football body hands you an oversized gold trophy for peace. The room claps. A reporter asks how many wars this covers. You start counting.",
+    "text": "A soccer body hands you an oversized gold trophy for peace. The room claps. A reporter asks how many wars this covers. You start counting.",
     "cost": 1,
     "options": [
       {
@@ -537,7 +537,7 @@
     "cost": 1,
     "options": [
       {
-        "label": "Stay brief and honour the honorees",
+        "label": "Stay brief and honor the honorees",
         "effects": {
           "stability": 5,
           "ego": -3
@@ -593,7 +593,7 @@
     "id": "event-trophy-oval",
     "kind": "press",
     "title": "The Trophy Question",
-    "text": "A world club champion team gives you its trophy in the Oval. Cameras ask where it goes afterward. You say \"here\".",
+    "text": "A world club champion team gives you its trophy in the Oval. Cameras ask where it goes afterward. You say \"here.\"",
     "cost": 1,
     "options": [
       {
@@ -730,7 +730,7 @@
           "ego": 7,
           "stability": -5
         },
-        "result": "A very large carriage was found. The palace said \"of course\", twice."
+        "result": "A very large carriage was found. The palace said \"of course,\" twice."
       }
     ],
     "ignore": {
@@ -743,7 +743,7 @@
     "id": "event-fifa-host-cities",
     "kind": "call",
     "title": "The Federation Calls",
-    "text": "The football federation president says a host city has lighting issues. He hints a visit might help. You hint that the city might lose a match.",
+    "text": "The soccer federation president says a host city has lighting issues. He hints a visit might help. You hint that the city might lose a match.",
     "cost": 2,
     "options": [
       {
@@ -790,12 +790,12 @@
           "ego": 5,
           "stability": -5
         },
-        "result": "He said \"never again\", twice. You suggested the Rose Garden."
+        "result": "He said \"never again,\" twice. You suggested the Rose Garden."
       }
     ],
     "ignore": {
       "stability": -4,
-      "text": "You never rang back. He enjoyed the quiet and a long lunch."
+      "text": "You never called back. He enjoyed the quiet and a long lunch."
     },
     "inspiredBy": "UFC's president said the White House fight \"will never happen again\" because of cost, June 2026."
   },

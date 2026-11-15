@@ -121,7 +121,7 @@ const ENDINGS = {
   },
   depression: {
     title: 'Full Depression',
-    text: 'The world has never been better: peace, prosperity, agencies that function. Nobody has said your name in weeks. You are under the gold duvet and you are not coming out.',
+    text: 'The world has never been better: peace, prosperity, agencies that function. Nobody has said your name in weeks. You are under the gold comforter and you are not coming out.',
   },
   won: {
     title: 'Term Complete',
