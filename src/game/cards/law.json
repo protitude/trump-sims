@@ -842,5 +842,35 @@
       "text": "A second summons arrived, in red ink. Then a third, addressed to \"Occupant.\""
     },
     "inspiredBy": "Presidents and former presidents have periodically been summoned for jury duty."
+  },
+  {
+    "id": "law-discovery-begins",
+    "kind": "decision",
+    "title": "Discovery Begins",
+    "text": "A judge says your ten-billion-dollar suit against a foreign broadcaster may go ahead. Counsel notes this means they get to ask you questions too.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Settle for an apology",
+        "effects": {
+          "stability": 5,
+          "ego": -4
+        },
+        "result": "They apologized in a short, accented statement. No money changed hands. You framed the statement anyway."
+      },
+      {
+        "label": "Declare a huge victory and press on",
+        "effects": {
+          "ego": 6,
+          "stability": -5
+        },
+        "result": "You call it a huge victory. The broadcaster's lawyers have sent 300 questions and a date for your deposition."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "The suit moved forward on its own. A deposition has been scheduled around your golf."
+    },
+    "inspiredBy": "November 2026: a judge ruled Trump's $10 billion defamation suit against the BBC could proceed. Trump called it a huge victory."
   }
 ]

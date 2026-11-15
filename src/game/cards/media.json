@@ -866,5 +866,35 @@
       "text": "The question went unanswered. The poll was then read out again, slower."
     },
     "inspiredBy": "Polls showing Trump approval ratings at second-term lows, 2025-2026."
+  },
+  {
+    "id": "media-plane-briefing",
+    "kind": "press",
+    "title": "The Briefing on the Plane",
+    "text": "A chip chief has resigned over an affair with a suspected spy. A reporter asks whether you were briefed about it in May, on your own plane.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say you will check the briefing logs",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "The logs show a briefing. You say you were there in person but not in spirit. It is somehow the calmer answer."
+      },
+      {
+        "label": "Say nobody tells you anything",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "\"I didn't hear about it then,\" you say. A source says you did. The source was sitting next to you on the plane."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You skipped the question. It boarded the next flight with you."
+    },
+    "inspiredBy": "November 2026: CNN reported Trump was briefed in May on spy concerns involving Nvidia's CEO, which he denied. The CEO resigned that week."
   }
 ]

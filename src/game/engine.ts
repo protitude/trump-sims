@@ -3,6 +3,7 @@ import { CRISES, DUTIES, HYBRIDS, VANITY, cardById, vanityById } from './content
 import { CONSEQUENCES, SET_PIECE_MONTHS } from './story.ts';
 import { CHAOS, chaosById } from './chaos.ts';
 import type { ChaosOutcome } from './chaos.ts';
+import { GUESTS, guestById } from './guests.ts';
 import { MIDTERM_BAR, MIDTERM_MONTH, WHIMS, WHIM_FAIL_EGO, WHIM_MONTHS, activeSeasons, whimById } from './calendar.ts';
 
 // Pure game rules. Every action takes a state and returns a new one, so the
@@ -42,6 +43,18 @@ export const TUNING = {
   blowbackOdds: [0.7, 0.25, 0.05],
   /** Chance that ignoring an event brings two rounds of blowback, not one. */
   blowbackTwice: 0.5,
+  /** Guests waiting at Mar-a-Lago each month. */
+  guestsPerMonth: 2,
+  /** Time blocks it takes to hear a guest out and take the coin. */
+  bribeCost: 1,
+  /** Ego lost by sending a guest away. */
+  declineEgo: -2,
+  /** Chance that a bribe leaks. Rolled once, when it is taken. */
+  leakChance: 0.1,
+  /** A leak takes back this many times what the bribe gave. */
+  leakTimes: 3,
+  /** A leak becomes news this many months later, at the earliest and the latest. */
+  leakDelay: [1, 6],
 };
 
 /** mulberry32, with the seed carried in the state so games are replayable. */
@@ -76,6 +89,7 @@ function apply(s: GameState, fx: Effects): void {
   s.stability = Math.min(100, Math.round(s.stability + (fx.stability ?? 0)));
   s.gold += fx.gold ?? 0;
   s.names += fx.names ?? 0;
+  s.coin += fx.coin ?? 0;
 }
 
 function count(s: GameState, stat: string, by = 1): void {
@@ -268,6 +282,74 @@ export function dismissReveal(state: GameState): GameState {
   return s;
 }
 
+// ---------- Guests at Mar-a-Lago ----------
+
+/** A new set of guests turns up at the club. Last month's have gone home. */
+function drawGuests(s: GameState): void {
+  s.guests = [];
+  for (let i = 0; i < TUNING.guestsPerMonth; i++) {
+    if (s.guestDeck.length === 0) s.guestDeck = shuffled(s, GUESTS.map((g) => g.id));
+    s.guests.push(s.guestDeck.pop()!);
+  }
+}
+
+/** What a leaked bribe costs: everything it gave, times three. The coin stays. */
+export function leakEffects(fx: Effects): Effects {
+  return { ego: -TUNING.leakTimes * (fx.ego ?? 0), stability: -TUNING.leakTimes * (fx.stability ?? 0) };
+}
+
+/**
+ * Grants the guest's ask and takes the coin. Whether it leaks is rolled here,
+ * so the player cannot know; a leak becomes news in a later month.
+ */
+export function takeBribe(state: GameState, guestId: string): GameState {
+  if (state.status !== 'playing' || state.chaos || state.place !== 'maralago') return state;
+  if (!state.guests.includes(guestId) || TUNING.bribeCost > state.blocks) return state;
+  const guest = guestById(guestId);
+
+  const s = structuredClone(state);
+  s.blocks -= TUNING.bribeCost;
+  s.guests = s.guests.filter((id) => id !== guestId);
+  apply(s, guest.effects);
+  log(s, guest.result, 'ego');
+  if (rand(s) < TUNING.leakChance) {
+    const [soonest, latest] = TUNING.leakDelay;
+    const delay = soonest + Math.floor(rand(s) * (latest - soonest + 1));
+    // Near the end of the term the story runs in the final month at the latest.
+    s.exposures.push({ id: guestId, due: Math.min(s.month + delay, TOTAL_MONTHS), effects: leakEffects(guest.effects) });
+  }
+  count(s, 'bribes');
+  count(s, 'resort');
+  settleWhim(s);
+  checkEnd(s);
+  return s;
+}
+
+/** Sends a guest home with nothing. Costs no time, only a little pride. */
+export function declineGuest(state: GameState, guestId: string): GameState {
+  if (state.status !== 'playing' || state.chaos || state.place !== 'maralago' || !state.guests.includes(guestId)) return state;
+  const guest = guestById(guestId);
+  const s = structuredClone(state);
+  s.guests = s.guests.filter((id) => id !== guestId);
+  apply(s, { ego: TUNING.declineEgo });
+  log(s, `You sent ${guest.title} away and kept your hands clean. It did not feel like winning.`, 'neutral');
+  checkEnd(s);
+  return s;
+}
+
+/** Leaked bribes whose story runs this month. */
+function landExposures(s: GameState): void {
+  const due = s.exposures.filter((e) => e.due <= s.month);
+  s.exposures = s.exposures.filter((e) => !due.includes(e));
+  for (const e of due) {
+    const guest = guestById(e.id);
+    apply(s, e.effects);
+    count(s, 'exposed');
+    log(s, guest.exposed, 'bad');
+    s.reveals.push({ eyebrow: 'Exposed · somebody talked', title: `${guest.title} And The Coin`, text: guest.exposed, effects: e.effects });
+  }
+}
+
 // ---------- Game flow ----------
 
 export function newGame(seed: number = Date.now()): GameState {
@@ -279,6 +361,7 @@ export function newGame(seed: number = Date.now()): GameState {
     stability: TUNING.startStability,
     gold: 0,
     names: 0,
+    coin: 0,
     monuments: 0,
     ignored: 0,
     crisisPending: false,
@@ -294,6 +377,9 @@ export function newGame(seed: number = Date.now()): GameState {
     usedChaos: [],
     blowback: [],
     reveals: [],
+    guests: [],
+    guestDeck: [],
+    exposures: [],
     inbox: [],
     deck: [],
     done: {},
@@ -302,6 +388,7 @@ export function newGame(seed: number = Date.now()): GameState {
   };
   log(s, 'Inauguration Day. Biggest crowd ever, period. Now there is apparently a job to do.', 'neutral');
   drawInbox(s);
+  drawGuests(s);
   offerWhims(s);
   return s;
 }
@@ -446,6 +533,9 @@ export function endMonth(state: GameState): GameState {
     }
   }
 
+  // The press runs whatever it has on the bribes before the month closes.
+  landExposures(s);
+
   apply(s, { ego: -egoDecay(s), stability: -stabilityDrift(s) });
   settleWhim(s);
   checkEnd(s);
@@ -474,6 +564,7 @@ export function endMonth(state: GameState): GameState {
   }
   if (s.crisisPending) log(s, 'Neglect has consequences. A crisis lands on your desk.', 'bad');
   drawInbox(s);
+  drawGuests(s);
 
   landBlowback(s);
   checkEnd(s);
@@ -483,7 +574,7 @@ export function endMonth(state: GameState): GameState {
 }
 
 export function score(s: GameState): number {
-  return s.gold * 10 + s.names * 25 + s.ego + s.stability + (s.stats.whimsDone ?? 0) * 20 + (s.status === 'won' ? 500 : 0);
+  return s.gold * 10 + s.coin * 10 + s.names * 25 + s.ego + s.stability + (s.stats.whimsDone ?? 0) * 20 + (s.status === 'won' ? 500 : 0);
 }
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

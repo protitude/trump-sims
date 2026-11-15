@@ -1,0 +1,262 @@
+[
+ {
+  "id": "guest-rocket-todd",
+  "kind": "ceo",
+  "title": "Rocket Man Todd",
+  "text": "Also known as Twitter Todd. He wants every federal rocket contract and the launch-safety office closed. He has brought a flamethrower as a gift and a wallet full of your coin.",
+  "effects": { "ego": 9, "stability": 8, "coin": 5 },
+  "result": "Todd got his contracts and posted about you forty times before dessert. The markets like it when you two are speaking.",
+  "exposed": "Leaked: the rocket contracts were agreed over shrimp, the night Todd bought a great deal of your coin. He has posted the receipts himself, by accident.",
+  "inspiredBy": "Elon Musk"
+ },
+ {
+  "id": "guest-tim-apple",
+  "kind": "ceo",
+  "title": "Tim Apple",
+  "text": "Very polite. Wants phones left out of the tariffs. He has a small gold plaque for you and has quietly bought a tasteful amount of your coin.",
+  "effects": { "ego": 7, "stability": 9, "coin": 4 },
+  "result": "Phones are exempt. Tim thanked you for your leadership in a voice like a software update. The plaque is on the desk.",
+  "exposed": "Leaked: the phone exemption was granted the same week Tim Apple's coin purchase cleared. The plaque is now Exhibit A.",
+  "inspiredBy": "Tim Cook"
+ },
+ {
+  "id": "guest-tech-antichrist",
+  "kind": "ceo",
+  "title": "The Technology Antichrist",
+  "text": "He would like a contract to hold all the government's data. No bidding, no questions. He does not blink and he pays in coin, up front.",
+  "effects": { "ego": 6, "stability": 7, "coin": 5 },
+  "result": "The contract is signed. He said the word \"inevitable\" four times and left without touching the food.",
+  "exposed": "Leaked: one man now holds every federal record, and he paid for the privilege in your coin. Agencies would look into it, if they could find their files.",
+  "inspiredBy": "Peter Thiel"
+ },
+ {
+  "id": "guest-metaverse-mark",
+  "kind": "ceo",
+  "title": "Metaverse Mark",
+  "text": "Wants the antitrust case to go away. In return: coin, and a virtual Mar-a-Lago where your avatar has legs. He is wearing a chain now. Nobody mentions it.",
+  "effects": { "ego": 7, "stability": 6, "coin": 4 },
+  "result": "The case was dropped. Your avatar has legs, and they are longer than everyone else's.",
+  "exposed": "Leaked: the antitrust case ended two days after Metaverse Mark's coin purchase. The memo was found in the metaverse, where it was the only visitor.",
+  "inspiredBy": "Mark Zuckerberg"
+ },
+ {
+  "id": "guest-prime-jeff",
+  "kind": "ceo",
+  "title": "Prime Jeff",
+  "text": "Wants cheaper postal rates for his parcels. Offers coin, and mentions in passing that his newspaper's opinion page has been feeling very open-minded lately.",
+  "effects": { "ego": 8, "stability": 7, "coin": 4 },
+  "result": "Postal rates fell. The opinion page ran three columns about your posture. Delivery was next-day.",
+  "exposed": "Leaked: postal rates were cut for exactly one customer. The story ran everywhere except one newspaper.",
+  "inspiredBy": "Jeff Bezos"
+ },
+ {
+  "id": "guest-sam-chatman",
+  "kind": "ceo",
+  "title": "Sam Chatman",
+  "text": "Needs five hundred billion dollars of data centers and a small exemption from the power grid. Each one will be named after you. He says the coin is a rounding error.",
+  "effects": { "ego": 9, "stability": 6, "coin": 4 },
+  "result": "Ground is broken on the first data center with your name on it. Sam says it will be conscious by spring.",
+  "exposed": "Leaked: the data center permits skipped every review after Sam Chatman's coin purchase. His own chatbot summarized the scandal accurately when asked.",
+  "inspiredBy": "Sam Altman"
+ },
+ {
+  "id": "guest-leather-jensen",
+  "kind": "ceo",
+  "title": "Leather Jacket Jensen",
+  "text": "Would like an export licence to sell chips to one small country. He will not say which. The jacket stays on in the Florida heat. The coin is already in your wallet.",
+  "effects": { "ego": 6, "stability": 9, "coin": 5 },
+  "result": "The licence is granted. Chip stocks soared and Jensen signed a waiter's shirt on the way out.",
+  "exposed": "Leaked: the small country was not small. The export licence and the coin purchase share a date and a dinner table.",
+  "inspiredBy": "Jensen Huang"
+ },
+ {
+  "id": "guest-larry-oracle",
+  "kind": "ceo",
+  "title": "Larry Oracle",
+  "text": "Wants to buy a social app the government happens to be selling, plus an island's worth of federal data. Arrived by yacht. The yacht has also bought some coin.",
+  "effects": { "ego": 7, "stability": 7, "coin": 4 },
+  "result": "The app is Larry's. He promises the algorithm will be \"fair, in your direction.\"",
+  "exposed": "Leaked: the app sale had one bidder, and the bidder had just bought your coin. The yacht has been subpoenaed.",
+  "inspiredBy": "Larry Ellison"
+ },
+ {
+  "id": "guest-search-sundar",
+  "kind": "ceo",
+  "title": "Search Engine Sundar",
+  "text": "A court has called his company a monopoly. He wonders, gently, if that could be reconsidered. Searching your name now returns only compliments, and he has bought coin.",
+  "effects": { "ego": 8, "stability": 6, "coin": 3 },
+  "result": "The ruling is being \"reconsidered.\" You searched your own name eleven times at the table and enjoyed every result.",
+  "exposed": "Leaked: the monopoly ruling was shelved after Sundar's coin purchase. It is the top search result everywhere but one site.",
+  "inspiredBy": "Sundar Pichai"
+ },
+ {
+  "id": "guest-venture-marc",
+  "kind": "ceo",
+  "title": "Venture Marc",
+  "text": "Wants a promise of no rules for AI, ever, in writing. He has written a nine-thousand-word manifesto about it and will read it aloud unless you take the coin.",
+  "effects": { "ego": 5, "stability": 6, "coin": 4 },
+  "result": "No rules, in writing. Marc did not read the manifesto. Investors are thrilled, and so is the table.",
+  "exposed": "Leaked: the no-rules pledge was drafted by Venture Marc's own lawyers and paid for in coin. He has published a second manifesto in his defence.",
+  "inspiredBy": "Marc Andreessen"
+ },
+ {
+  "id": "guest-crypto-chad",
+  "kind": "ceo",
+  "title": "Crypto Chad Z",
+  "text": "Wants a pardon. Can pay in your own coin, of which he now owns a remarkable amount. Says the whole thing is \"very on-chain,\" as though that helps.",
+  "effects": { "ego": 6, "stability": 4, "coin": 5 },
+  "result": "Pardon signed. Your coin hit an all-time high and Chad called you \"the first on-chain president.\"",
+  "exposed": "Leaked: the pardon and the coin purchase are both on a public ledger, timestamped ninety seconds apart. That is what on-chain means.",
+  "inspiredBy": "Changpeng Zhao"
+ },
+ {
+  "id": "guest-pillow-mike",
+  "kind": "ceo",
+  "title": "Pillow Mike",
+  "text": "Wants pillows declared critical national infrastructure. He has a binder of proof and a promo code. He paid for his coin in instalments.",
+  "effects": { "ego": 8, "stability": 4, "coin": 1 },
+  "result": "Pillows are now infrastructure. Mike wept, and gave the whole patio a discount.",
+  "exposed": "Leaked: the Department of Pillow Security was created the day Pillow Mike's last instalment cleared. The promo code was BRIBE20.",
+  "inspiredBy": "Mike Lindell"
+ },
+ {
+  "id": "guest-cage-dana",
+  "kind": "ceo",
+  "title": "Cage Fight Dana",
+  "text": "Wants to hold a cage fight on the South Lawn. You get the front-row seat and the walk-out music. He has put a purse's worth into your coin.",
+  "effects": { "ego": 9, "stability": 5, "coin": 3 },
+  "result": "The fight is on the calendar. You have chosen your walk-out song. It is your own rally playlist.",
+  "exposed": "Leaked: the South Lawn was rented out for a cage fight in exchange for coin. The Park Service found out from the poster.",
+  "inspiredBy": "Dana White"
+ },
+ {
+  "id": "guest-washed-comedian",
+  "kind": "media",
+  "title": "HBO's Washed-Up Comedian",
+  "text": "He has spent years calling you names on cable. He wants one dinner, so he can tell his audience you were \"actually very gracious.\" He bought coin to prove he is serious.",
+  "effects": { "ego": 9, "stability": 5, "coin": 2 },
+  "result": "He told his audience you were gracious and measured. Half of them cancelled. You have watched the clip nine times.",
+  "exposed": "Leaked: the \"gracious\" monologue was written before the dinner and paid for in coin. His remaining audience has also left.",
+  "inspiredBy": "Bill Maher"
+ },
+ {
+  "id": "guest-rock-kid",
+  "kind": "media",
+  "title": "Try-Hard Rock Kid",
+  "text": "Also called Baby Metal. He wants to be Ambassador to Rock. Wearing a fur coat and a hat in Palm Beach. He bought coin and wrote a song about it.",
+  "effects": { "ego": 8, "stability": 4, "coin": 2 },
+  "result": "He is now Ambassador to Rock. The anthem at your next rally will be performed shirtless.",
+  "exposed": "Leaked: an ambassadorship was invented for a man in a fur coat, in exchange for coin. Rock has filed a formal objection.",
+  "inspiredBy": "Kid Rock, born Robert Ritchie"
+ },
+ {
+  "id": "guest-boxwine-judge",
+  "kind": "media",
+  "title": "Fox's Box-Wine Judge",
+  "text": "She has shouted about your enemies on television for years and would now like a real prosecutor job. Her glass is full and so is her coin wallet.",
+  "effects": { "ego": 7, "stability": 5, "coin": 2 },
+  "result": "She is a prosecutor now. Her first press conference was louder than her show.",
+  "exposed": "Leaked: the prosecutor job was offered at the patio bar after a coin purchase. The bar tab is in the court record.",
+  "inspiredBy": "Jeanine Pirro"
+ },
+ {
+  "id": "guest-sean-newsmanguy",
+  "kind": "media",
+  "title": "Sean Newsmanguy",
+  "text": "Wants a phone call every night after his show and the interview questions in advance. He will write the questions. He bought coin on air, live.",
+  "effects": { "ego": 9, "stability": 6, "coin": 3 },
+  "result": "The interview went well. Every question was a compliment with a question mark on the end.",
+  "exposed": "Leaked: the questions, the answers and the coin purchase were all in one email. Sean read it out on air, believing it to be fan mail.",
+  "inspiredBy": "Sean Hannity"
+ },
+ {
+  "id": "guest-laura-angle",
+  "kind": "media",
+  "title": "Laura Angle",
+  "text": "Wants the exclusive on whatever she is angry about this week. She has a list of nine things. Her producers bought coin so she would not have to.",
+  "effects": { "ego": 7, "stability": 5, "coin": 2 },
+  "result": "She got the exclusive and was angry about it for a full hour, in your favor.",
+  "exposed": "Leaked: the exclusive was traded for coin. Laura is furious, though for once nobody is sure at whom.",
+  "inspiredBy": "Laura Ingraham"
+ },
+ {
+  "id": "guest-tucker-bowtie",
+  "kind": "media",
+  "title": "Tucker Bowtie",
+  "text": "Wants an interview with you and a dictator of his choice, in the same room. He looks confused about everything, including the menu. He has bought coin, he thinks.",
+  "effects": { "ego": 8, "stability": 4, "coin": 3 },
+  "result": "The interview is booked. Tucker asked what the coin was, laughed for some time, and bought more.",
+  "exposed": "Leaked: a sit-down with a dictator was arranged for a cable host in exchange for coin. The dictator is asking for his cut.",
+  "inspiredBy": "Tucker Carlson"
+ },
+ {
+  "id": "guest-podcast-joe",
+  "kind": "media",
+  "title": "Podcast Joe",
+  "text": "Wants three hours of you on his show, and the alien files. He has brought elk meat and has questions about chimps. The coin was his producer's idea.",
+  "effects": { "ego": 9, "stability": 7, "coin": 3 },
+  "result": "Three hours on air. Forty million people heard you describe a chimp you have never met. The files remain \"under review.\"",
+  "exposed": "Leaked: the alien files were promised to a podcaster who had bought your coin. The aliens have declined to comment.",
+  "inspiredBy": "Joe Rogan"
+ },
+ {
+  "id": "guest-pundit-piers",
+  "kind": "media",
+  "title": "Pundit Piers",
+  "text": "Wants any interview at all. Flew himself over from London and has been waiting by the buffet for two days. He bought coin and is telling everyone.",
+  "effects": { "ego": 7, "stability": 4, "coin": 1 },
+  "result": "You gave him eleven minutes. He is calling it \"the interview of the century.\" It will air in four parts.",
+  "exposed": "Leaked: Pundit Piers paid for his eleven minutes in coin. He broke the story himself, to get on television.",
+  "inspiredBy": "Piers Morgan"
+ },
+ {
+  "id": "guest-jesse-smirk",
+  "kind": "media",
+  "title": "Jesse Smirk",
+  "text": "Wants to be Press Secretary for one day, for a segment. He has already written the jokes. They are all about salad. His coin purchase was the punchline.",
+  "effects": { "ego": 7, "stability": 5, "coin": 2 },
+  "result": "He ran one briefing, took no questions and smirked for forty minutes. Ratings were excellent.",
+  "exposed": "Leaked: the briefing room podium was rented to a cable host for a day, for coin. The real Press Secretary found out from the segment.",
+  "inspiredBy": "Jesse Watters"
+ },
+ {
+  "id": "guest-late-night-greg",
+  "kind": "media",
+  "title": "Late Night Greg",
+  "text": "Wants you on his show, laughing at his jokes. He will supply the jokes and, if needed, the laughing. He has bought coin and a new blazer.",
+  "effects": { "ego": 8, "stability": 4, "coin": 2 },
+  "result": "You went on and laughed twice. He has the clip framed. So do you.",
+  "exposed": "Leaked: your laughter on Late Night Greg was a paid appearance, settled in coin. Critics note that it sounded like it.",
+  "inspiredBy": "Greg Gutfeld"
+ },
+ {
+  "id": "guest-money-maria",
+  "kind": "media",
+  "title": "Money Honey Maria",
+  "text": "Wants you to confirm, live on air, that the economy is perfect. She will nod throughout. Her coin purchase was announced as breaking news.",
+  "effects": { "ego": 6, "stability": 10, "coin": 3 },
+  "result": "You said the economy was perfect. She nodded. Markets rose on the nodding.",
+  "exposed": "Leaked: the \"perfect economy\" segment was scripted in exchange for coin. Markets are now pricing in the nodding.",
+  "inspiredBy": "Maria Bartiromo"
+ },
+ {
+  "id": "guest-dr-feel",
+  "kind": "media",
+  "title": "Dr. Feel",
+  "text": "A television doctor of some kind. Wants his camera crew along on the next federal raid, for a special. Asks how the coin makes you feel.",
+  "effects": { "ego": 6, "stability": 4, "coin": 2 },
+  "result": "His crew rode along. The special is called \"Feelings and Handcuffs.\" You are thanked in the credits.",
+  "exposed": "Leaked: a television doctor bought a seat on a federal raid with coin. He is not, it turns out, that kind of doctor.",
+  "inspiredBy": "Dr. Phil McGraw"
+ },
+ {
+  "id": "guest-newsmax-greg",
+  "kind": "media",
+  "title": "Newsmax Greg",
+  "text": "Wants a front-row seat in the briefing room, ahead of the wire services. Promises to ask only how you stay so energetic. Paid in coin and a fruit basket.",
+  "effects": { "ego": 7, "stability": 5, "coin": 1 },
+  "result": "Greg has the front-row seat. His first question was about your energy. His second was the same question.",
+  "exposed": "Leaked: a front-row briefing seat was sold for coin and a fruit basket. The wire services have asked what a second-row seat costs.",
+  "inspiredBy": "Greg Kelly"
+ }
+]

@@ -7,6 +7,7 @@ export function Fx({ effects }: { effects: Effects }) {
   if (effects.ego) chips.push({ text: `${signed(effects.ego)} Ego`, good: effects.ego > 0 });
   if (effects.stability) chips.push({ text: `${signed(effects.stability)} Stability`, good: effects.stability > 0 });
   if (effects.gold) chips.push({ text: `+${effects.gold} Gold`, good: true });
+  if (effects.coin) chips.push({ text: `+${effects.coin} Coin`, good: true });
   if (effects.names) chips.push({ text: `+${effects.names} Named`, good: true });
   return (
     <span className="fx">
@@ -20,5 +21,5 @@ export function Fx({ effects }: { effects: Effects }) {
 }
 
 export function Blocks({ n }: { n: number }) {
-  return <span className="cost">{n === 1 ? '1 block' : `${n} blocks`}</span>;
+  return <span className="cost">{n === 0 ? 'No time' : n === 1 ? '1 block' : `${n} blocks`}</span>;
 }

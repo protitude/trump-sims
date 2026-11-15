@@ -181,6 +181,60 @@ export function waitingSpot(kind: DutyKind, taken: Tile[]): Tile {
 /** Visitors arrive and leave through the east door. */
 export const ENTRANCE: Tile = [69, 19];
 
+/** Guests at Mar-a-Lago come and go by the east gate. */
+export const CLUB_GATE: Tile = [47, 71];
+
+/** Where guests stand around at the club. The president stands two tiles to their left. */
+const CLUB_SPOTS: Tile[] = [
+  [27, 65],
+  [31, 65],
+  [24, 73],
+  [30, 74],
+];
+
+/** First free standing spot for a guest at the club. */
+export function guestSpot(taken: Tile[]): Tile {
+  return CLUB_SPOTS.find((t) => !taken.some((o) => o[0] === t[0] && o[1] === t[1])) ?? CLUB_SPOTS[0];
+}
+
+// ---------- Idle scenes ----------
+
+/** What the president drifts into when left standing about. */
+export type IdleKind = 'press' | 'briefing' | 'dictate' | 'toilet' | 'nap';
+
+const inRoom = (t: Tile, name: string): boolean => {
+  const r = ROOMS.find((room) => room.name === name)!.rect;
+  return t[0] >= r.x && t[0] < r.x + r.w && t[1] >= r.y && t[1] < r.y + r.h;
+};
+
+/** The idle scene that suits where he is standing, if any. */
+export function idleKindAt(place: Place, p: Point): IdleKind | null {
+  // The whole club is out of doors, so the press can always find him there.
+  if (place === 'maralago') return 'press';
+  const t = tileAt(p);
+  if (inRoom(t, 'RESIDENCE')) return 'toilet';
+  if (inRoom(t, 'OVAL OFFICE')) return 'dictate';
+  if (inRoom(t, 'CABINET ROOM')) return 'nap';
+  if (inRoom(t, 'PRESS ROOM')) return 'briefing';
+  return t[1] >= 23 ? 'press' : null;
+}
+
+/** Where he walks to for an idle scene, and the exact pixel he sits (or stands) at. */
+export const IDLE_SEATS: Record<Exclude<IdleKind, 'press'>, { tile: Tile; seat: Point; facing: 1 | -1; stand?: boolean }> = {
+  // Behind the podium, looking out over the chairs.
+  briefing: { tile: [60, 4], seat: { x: 61 * T, y: 5 * T - 1 }, facing: 1, stand: true },
+  // Behind the desk, tucked against its back edge.
+  dictate: { tile: [28, 4], seat: { x: 28 * T, y: 5 * T - 1 }, facing: -1 },
+  // On the bowl, just in front of it so he is drawn over it.
+  toilet: { tile: [13, 6], seat: { x: 14 * T, y: 6 * T + 1 }, facing: 1 },
+  // The second chair along the far side of the cabinet table.
+  nap: { tile: [46, 6], seat: { x: 46 * T + 2, y: 7 * T - 1 }, facing: 1 },
+};
+
+/** The aide takes dictation in front of the desk, and uses the Oval Office door. */
+export const AIDE_SPOT: Tile = [26, 9];
+export const OVAL_DOOR: Tile = [28, 17];
+
 // ---------- Collision grid ----------
 
 const wall = new Uint8Array(COLS * ROWS);

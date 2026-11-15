@@ -1,5 +1,6 @@
 // Checks a JSON file of duty cards against the rules the game expects.
 // Usage: node scripts/validate-cards.mjs src/game/cards/<file>.json [expectedCount]
+// guests.json (the Mar-a-Lago guests) has its own, simpler shape and is checked separately.
 
 import { readFileSync } from 'node:fs';
 
@@ -27,6 +28,41 @@ const seen = new Set();
 const titles = new Set();
 const within = (n, lo, hi) => typeof n === 'number' && Number.isInteger(n) && n >= lo && n <= hi;
 const text = (value, max) => typeof value === 'string' && value.trim().length > 0 && value.length <= max;
+
+// Guests at Mar-a-Lago: a parody name, an ask, and what taking the coin gives.
+if (cards.some((card) => card?.exposed !== undefined)) {
+  cards.forEach((guest, index) => {
+    const bad = (message) => errors.push(`#${index + 1} (${guest?.id ?? 'no id'}): ${message}`);
+    if (!/^guest(-[a-z0-9]+)+$/.test(guest.id ?? '')) bad('id must be kebab-case and start with "guest-"');
+    if (seen.has(guest.id)) bad('duplicate id');
+    seen.add(guest.id);
+    if (titles.has(guest.title)) bad('duplicate title');
+    titles.add(guest.title);
+    if (!['ceo', 'media'].includes(guest.kind)) bad('kind must be ceo or media');
+    if (!text(guest.title, 40)) bad('title missing or longer than 40 characters');
+    if (!text(guest.text, 190)) bad('text missing or longer than 190 characters');
+    if (!text(guest.result, 190)) bad('result missing or longer than 190 characters');
+    if (!text(guest.exposed, 190)) bad('exposed missing or longer than 190 characters');
+    if (!text(guest.inspiredBy, 200)) bad('inspiredBy missing or longer than 200 characters');
+    // The parody name is all the game shows; the real one stays in inspiredBy.
+    const shown = `${guest.title} ${guest.text} ${guest.result} ${guest.exposed}`.toLowerCase();
+    const surname = String(guest.inspiredBy ?? '').trim().split(/\s+/).pop().toLowerCase();
+    if (surname.length > 3 && shown.includes(surname)) bad(`real surname "${surname}" appears in the shown text`);
+    const fx = guest.effects ?? {};
+    for (const key of Object.keys(fx)) if (!['ego', 'stability', 'coin'].includes(key)) bad(`unknown effect "${key}"`);
+    if (!within(fx.ego, 5, 9)) bad('ego must be 5..9');
+    if (!within(fx.stability, 4, 10)) bad('stability must be 4..10');
+    if (!within(fx.coin, 1, 5)) bad('coin must be 1..5');
+  });
+  if (expected && cards.length !== Number(expected)) errors.push(`expected ${expected} guests, found ${cards.length}`);
+  if (errors.length > 0) {
+    console.error(`${errors.length} problem(s) in ${file}:`);
+    for (const e of errors) console.error(`  ${e}`);
+    process.exit(1);
+  }
+  console.log(`OK: ${cards.length} guests in ${file}`);
+  process.exit(0);
+}
 
 cards.forEach((card, index) => {
   const where = `#${index + 1} (${card?.id ?? 'no id'})`;

@@ -850,5 +850,35 @@
       "text": "You did not answer. The foreign leaders kept nominating you in public."
     },
     "inspiredBy": "Foreign leaders publicly nominated Trump for the Nobel Peace Prize through 2025 and he repeatedly said he deserved it."
+  },
+  {
+    "id": "ally-impeachment-fizzle",
+    "kind": "press",
+    "title": "The Impeachment That Wasn't",
+    "text": "The House effort to impeach your defense secretary has collapsed. A reporter asks whether you ever doubted him.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Say the matter is closed",
+        "effects": {
+          "stability": 5,
+          "ego": -3
+        },
+        "result": "You say it is closed and take the next question. The secretary sends a thank-you note, in a group chat."
+      },
+      {
+        "label": "Vow to stand by him forever",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "You promise to stand by him through any impeachment, including ones not yet filed. Three members take that as a suggestion."
+      }
+    ],
+    "ignore": {
+      "stability": -3,
+      "text": "You said nothing. He read the silence four times and has asked staff what it meant."
+    },
+    "inspiredBy": "November 2026: Trump vowed to stand by Pete Hegseth if impeached; the House impeachment effort collapsed days later."
   }
 ]

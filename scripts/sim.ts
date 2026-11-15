@@ -6,9 +6,11 @@
 //   duty-only    -> always depression
 //   random       -> almost always loses
 //   balanced     -> wins some of the time, not all of it
+//   grifter      -> balanced, plus a trip to Mar-a-Lago every few months to take
+//                   every bribe on offer; shows how strong the bribes are
 
 import { VANITY, cardById } from '../src/game/content.ts';
-import { chooseWhim, doVanity, dutyCost, endMonth, newGame, playDuty, resolveChaos, vanityEgo, vanityStatus } from '../src/game/engine.ts';
+import { TUNING, chooseWhim, doVanity, dutyCost, endMonth, newGame, playDuty, resolveChaos, takeBribe, vanityEgo, vanityStatus } from '../src/game/engine.ts';
 import type { GameState } from '../src/game/types.ts';
 
 type Strategy = (s: GameState) => GameState;
@@ -37,6 +39,18 @@ function hybridFirst(s: GameState): GameState | null {
   return card ? playDuty(s, card.id, 0) : null;
 }
 
+// Feed whichever meter is lower, and grab every opportunity.
+const balanced: Strategy = (s) => {
+  const hybrid = hybridFirst(s);
+  if (hybrid) return hybrid;
+  const first = s.stability <= s.ego ? bestDuty : bestVanity;
+  const second = s.stability <= s.ego ? bestVanity : bestDuty;
+  return first(s) ?? second(s) ?? endMonth(s);
+};
+
+/** How often the grifter flies south: every Nth month (set with TRIP_EVERY). */
+const tripEvery = Number(process.env.TRIP_EVERY ?? 3);
+
 const strategies: Record<string, Strategy> = {
   'vanity-only': (s) => bestVanity(s) ?? endMonth(s),
   'duty-only': (s) => bestDuty(s) ?? endMonth(s),
@@ -51,13 +65,17 @@ const strategies: Record<string, Strategy> = {
     if (moves.length === 0) return endMonth(s);
     return moves[Math.floor(Math.random() * moves.length)]();
   },
-  // Feed whichever meter is lower, and grab every opportunity.
-  balanced: (s) => {
-    const hybrid = hybridFirst(s);
-    if (hybrid) return hybrid;
-    const first = s.stability <= s.ego ? bestDuty : bestVanity;
-    const second = s.stability <= s.ego ? bestVanity : bestDuty;
-    return first(s) ?? second(s) ?? endMonth(s);
+  balanced,
+  // Balanced, but flies down at the start of every few months, takes every
+  // bribe going, and flies straight home to spend what time is left on the job.
+  grifter: (s) => {
+    if (s.place === 'maralago') {
+      if (s.guests.length > 0 && s.blocks >= TUNING.bribeCost) return takeBribe(s, s.guests[0]);
+      const home = doVanity(s, 'trip-home');
+      return home === s ? endMonth(s) : home;
+    }
+    if (s.month % tripEvery === 0 && s.blocks === 5 && s.guests.length > 0) return doVanity(s, 'trip-maralago');
+    return balanced(s);
   },
 };
 
@@ -66,14 +84,19 @@ const chaosAnswer: Record<string, () => 0 | 1 | 'ignore'> = {
   'vanity-only': () => 1,
   'duty-only': () => 0,
   random: () => ([0, 1, 'ignore'] as const)[Math.floor(Math.random() * 3)],
+  grifter: () => 0,
   balanced: () => (process.env.CHAOS === 'ignore' ? 'ignore' : process.env.CHAOS === 'deflect' ? 1 : 0),
 };
 
 const games = Number(process.argv[2] ?? 1000);
+// LEAK=0.2 overrides the chance that a bribe leaks, to see what the leaks alone cost.
+if (process.env.LEAK) TUNING.leakChance = Number(process.env.LEAK);
 
 for (const [name, strategy] of Object.entries(strategies)) {
   const endings: Record<string, number> = { won: 0, ww3: 0, depression: 0 };
   let monthsSurvived = 0;
+  let bribes = 0;
+  let exposed = 0;
   for (let i = 0; i < games; i++) {
     let s = newGame(i * 7919 + 1);
     // Bots take the first whim on offer and then ignore it.
@@ -85,9 +108,12 @@ for (const [name, strategy] of Object.entries(strategies)) {
     }
     endings[s.status] += 1;
     monthsSurvived += s.month;
+    bribes += s.stats.bribes ?? 0;
+    exposed += s.stats.exposed ?? 0;
   }
   const pct = (n: number) => `${((n / games) * 100).toFixed(1)}%`.padStart(6);
   console.log(
-    `${name.padEnd(12)} won ${pct(endings.won)}  ww3 ${pct(endings.ww3)}  depression ${pct(endings.depression)}  avg months ${(monthsSurvived / games).toFixed(1)}`,
+    `${name.padEnd(12)} won ${pct(endings.won)}  ww3 ${pct(endings.ww3)}  depression ${pct(endings.depression)}  avg months ${(monthsSurvived / games).toFixed(1)}` +
+      (bribes > 0 ? `  bribes ${(bribes / games).toFixed(1)}/game, exposed ${(exposed / games).toFixed(2)}/game` : ''),
   );
 }

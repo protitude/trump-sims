@@ -1154,5 +1154,254 @@
     }
    ]
   }
+ },
+ {
+  "id": "chaos-m365-down",
+  "title": "Microsoft 365 Goes Down",
+  "text": "Outlook, Teams and Copilot are out in seventy countries. The federal government cannot email itself. A cabinet meeting is being organized by shouting down a corridor.",
+  "choices": [
+   {
+    "label": "Call Satya Nadella and ask nicely",
+    "cost": 1,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 5,
+       "stability": 6
+      },
+      "text": "Nadella took the call and the mail queues drained by lunch. You announced that you fixed the internet. Nobody had the email to argue."
+     },
+     {
+      "effects": {
+       "stability": 4,
+       "ego": -4
+      },
+      "text": "Service came back, slowly. Nadella explained a network capacity upgrade for forty minutes. You were not the subject of any of it."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "You were put on hold. The hold music was a Teams ringtone. A recording of you waiting has four million views."
+     }
+    ]
+   },
+   {
+    "label": "Blame it on a cyberattack",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 5,
+       "stability": 4
+      },
+      "text": "Nobody could email a correction. By the time Outlook returned, the news had moved on to the planes."
+     },
+     {
+      "effects": {
+       "ego": 4,
+       "stability": -4
+      },
+      "text": "Microsoft said it was a settings change, not an attack. Markets believed Microsoft. Your post stayed up."
+     },
+     {
+      "effects": {
+       "stability": -12
+      },
+      "text": "Three allies raised their alert level on your word. Microsoft said it was a settings change. The allies would like an explanation, by fax."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore it",
+   "text": "The outage rolled on. Agencies are back on paper memos. A fax machine has been found and is being worshipped.",
+   "blowback": [
+    {
+     "effects": {
+      "ego": -3,
+      "stability": -5
+     },
+     "text": "Remember the Microsoft outage? Two days of federal email arrived at once. Nobody has read any of it, including the urgent ones."
+    },
+    {
+     "effects": {
+      "ego": -6,
+      "stability": -8
+     },
+     "text": "Remember when Outlook went down? Staff moved to a group chat to cope. A reporter was in it by Tuesday."
+    },
+    {
+     "effects": {},
+     "text": "Remember the Microsoft outage? It fixed itself. Most of the government took the afternoon off and nobody noticed."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-ground-stop",
+  "title": "The FAA Grounds Every Plane",
+  "text": "A communication failure has stopped every departure in the country. Ten thousand flights are stuck. Sean Duffy says the system is very old. Your own jet is on the tarmac too.",
+  "choices": [
+   {
+    "label": "Fund the new system tonight",
+    "cost": 2,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 6,
+       "stability": 6
+      },
+      "text": "Departures resumed in four hours and the upgrade money went out the same night. Duffy called you the father of modern air travel."
+     },
+     {
+      "effects": {
+       "stability": 5,
+       "ego": -3
+      },
+      "text": "Planes are moving, but the weekend is a write-off. The new system arrives in 2031. The old one runs on a cable nobody may touch."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "The money went out and the screens stayed dark. You spent the evening in a parked jet, on camera, eating a cold burger."
+     }
+    ]
+   },
+   {
+    "label": "Say flying is overrated anyway",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 4,
+       "stability": 5
+      },
+      "text": "The line got a laugh and the stop lifted by evening. Train bookings rose, which you took credit for."
+     },
+     {
+      "effects": {
+       "ego": 4,
+       "stability": -4
+      },
+      "text": "The line played well for an hour. Then the airport footage arrived: floors full of people who disagreed."
+     },
+     {
+      "effects": {
+       "stability": -12
+      },
+      "text": "Stranded travelers heard it on the terminal televisions. 2,500 more flights were canceled. Every gate has your quote on a sign."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore it",
+   "text": "The ground stop lifted on its own after four hours. The cancellations did not. Airports are now campsites.",
+   "blowback": [
+    {
+     "effects": {
+      "ego": -3,
+      "stability": -6
+     },
+     "text": "Remember the ground stop? The old system failed again, during the holidays. Duffy has been seen holding a cable."
+    },
+    {
+     "effects": {
+      "ego": -6,
+      "stability": -8
+     },
+     "text": "Remember the grounded planes? Congress held hearings. The witness list was every person who slept at a gate."
+    },
+    {
+     "effects": {},
+     "text": "Remember the ground stop? Someone plugged the cable back in. It has been fine since. Nobody knows who."
+    }
+   ]
+  }
+ },
+ {
+  "id": "chaos-dana-white-podium",
+  "title": "Dana White Arrives for the Podium",
+  "text": "You offered Dana White the press secretary job on Truth Social, then said you were kidding. He has landed in Washington anyway and posted a photo of himself at the lectern.",
+  "choices": [
+   {
+    "label": "Meet him and settle it in person",
+    "cost": 1,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 7,
+       "stability": 3
+      },
+      "text": "White declined warmly and said you were the greatest fighter he knew. The job stays empty, which the press pool prefers."
+     },
+     {
+      "effects": {
+       "ego": 4,
+       "stability": -4
+      },
+      "text": "White agreed to think about it and held a weigh-in for the press corps. Two reporters made weight."
+     },
+     {
+      "effects": {
+       "ego": -12
+      },
+      "text": "White said no on camera and noted that the last press secretary lasted five days. The clip is everywhere."
+     }
+    ]
+   },
+   {
+    "label": "Insist you were kidding",
+    "cost": 0,
+    "outcomes": [
+     {
+      "effects": {
+       "ego": 4,
+       "stability": 5
+      },
+      "text": "Everyone agreed it was a joke. White laughed, flew home and sent a title belt. The podium stays empty and calm."
+     },
+     {
+      "effects": {
+       "ego": 3,
+       "stability": -4
+      },
+      "text": "You said it was a joke. Your original post said otherwise and is still up. The job has now been vacant a month."
+     },
+     {
+      "effects": {
+       "stability": -12
+      },
+      "text": "White took the joke badly and the briefing room took it worse. Reporters now brief each other, and attendance is up."
+     }
+    ]
+   }
+  ],
+  "ignore": {
+   "label": "Ignore him",
+   "text": "White waited in the lobby all afternoon. The lectern is still empty. A reporter has begun answering questions herself.",
+   "blowback": [
+    {
+     "effects": {
+      "ego": -5,
+      "stability": -3
+     },
+     "text": "Remember offering Dana White the podium? Nobody else will take it now. Applicants ask whether it was also a joke."
+    },
+    {
+     "effects": {
+      "ego": -8,
+      "stability": -6
+     },
+     "text": "Remember the press secretary offer? With no one at the podium, an octagon went up in the briefing room. There was an undercard."
+    },
+    {
+     "effects": {},
+     "text": "Remember the Dana White offer? He went home. The job went to someone quiet, who has lasted nine days so far."
+    }
+   ]
+  }
  }
 ]

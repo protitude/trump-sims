@@ -112,6 +112,7 @@ export const WHIMS: Whim[] = [
   { id: 'groundbreaking', title: 'Groundbreaking', text: 'Finish one big project. Something people can see from the road.', stat: 'build', target: 1, reward: { ego: 10 }, possible: (s) => remaining(s, 'build') >= 1 },
   { id: 'man-of-the-people', title: 'Man Of The People', text: 'Hold three rallies. The people have been asking. You have been told.', stat: 'rally', target: 3, reward: { ego: 12 } },
   { id: 'florida-man', title: 'Florida Man', text: 'Do five things at Mar-a-Lago. Washington will manage. Probably.', stat: 'resort', target: 5, reward: { ego: 12, gold: 1 } },
+  { id: 'pay-to-play', title: 'Pay To Play', text: 'Take the coin from three guests at Mar-a-Lago. They came all this way.', stat: 'bribes', target: 3, reward: { ego: 10, coin: 2 } },
   { id: 'eighteen-holes', title: 'Tournament Form', text: 'Play golf four times, on either course.', stat: 'golf', target: 4, reward: { ego: 9 } },
   { id: 'post-through-it', title: 'Post Through It', text: 'Post at 3am three times. The followers are waiting.', stat: 'post', target: 3, reward: { ego: 9 } },
   { id: 'unfiltered', title: 'Unfiltered', text: 'Take the fun option five times. Advisers are for other people.', stat: 'vain', target: 5, reward: { ego: 12 } },

@@ -3,6 +3,7 @@ import {
   BLOCKS_PER_MONTH,
   TOTAL_MONTHS,
   chooseWhim,
+  declineGuest,
   dateLabel,
   dismissReveal,
   doVanity,
@@ -14,10 +15,12 @@ import {
   resolveChaos,
   score,
   stabilityDrift,
+  takeBribe,
 } from './game/engine.ts';
 import { WHIM_FAIL_EGO, WHIM_MONTHS, activeSeasons, comingUp, whimById, whimProgress } from './game/calendar.ts';
 import { Blocks, Fx } from './ui.tsx';
 import { chaosById } from './game/chaos.ts';
+import { guestById } from './game/guests.ts';
 import type { GameState } from './game/types.ts';
 import { cardById } from './game/content.ts';
 import { MusicControl, useMusic } from './music.tsx';
@@ -25,7 +28,7 @@ import type { Music } from './music.tsx';
 import { World } from './world/World.tsx';
 import type { Target } from './world/World.tsx';
 
-const SAVE_KEY = 'executive-time-save-v5';
+const SAVE_KEY = 'executive-time-save-v6';
 
 function loadSave(): GameState | null {
   try {
@@ -45,6 +48,7 @@ function writeSave(state: GameState | null): void {
   }
 }
 
+const GUEST_ICON = { ceo: '🪙', media: '🎙️' };
 const VISITOR_ICON = { briefing: '📋', decision: '❓', press: '🎤', call: '📞', crisis: '🚨', hybrid: '⭐' };
 
 const MOODS = {
@@ -154,6 +158,16 @@ function GameOver({ state, onRestart }: { state: GameState; onRestart: () => voi
             <dd>{state.gold}</dd>
           </div>
           <div>
+            <dt>Coin</dt>
+            <dd>{state.coin}</dd>
+          </div>
+          <div>
+            <dt>Bribes taken / exposed</dt>
+            <dd>
+              {state.stats.bribes ?? 0} / {state.stats.exposed ?? 0}
+            </dd>
+          </div>
+          <div>
             <dt>Whims satisfied</dt>
             <dd>{state.stats.whimsDone ?? 0}</dd>
           </div>
@@ -235,6 +249,9 @@ function Game({ music }: { music: Music }) {
             <span>
               <b>{state.gold}</b> gold
             </span>
+            <span>
+              <b>{state.coin}</b> coin
+            </span>
           </div>
         </div>
         <div className="meters">
@@ -277,6 +294,20 @@ function Game({ music }: { music: Music }) {
             );
           })}
         </div>
+        {state.guests.length > 0 && (
+          <div className="waiting">
+            <span className="waiting-label">{state.place === 'maralago' ? 'Guests at the club:' : 'At Mar-a-Lago this month:'}</span>
+            {state.guests.map((id) => {
+              const guest = guestById(id);
+              return (
+                <button key={id} className="visitor kind-hybrid" disabled={state.place !== 'maralago'} onClick={() => go({ type: 'guest', cardId: id })}>
+                  <span aria-hidden="true">{GUEST_ICON[guest.kind]}</span>
+                  {guest.title}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </header>
 
       <div className="calendar">
@@ -383,6 +414,8 @@ function Game({ music }: { music: Music }) {
         command={command}
         onDuty={(cardId, option) => setState((s) => s && playDuty(s, cardId, option))}
         onVanity={(actionId) => setState((s) => s && doVanity(s, actionId))}
+        onBribe={(guestId) => setState((s) => s && takeBribe(s, guestId))}
+        onDecline={(guestId) => setState((s) => s && declineGuest(s, guestId))}
         onEndMonth={() => setState((s) => s && endMonth(s))}
       />
 

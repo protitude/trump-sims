@@ -66,11 +66,21 @@ Vanity is visible. Gilded things turn gold and sparkle, monuments rise on their 
 
 ### Trips to Mar-a-Lago
 
-Click the plane on the South Lawn to fly to Mar-a-Lago. The flight costs one time block each way. Once the Rose Garden is gilded it can be turned into a helipad; the helicopter parked there can be gilded too, and flies to Mar-a-Lago in place of the plane. Whatever you flew out in is the way back.
+Click the plane on the South Lawn to fly to Mar-a-Lago. Flights are free in both directions: they cost no time and change no meters. Once the Rose Garden is gilded it can be turned into a helipad; the helicopter parked there can be gilded too, and flies to Mar-a-Lago in place of the plane. Whatever you flew out in is the way back.
 
 - **Why go.** Everything there feeds Ego better than its Washington equivalent, and it can all be repeated (with slowly fading returns).
 - **What it costs.** The job cannot follow you. Visitors keep waiting in Washington, and you cannot deal with any of them until you fly back. If you go to bed in Florida, everyone waiting that month is ignored.
 - **Staying over.** There is a bed at the club, so you can stay for several months. Stability will not thank you.
+
+### Guests at the club
+
+Two guests are waiting at Mar-a-Lago every month: tech bosses and media people, each with an ask and a stake in your crypto coin. They are listed in the bar at the top wherever you are, but you have to fly down to talk to them. Anyone you do not get to has gone home by next month, at no cost.
+
+- **Take the coin.** One time block. You grant the ask, and get Ego, Stability and coin, all shown on the button. Coin does nothing during the game; it counts toward the final score.
+- **Send them away.** No time, −2 Ego.
+- **The catch.** Each bribe has a 10% chance of leaking, rolled in secret when you take it. A leak becomes news one to six months later (in the final month at the latest) and takes back three times the Ego and Stability the bribe gave: a deal worth +8 Ego and +10 Stability comes back as −24 and −30. You keep the coin.
+
+The guests are parodies under made-up names. There are 26, in `src/game/cards/guests.json`; they come round again once all have visited.
 
 ### Consequences
 
@@ -121,7 +131,7 @@ Nothing on the menu tells you what any of them will do. The result is rolled whe
 
 Ignoring an event does nothing at the time. It comes back once or twice in later months of the same year, and that blowback is nearly always bad and sometimes severe. An event ignored in December comes back in January.
 
-Unlike the rest of the game, chaos events name real public figures. There are 14, in `src/game/cards/chaos.json`, and none repeats within a game.
+Unlike the rest of the game, chaos events name real public figures. There are 17, in `src/game/cards/chaos.json`, and none repeats within a game.
 
 ### Things that complicate it
 
@@ -131,7 +141,7 @@ Unlike the rest of the game, chaos events name real public figures. There are 14
 
 ### The scenarios
 
-There are 288 everyday scenarios, 20 crises and 20 opportunities. A full term draws at most 144 everyday scenarios (three a month for 48 months), so the deck is twice the size a game can use and nothing repeats within a game. Crises and opportunities are also dealt without repeats.
+There are 295 everyday scenarios, 20 crises and 20 opportunities. A full term draws at most 144 everyday scenarios (three a month for 48 months), so the deck is twice the size a game can use and nothing repeats within a game. Crises and opportunities are also dealt without repeats.
 
 Most scenarios are loosely based on real news from 2025 and 2026, exaggerated into something clearly comic. Each card carries an `inspiredBy` note naming the event behind it. That note is for whoever edits the cards and is never shown in the game. Other than the President, real people are referred to by role, not name.
 
@@ -169,6 +179,7 @@ src/
     story.ts      Consequence cards, what triggers them, and the set pieces
     calendar.ts   Seasons, the midterms, and the whims
     chaos.ts      The shape of a chaos event (the events are in cards/chaos.json)
+    guests.ts     The shape of a Mar-a-Lago guest (the guests are in cards/guests.json)
     cards/        The news-based scenarios, one JSON file per beat (trade, allies,
                   peace deals, the White House, media, agencies, courts, science,
                   ceremonies) plus special.json for crises and opportunities
@@ -195,7 +206,7 @@ Three things are worth knowing before changing anything:
 
 ### Tuning the balance
 
-All the numbers that govern difficulty are in the `TUNING` object at the top of `engine.ts`. After changing one, run `npm run sim`. It plays 1,000 games with each of four bots:
+All the numbers that govern difficulty are in the `TUNING` object at the top of `engine.ts`. After changing one, run `npm run sim`. It plays 1,000 games with each of five bots:
 
 | Bot | What it does | Result at current tuning |
 |---|---|---|
@@ -203,14 +214,17 @@ All the numbers that govern difficulty are in the `TUNING` object at the top of 
 | duty-only | Never does anything fun | Depression by month 5, every time |
 | random | Clicks anything | World War III within about 4 months |
 | balanced | Feeds whichever meter is lower | Wins about 34% of games, usually lasting into Year 4 |
+| grifter | Balanced, but flies to Mar-a-Lago every third month, takes both bribes and flies home | Wins about 15% of games; about 21 bribes and 2 leaks a game |
 
-The balanced bot is a fairly naive player, and it picks a whim at random and then ignores it. A person who chases whims collects several rewards a game that the bot mostly misses, so 34% for the bot should mean a hard but fair game for a person. That is an estimate from the simulator, not something tested widely with real players. The bots answer chaos events in a fixed way: the balanced bot always takes the favorable answer, which leaves its win rate unchanged at about 34%. Made to always deflect, it wins about 30%; made to always ignore, about 11% (17% if blowback only ever came once). The bots never fly to Mar-a-Lago, so the simulator says nothing about whether trips are too strong or too weak.
+The balanced bot is a fairly naive player, and it picks a whim at random and then ignores it. A person who chases whims collects several rewards a game that the bot mostly misses, so 34% for the bot should mean a hard but fair game for a person. That is an estimate from the simulator, not something tested widely with real players. The bots answer chaos events in a fixed way: the balanced bot always takes the favorable answer, which leaves its win rate unchanged at about 34%. Made to always deflect, it wins about 30%; made to always ignore, about 11% (17% if blowback only ever came once). Only the grifter flies to Mar-a-Lago, and only for the bribes, so the simulator says nothing about whether the rest of the club is too strong or too weak.
+
+The bribes are a gamble, not free money. With leaks switched off (`LEAK=0 npm run sim`) the grifter wins about 75% of games; at the real 10% it wins about 15%, because two leaks a game at three times the damage usually means World War III. `TRIP_EVERY=4 npm run sim` changes how often it flies.
 
 The balance is very sensitive to the number of big projects and to `egoInflation`, so re-run the simulator after touching either. For reference: six projects at 0.25 gave the bot 29% wins; twelve projects at 0.25 gave 97%; seven projects at 0.26 gave 37%. Adding the calendar and whims made the game easier again (78% at 0.26), so the value is now 0.36.
 
 ## Ideas not built yet
 
-- **More consequences.** Only about 40 of the 288 scenarios have a follow-up, so several months can pass without one.
+- **More consequences.** Only about 40 of the 295 scenarios have a follow-up, so several months can pass without one.
 - **A staff you hire and fire, recurring rivals, risky actions with uncertain results, and monuments that grant perks.** The remaining ideas from the engagement list.
 - **A running clock and an action queue**, so you can line up several things and watch them play out, with speed controls.
 - **Aides** who live in the building. You can delegate duties to them. The competent ones get credit, which drains your Ego until you fire them. The loyal ones are useless.
@@ -218,7 +232,6 @@ The balance is very sensitive to the number of big projects and to `egoInflation
 - **Multi-month construction**, with scaffolding going up over several turns.
 - **Real art and sound.** Sprites in place of shapes, probably moving the drawing to Phaser at that point.
 - **A comedy and fact pass on the scenarios.** The news-based cards were drafted in bulk. Some punchlines are soft, and many `inspiredBy` notes were written from memory and have not been checked against sources.
-- **Visitors at Mar-a-Lago.** Members, donors and the occasional ambassador who has followed you down.
 
 ## A note on tone
 

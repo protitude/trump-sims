@@ -3,6 +3,8 @@ export interface Effects {
   stability?: number;
   gold?: number;
   names?: number;
+  /** The president's crypto coin. Only counts toward the score. */
+  coin?: number;
 }
 
 export type DutyKind = 'briefing' | 'decision' | 'press' | 'call' | 'crisis' | 'hybrid';
@@ -87,6 +89,8 @@ export interface GameState {
   stability: number;
   gold: number;
   names: number;
+  /** Crypto coin padded by guests at Mar-a-Lago. Only counts toward the score. */
+  coin: number;
   /** Builds + renames completed. Drives ego inflation. */
   monuments: number;
   /** Duty cards left to rot. Every third one spawns a crisis. */
@@ -118,6 +122,12 @@ export interface GameState {
   blowback: { id: string; due: number }[];
   /** What chaos did, waiting to be shown to the player and dismissed. */
   reveals: Reveal[];
+  /** Guests at Mar-a-Lago this month, each with an ask and an offer. */
+  guests: string[];
+  /** Guests not yet dealt this time through the list. */
+  guestDeck: string[];
+  /** Bribes that leaked, waiting for the month the story runs. */
+  exposures: { id: string; due: number; effects: Effects }[];
   inbox: string[];
   deck: string[];
   /** Times each vanity action has been used. */

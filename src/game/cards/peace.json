@@ -842,5 +842,35 @@
       "text": "You didn't take the call. The envoy briefed the wrong person, who was thrilled too."
     },
     "inspiredBy": "December 2025 meetings between a US envoy and Russia's president on a new peace proposal."
+  },
+  {
+    "id": "peace-three-chairs",
+    "kind": "decision",
+    "title": "Three Chairs in Shenzhen",
+    "text": "The summit hosts propose a first three-way meeting with the leaders of China and Russia. Staff ask what you plan to say. You ask how big the table is.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Go in with a written agenda",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "Eleven agenda items, and you reached nine. Both leaders looked faintly disappointed, which staff count as a success."
+      },
+      {
+        "label": "Wing it and call it the Big Three",
+        "effects": {
+          "ego": 6,
+          "stability": -6
+        },
+        "result": "You named it the Big Three and gave yourself the middle chair. Allies watched the photo with the sound off."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "No answer was sent. The other two met anyway and saved you a chair, near the door."
+    },
+    "inspiredBy": "November 2026: the White House announced a first trilateral meeting of Trump, Putin and Xi around the APEC summit in Shenzhen."
   }
 ]

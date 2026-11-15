@@ -1,8 +1,9 @@
 import { BLOCKS_PER_MONTH, mood } from '../game/engine.ts';
 import { vanityById } from '../game/content.ts';
-import type { DutyKind, GameState } from '../game/types.ts';
+import type { GuestKind } from '../game/guests.ts';
+import type { DutyKind, GameState, Place } from '../game/types.ts';
 import { OBJECTS, REGIONS, ROOMS, T, exists, isWall, objectName } from './map.ts';
-import type { Point, Rect, Tile, WorldObject } from './map.ts';
+import type { IdleKind, Point, Rect, Tile, WorldObject } from './map.ts';
 
 // Everything on screen is drawn with canvas shapes; there are no image files.
 
@@ -13,12 +14,25 @@ export interface Actor {
   facing: 1 | -1;
   /** Seconds spent walking, drives the leg swing. */
   walk: number;
+  /** Sitting down: drawn lower, with short legs. */
+  seated?: boolean;
+}
+
+/** What the president gets up to when nobody tells him what to do. */
+export interface Idle {
+  kind: IdleKind;
+  /** Still on his way to the seat. */
+  walking: boolean;
+  /** Seconds since the scene proper began. */
+  t: number;
 }
 
 export interface Npc extends Actor {
   key: string;
   cardId: string;
-  kind: DutyKind;
+  kind: DutyKind | GuestKind;
+  /** Where they are: a duty visitor in Washington, or a guest at the club. */
+  place: Place;
   spot: Tile;
   leaving: boolean;
   angry: boolean;
@@ -30,6 +44,8 @@ export interface Activity {
   t: number;
   dur: number;
   sleep?: boolean;
+  /** A flight: taking off from the object, or coming in to land on it. */
+  flight?: 'out' | 'in';
   /** Which animation to play: an action id, a category, or "duty-<kind>". */
   anim?: string;
   /** The object being used, or the card being dealt with. */
@@ -50,6 +66,9 @@ export interface Sim {
   pres: Actor;
   npcs: Npc[];
   activity: Activity | null;
+  idle: Idle | null;
+  /** Natalie Harp, while she is in the Oval Office taking dictation. */
+  aide: (Actor & { leaving: boolean }) | null;
   floats: Float[];
   /** Object id or npc key under the pointer. */
   hover: string | null;
@@ -67,7 +86,9 @@ const GOLD_DARK = '#a87c16';
 const FONT = 'system-ui, -apple-system, "Segoe UI", sans-serif';
 const EMOJI_FONT = '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
 
-const NPC_LOOK: Record<DutyKind, { suit: string; hair: string; icon: string }> = {
+const NPC_LOOK: Record<DutyKind | GuestKind, { suit: string; hair: string; icon: string }> = {
+  ceo: { suit: '#2b2b33', hair: '#3a2c22', icon: '🪙' },
+  media: { suit: '#b0413e', hair: '#d8c48a', icon: '🎙️' },
   briefing: { suit: '#56627a', hair: '#4a3728', icon: '📋' },
   decision: { suit: '#6b5a7d', hair: '#2b2118', icon: '❓' },
   press: { suit: '#2f8f83', hair: '#8a5a2b', icon: '🎤' },
@@ -143,6 +164,8 @@ interface Look {
   hair: string;
   tie?: string;
   swoosh?: boolean;
+  /** Hair down to the shoulders. */
+  long?: boolean;
 }
 
 function person(c: Ctx, a: Actor, look: Look, bob: number): void {
@@ -155,10 +178,12 @@ function person(c: Ctx, a: Actor, look: Look, bob: number): void {
   c.fill();
   c.translate(0, -bob);
   c.scale(a.facing, 1);
+  if (a.seated) c.translate(0, 6);
 
+  const leg = a.seated ? 8 : 14;
   c.fillStyle = '#1b1f2e';
-  c.fillRect(-7, -14, 6, 14 - Math.max(0, swing) * 5);
-  c.fillRect(1, -14, 6, 14 - Math.max(0, -swing) * 5);
+  c.fillRect(-7, -14, 6, leg - Math.max(0, swing) * 5);
+  c.fillRect(1, -14, 6, leg - Math.max(0, -swing) * 5);
 
   c.fillStyle = look.suit;
   c.fillRect(-14, -38, 5, 17 + swing * 2);
@@ -175,6 +200,12 @@ function person(c: Ctx, a: Actor, look: Look, bob: number): void {
     c.fill();
     c.fillStyle = look.tie;
     c.fillRect(-2, -38, 4, 23);
+  }
+
+  if (look.long) {
+    c.fillStyle = look.hair;
+    rr(c, -11, -54, 22, 20, 5);
+    c.fill();
   }
 
   c.fillStyle = look.skin;
@@ -360,13 +391,46 @@ function landingPad(c: Ctx, cx: number, cy: number, radius: number): void {
   label(c, 'H', cx, cy + 2, 40, 'rgba(255,255,255,0.9)');
 }
 
-/** Seen from above, nose to the left. The rotor races while a flight is boarding. */
-function helicopter(c: Ctx, cx: number, cy: number, gilded: boolean, time: number): void {
+const clamp01 = (n: number): number => Math.max(0, Math.min(1, n));
+
+/** How far through leaving the ground the craft at this object is: 0 parked, 1 gone. */
+function airborne(o: WorldObject): { k: number; side: number } | null {
+  const act = currentAct;
+  if (!act?.flight || act.objectId !== o.id) return null;
+  const u = clamp01(act.t / act.dur);
+  // Departures leave to the left; arrivals come in from the right and play backwards.
+  return act.flight === 'out' ? { k: u, side: -1 } : { k: 1 - u, side: 1 };
+}
+
+/** Seen from above, nose to the left. It lifts straight up, then leans away. */
+function helicopter(c: Ctx, cx: number, cy: number, gilded: boolean, time: number, air: { k: number; side: number } | null = null): void {
+  const lift = air ? clamp01(air.k / 0.5) : 0;
+  const away = air ? clamp01((air.k - 0.35) / 0.65) : 0;
+  const dx = air ? air.side * away * away * 900 : 0;
   const bx = cx - 8;
-  c.fillStyle = 'rgba(0,0,0,0.2)';
+  c.fillStyle = `rgba(0,0,0,${0.2 - lift * 0.11})`;
   c.beginPath();
-  c.ellipse(bx + 6, cy + 10, 36, 16, 0, 0, Math.PI * 2);
+  c.ellipse(bx + 6 + dx, cy + 10 + lift * 34, 36 * (1 - lift * 0.25), 16 * (1 - lift * 0.25), 0, 0, Math.PI * 2);
   c.fill();
+  if (air && lift > 0 && lift < 1) {
+    // Rotor wash on the pad while it is close to the ground.
+    c.strokeStyle = `rgba(255,255,255,${0.35 * (1 - lift)})`;
+    c.lineWidth = 2;
+    for (let i = 0; i < 3; i++) {
+      const ring = 30 + ((time * 60 + i * 22) % 66);
+      c.beginPath();
+      c.ellipse(bx + dx, cy + 8, ring, ring * 0.45, 0, 0, Math.PI * 2);
+      c.stroke();
+    }
+  }
+  c.save();
+  if (air) {
+    const size = 1 + lift * 0.4;
+    c.translate(cx + dx, cy - lift * 90 + Math.sin(time * 9) * 2 * lift);
+    c.rotate(air.side * away * 0.12);
+    c.scale(size, size);
+    c.translate(-cx, -cy);
+  }
   // Tail boom, fin and tail rotor.
   c.fillStyle = gilded ? GOLD_DARK : '#2f4a2c';
   c.fillRect(bx + 20, cy - 3, 36, 6);
@@ -402,6 +466,7 @@ function helicopter(c: Ctx, cx: number, cy: number, gilded: boolean, time: numbe
   c.beginPath();
   c.arc(bx, cy, 4, 0, Math.PI * 2);
   c.fill();
+  c.restore();
 }
 
 /** The activity in progress, shared with drawObject while a frame is drawn. */
@@ -594,7 +659,7 @@ function drawObject(c: Ctx, o: WorldObject, s: GameState, time: number, hovered:
         }
         if (did('build-helipad')) {
           landingPad(c, cx, cy, 44);
-          helicopter(c, cx, cy, did('gild-helicopter'), time);
+          helicopter(c, cx, cy, did('gild-helicopter'), time, airborne(o));
         }
       } else {
         c.fillStyle = '#2f6a3a';
@@ -670,7 +735,7 @@ function drawObject(c: Ctx, o: WorldObject, s: GameState, time: number, hovered:
       // The helicopter is only here if it brought you.
       if (s.vehicle === 'heli') {
         gilded = did('gild-helicopter');
-        helicopter(c, cx, cy, gilded, time);
+        helicopter(c, cx, cy, gilded, time, airborne(o));
       }
       break;
     }
@@ -679,10 +744,32 @@ function drawObject(c: Ctx, o: WorldObject, s: GameState, time: number, hovered:
       if (o.place === 'maralago' && s.vehicle === 'heli') break;
       gilded = did('gild-plane');
       const body = gilded ? goldFill(c, r.x, r.y, r.w, r.h) : '#f4f6fa';
-      c.fillStyle = 'rgba(0,0,0,0.2)';
+      // In flight it rolls down the lawn, then climbs: bigger, higher, shadow left behind.
+      const air = airborne(o);
+      const roll = air ? air.side * air.k * air.k * 1500 : 0;
+      const climb = air ? clamp01((air.k - 0.35) / 0.65) : 0;
+      c.fillStyle = `rgba(0,0,0,${0.2 - climb * 0.12})`;
       c.beginPath();
-      c.ellipse(cx + 4, cy + 10, r.w / 2, 20, 0, 0, Math.PI * 2);
+      c.ellipse(cx + 4 + roll, cy + 10 + climb * 50, (r.w / 2) * (1 - climb * 0.3), 20 * (1 - climb * 0.3), 0, 0, Math.PI * 2);
       c.fill();
+      c.save();
+      if (air) {
+        const size = 1 + climb * 0.45;
+        c.translate(cx + roll, cy - climb * 130);
+        c.rotate(air.side * -climb * 0.07);
+        c.scale(size, size);
+        c.translate(-cx, -cy);
+        // Engine streaks trailing off the tail.
+        c.strokeStyle = `rgba(255,255,255,${0.5 * Math.min(1, air.k * 4)})`;
+        c.lineWidth = 3;
+        for (const dy of [-26, 26]) {
+          const len = 40 + air.k * 160 + Math.sin(time * 30 + dy) * 10;
+          c.beginPath();
+          c.moveTo(cx + 50, cy + dy);
+          c.lineTo(cx + 50 + len, cy + dy);
+          c.stroke();
+        }
+      }
       c.fillStyle = gilded ? GOLD : '#c8ced9';
       c.beginPath();
       c.moveTo(cx - 20, cy);
@@ -709,6 +796,7 @@ function drawObject(c: Ctx, o: WorldObject, s: GameState, time: number, hovered:
       c.fillStyle = gilded ? '#fff4c2' : '#9db5dd';
       for (let i = 0; i < 9; i++) c.fillRect(r.x + 44 + i * 22, cy - 10, 8, 5);
       label(c, 'TRUMP FORCE ONE', cx + 10, cy + 5, 9, gilded ? '#fff4c2' : '#ffffff');
+      c.restore();
       break;
     }
     case 'malballroom': {
@@ -931,6 +1019,21 @@ function risingText(c: Ctx, text: string, x: number, y: number, age: number, lif
   c.strokeText(text, x, y - age * 36);
   c.fillStyle = color;
   c.fillText(text, x, y - age * 36);
+  c.globalAlpha = 1;
+}
+
+/** Like risingText, but drifts off to the right: for speech with no headroom above it. */
+function driftingText(c: Ctx, text: string, x: number, y: number, age: number, life: number, size: number, color: string): void {
+  if (age < 0 || age > life) return;
+  c.globalAlpha = 1 - (age / life) ** 2;
+  c.font = `800 ${size}px ${FONT}`;
+  c.textAlign = 'center';
+  c.textBaseline = 'middle';
+  c.lineWidth = 3;
+  c.strokeStyle = 'rgba(10,15,31,0.85)';
+  c.strokeText(text, x + age * 34, y);
+  c.fillStyle = color;
+  c.fillText(text, x + age * 34, y);
   c.globalAlpha = 1;
 }
 
@@ -1163,6 +1266,153 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
   }
 }
 
+// ---------- Idle scenes ----------
+
+const GAGGLE = ['FAKE NEWS!', 'NEXT QUESTION', 'TREMENDOUS', 'NASTY QUESTION', 'IN TWO WEEKS', 'EVERYBODY KNOWS IT'];
+const DICTATION = ['WITCH HUNT!', 'MANY PEOPLE ARE SAYING', 'TOTAL DISASTER', 'ALL CAPS, NATALIE', 'THANK YOU FOR YOUR', 'ATTENTION TO THIS MATTER!'];
+const SCROLL = ['❤️', '👍', '🔁', '😡', '❤️', '🔥'];
+/** Where the reporters stand, relative to the president. */
+const REPORTERS: [number, number][] = [
+  [-58, 8],
+  [-36, 32],
+  [0, 44],
+  [36, 32],
+  [58, 8],
+];
+
+const RAMBLE = [
+  'NOBODY KNEW THAT',
+  'BIGGEST CROWD EVER',
+  'THEY SAID "SIR..."',
+  'PERFECT. JUST PERFECT.',
+  'SHARKS, VERY BAD',
+  'WE HAVE THE BEST WATER',
+  'QUIET, QUIET PIGGY',
+  'FAKE NEWS!',
+  "I DON'T KNOW HER",
+  'IN TWO WEEKS',
+];
+const QUESTIONS = ['SIR! SIR!', 'BUT THE TARIFFS?', 'WHICH GULF?', 'A FOLLOW-UP?', 'WHAT WATER?', 'IS THAT LEGAL?', 'TWO WEEKS FROM WHEN?', 'MR PRESIDENT!', 'WHO SAID "SIR"?', 'ANY COMMENT?'];
+/** The order the press room chairs fill up in. Matches the seating drawn in washington(). */
+const SEAT_ORDER = [2, 7, 0, 9, 4, 5, 1, 8, 3, 6];
+const seatAt = (i: number): Point => ({ x: 56.3 * T + (i % 5) * 42 + 13, y: (12.6 + Math.floor(i / 5) * 1.9) * T + 15 });
+const SEAT_EVERY = 0.9;
+const QUESTION_EVERY = 2.8;
+
+/** Draws what the president does when left alone, on top of the scene. */
+function drawIdle(c: Ctx, sim: Sim): void {
+  const idle = sim.idle;
+  if (!idle || idle.walking) return;
+  const p = sim.pres;
+  const t = idle.t;
+
+  switch (idle.kind) {
+    case 'press': {
+      // The pack closes in from all sides, then he holds forth.
+      const k = 1 - (1 - Math.min(1, t / 0.7)) ** 3;
+      p.facing = Math.sin(t * 0.9) >= 0 ? 1 : -1;
+      REPORTERS.forEach(([dx, dy], j) => {
+        const spread = 1 + (1 - k) * 1.6;
+        const x = p.x + dx * spread;
+        const y = p.y + dy * spread;
+        const bob = Math.abs(Math.sin(sim.time * 5 + j * 1.7)) * 2;
+        c.globalAlpha = k;
+        fan(c, x, y, bob, CROWD_SHIRTS[(j + 1) % 4], null);
+        c.globalAlpha = 1;
+        const lean = dx === 0 ? 0 : dx > 0 ? -1 : 1;
+        emojiAt(c, j === 2 ? '📸' : '🎤', x + lean * 9, y - 32 - bob, 12, k);
+        const flash = (t * 1.3 + j * 0.41) % 1;
+        if (k === 1 && j % 2 === 0 && flash < 0.12) {
+          c.fillStyle = `rgba(255,255,255,${1 - flash * 8})`;
+          c.beginPath();
+          c.arc(x, y - 30, 5 + flash * 110, 0, Math.PI * 2);
+          c.fill();
+        }
+      });
+      if (k === 1) risingText(c, GAGGLE[Math.floor(t / 1.7) % GAGGLE.length], p.x, p.y - 100, t % 1.7, 1.7, 12, '#ffffff');
+      break;
+    }
+    case 'briefing': {
+      // He holds forth from the podium while the chairs fill up with questions.
+      p.facing = Math.sin(t * 0.7) >= 0 ? 1 : -1;
+      driftingText(c, RAMBLE[Math.floor(t / 1.8) % RAMBLE.length], p.x + 10, p.y - 72, t % 1.8, 1.8, 12, '#ffffff');
+      emojiAt(c, '🎤', p.x, p.y + 12, 11);
+
+      const seated = Math.min(SEAT_ORDER.length, Math.floor(t / SEAT_EVERY));
+      const n = Math.floor(t / QUESTION_EVERY);
+      const age = t % QUESTION_EVERY;
+      // Whoever is asking was picked from those already sitting when the question began.
+      const there = Math.min(SEAT_ORDER.length, Math.floor((n * QUESTION_EVERY) / SEAT_EVERY));
+      const asker = there > 0 && age < 1.9 ? SEAT_ORDER[(n * 7) % there] : -1;
+      // Back row last, so it is drawn over the front one.
+      for (let seat = 0; seat < SEAT_ORDER.length; seat++) {
+        const j = SEAT_ORDER.indexOf(seat);
+        if (j >= seated) continue;
+        const { x, y } = seatAt(seat);
+        const k = Math.min(1, (t - (j + 1) * SEAT_EVERY) / 0.35);
+        const asking = seat === asker;
+        const bob = asking ? 3 + Math.abs(Math.sin(sim.time * 9)) * 2 : Math.abs(Math.sin(sim.time * 2 + seat)) * 0.8;
+        c.globalAlpha = k;
+        fan(c, x, y + (1 - k) * 8, bob, CROWD_SHIRTS[(seat * 3 + 1) % 4], null);
+        c.globalAlpha = 1;
+        if (asking) emojiAt(c, '✋', x + 9, y - 30 - bob, 11);
+        else if (seat % 4 === 1) emojiAt(c, seat === 5 ? '📸' : '🎤', x + 8, y - 16, 9, k);
+        const flash = (t * 0.9 + seat * 0.37) % 1;
+        if (k === 1 && seat === 5 && flash < 0.1) {
+          c.fillStyle = `rgba(255,255,255,${1 - flash * 10})`;
+          c.beginPath();
+          c.arc(x + 8, y - 16, 5 + flash * 120, 0, Math.PI * 2);
+          c.fill();
+        }
+      }
+      if (asker >= 0) {
+        const { x, y } = seatAt(asker);
+        const text = QUESTIONS[n % QUESTIONS.length];
+        // Kept clear of the side walls, so long questions stay in the room.
+        risingText(c, text, Math.max(58.5 * T, Math.min(63.5 * T, x)), y - 44, age, 1.9, 10, GOLD_LIGHT);
+      }
+      break;
+    }
+    case 'dictate': {
+      const aide = sim.aide;
+      const ready = aide && !aide.leaving && aide.path.length === 0;
+      if (!aide || !ready) {
+        // Waiting for her: he drums on the soda button.
+        driftingText(c, 'NATALIE!', p.x + 10, p.y - 72, t % 1.4, 1.4, 12, '#ffffff');
+        break;
+      }
+      const n = Math.floor(t / 1.9);
+      const age = t % 1.9;
+      driftingText(c, DICTATION[n % DICTATION.length], p.x + 10, p.y - 72, age, 1.9, 11, '#ffffff');
+      emojiAt(c, '💻', aide.x + aide.facing * 15, aide.y - 28 + Math.abs(Math.sin(sim.time * 16)) * 2, 15);
+      risingText(c, 'POSTED ✓', aide.x, aide.y - 84, age - 1.1, 0.8, 10, GOLD_LIGHT);
+      break;
+    }
+    case 'toilet': {
+      const hx = p.x + p.facing * 15;
+      const hy = p.y - 30 + Math.sin(sim.time * 9) * 1.5;
+      // The glow of the screen on a happy face.
+      c.fillStyle = 'rgba(150,200,255,0.22)';
+      c.beginPath();
+      c.arc(hx, hy, 20 + Math.sin(sim.time * 3) * 2, 0, Math.PI * 2);
+      c.fill();
+      emojiAt(c, '📱', hx, hy, 15);
+      for (let j = 0; j < 3; j++) {
+        const age = (t + j * 0.6) % 1.8;
+        const which = Math.floor((t + j * 0.6) / 1.8) * 3 + j;
+        emojiAt(c, SCROLL[which % SCROLL.length], hx + 8 + j * 9 + Math.sin(age * 4 + j) * 4, hy - 14 - age * 30, 11, 1 - age / 1.8);
+      }
+      break;
+    }
+    case 'nap': {
+      // Out cold at the cabinet table.
+      for (let j = 0; j < 3; j++) risingText(c, 'Z', p.x + 14 + j * 8, p.y - 62, (t + j * 0.5) % 1.5, 1.5, 12 + j * 4, '#ffffff');
+      emojiAt(c, '😴', p.x - 20, p.y - 70 + Math.sin(sim.time * 2) * 2, 14);
+      break;
+    }
+  }
+}
+
 // ---------- Scenery ----------
 
 function palm(c: Ctx, x: number, y: number): void {
@@ -1330,7 +1580,7 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
     if (!o.blocking) continue;
     standing.push({ y: (o.rect.y + o.rect.h) * T, draw: () => drawObject(c, o, s, sim.time, sim.hover === o.id) });
   }
-  for (const n of s.place === 'dc' ? sim.npcs : []) {
+  for (const n of sim.npcs.filter((x) => x.place === s.place)) {
     const look = NPC_LOOK[n.kind];
     standing.push({
       y: n.y,
@@ -1340,7 +1590,7 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
           if (n.angry) bubble(c, n.x, n.y - 70, '💢');
         } else {
           const bounce = n.path.length === 0 ? Math.sin(sim.time * 4 + n.x) * 2 : 0;
-          bubble(c, n.x, n.y - 70 + bounce, look.icon, n.kind === 'crisis' ? '#ffd9d4' : n.kind === 'hybrid' ? '#fff0b8' : '#ffffff');
+          bubble(c, n.x, n.y - 70 + bounce, look.icon, n.kind === 'crisis' ? '#ffd9d4' : n.kind === 'hybrid' || n.place === 'maralago' ? '#fff0b8' : '#ffffff');
         }
         if (sim.hover === n.key) {
           c.strokeStyle = '#ffffff';
@@ -1352,11 +1602,37 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
       },
     });
   }
+  const aide = s.place === 'dc' ? sim.aide : null;
+  if (aide) {
+    standing.push({
+      y: aide.y,
+      draw: () => {
+        person(c, aide, { suit: '#f4f1ea', skin: '#f0c9a8', hair: '#e8cf7a', long: true }, 0);
+        c.font = `700 9px ${FONT}`;
+        const w = c.measureText('Natalie Harp').width + 10;
+        c.fillStyle = 'rgba(10,15,31,0.8)';
+        rr(c, aide.x - w / 2, aide.y - 80, w, 14, 4);
+        c.fill();
+        label(c, 'Natalie Harp', aide.x, aide.y - 73, 9, '#ffffff');
+      },
+    });
+  }
   const act = sim.activity;
-  standing.push({
+  const idle = sim.idle && !sim.idle.walking ? sim.idle.kind : null;
+  // He is aboard while a flight is in the air.
+  if (!act?.flight) standing.push({
     y: sim.pres.y,
     draw: () => {
-      const bob = act ? Math.abs(Math.sin(sim.time * 8)) * 3 : 0;
+      const bob = act ? Math.abs(Math.sin(sim.time * 8)) * 3 : idle === 'press' || idle === 'briefing' ? Math.abs(Math.sin(sim.time * 5)) * 1.5 : 0;
+      if (idle === 'dictate') {
+        // The chair behind the desk.
+        c.fillStyle = '#3a2416';
+        rr(c, sim.pres.x - 15, sim.pres.y - 50, 30, 46, 7);
+        c.fill();
+        c.fillStyle = '#6b3f24';
+        rr(c, sim.pres.x - 12, sim.pres.y - 47, 24, 40, 5);
+        c.fill();
+      }
       person(c, sim.pres, { suit: '#1d2a52', skin: '#f2a35e', hair: '#f2c230', tie: '#d9282f', swoosh: true }, bob);
     },
   });
@@ -1364,10 +1640,13 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   for (const item of standing) item.draw();
 
   drawActivity(c, sim, s);
+  drawIdle(c, sim);
 
   // Above-head status for the president.
   const p = sim.pres;
-  if (act) {
+  if (act?.flight) {
+    // Nothing over his head: he is on board.
+  } else if (act) {
     bubble(c, p.x, p.y - 84, act.emoji);
     const w = 54;
     c.fillStyle = 'rgba(10,15,31,0.85)';

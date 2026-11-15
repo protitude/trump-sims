@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent } from 'react';
 import { cardById, vanityById } from '../game/content.ts';
-import { dutyCost, vanityEgo, vanityStatus } from '../game/engine.ts';
+import { TUNING, dutyCost, vanityEgo, vanityStatus } from '../game/engine.ts';
+import { guestById } from '../game/guests.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
 import { Blocks, Fx } from '../ui.tsx';
 import { drawWorld, hitRectPx } from './draw.ts';
 import type { Actor, Npc, Sim } from './draw.ts';
-import { BEDS, arrival, exists, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
+import { AIDE_SPOT, BEDS, CLUB_GATE, IDLE_SEATS, OVAL_DOOR, arrival, exists, guestSpot, idleKindAt, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
 import { T } from './map.ts';
 import type { Point, Tile } from './map.ts';
 
@@ -16,14 +17,19 @@ interface Props {
   command: { n: number; target: Target } | null;
   onDuty: (cardId: string, option: number) => void;
   onVanity: (actionId: string) => void;
+  onBribe: (guestId: string) => void;
+  onDecline: (guestId: string) => void;
   onEndMonth: () => void;
 }
 
-export type Target = { type: 'object'; id: string } | { type: 'npc'; cardId: string };
+/** `cardId` is a duty card for a visitor in Washington, or a guest id at the club. */
+export type Target = { type: 'object'; id: string } | { type: 'npc'; cardId: string } | { type: 'guest'; cardId: string };
 type Menu = Target & { sx: number; sy: number };
 
 const PRESIDENT_SPEED = 340;
 const VISITOR_SPEED = 210;
+/** Seconds of standing about before he finds something to do by himself. */
+const IDLE_AFTER = 30;
 /** How long an activity takes to watch, by its cost in time blocks. */
 const watchTime = (blocks: number) => 1.6 + 0.8 * blocks;
 
@@ -91,6 +97,8 @@ function createSim(place: Place): Sim {
     pres: { ...start, path: [], facing: 1, walk: 0 },
     npcs: [],
     activity: null,
+    idle: null,
+    aide: null,
     floats: [],
     hover: null,
     time: 0,
@@ -99,12 +107,15 @@ function createSim(place: Place): Sim {
   };
 }
 
+/** Seconds a take-off or a landing takes to watch. */
+const FLIGHT_SECONDS = 2.4;
+
 /** Tile the president stands on to talk to a visitor. */
 function besideVisitor(spot: Tile): Tile {
   return [spot[0] - 2, spot[1]];
 }
 
-export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
+export function World({ state, command, onDuty, onVanity, onBribe, onDecline, onEndMonth }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const simRef = useRef<Sim | null>(null);
@@ -113,8 +124,8 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
 
   const stateRef = useRef(state);
   stateRef.current = state;
-  const callbacks = useRef({ onDuty, onVanity, onEndMonth });
-  callbacks.current = { onDuty, onVanity, onEndMonth };
+  const callbacks = useRef({ onDuty, onVanity, onBribe, onDecline, onEndMonth });
+  callbacks.current = { onDuty, onVanity, onBribe, onDecline, onEndMonth };
 
   const targetRef = useRef<Target | null>(null);
   const [menu, setMenu] = useState<Menu | null>(null);
@@ -137,8 +148,34 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
     setMenu({ ...target, ...toScreen(anchor) });
   };
 
+  /** Seconds he has been standing still with nothing to do. */
+  const idleFor = useRef(0);
+  const menuOpen = useRef(false);
+  menuOpen.current = menu !== null;
+
+  /** Left alone too long: start the scene that suits where he is standing. */
+  const startIdle = () => {
+    const kind = idleKindAt(stateRef.current.place, sim.pres);
+    if (!kind) return;
+    sim.idle = { kind, walking: kind !== 'press', t: 0 };
+    if (kind !== 'press') sim.pres.path = findPath(sim.pres, IDLE_SEATS[kind].tile);
+  };
+
+  /** Any instruction snaps him out of it. */
+  const endIdle = () => {
+    idleFor.current = 0;
+    if (!sim.idle) return;
+    sim.idle = null;
+    sim.pres.seated = false;
+    if (sim.aide && !sim.aide.leaving) {
+      sim.aide.leaving = true;
+      sim.aide.path = findPath(sim.aide, OVAL_DOOR);
+    }
+  };
+
   const walkTo = (tile: Tile, target: Target | null) => {
     setMenu(null);
+    endIdle();
     sim.pres.path = findPath(sim.pres, tile);
     // No route (the other place, or out at sea): stay put and open nothing.
     const goal = tileCenter(tile);
@@ -163,6 +200,7 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
     scene: { anim?: string; objectId?: string; cardId?: string } = {},
   ) {
     setMenu(null);
+    endIdle();
     setBusy(label);
     sim.activity = {
       label,
@@ -189,10 +227,21 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
       advance(sim.pres, PRESIDENT_SPEED, dt);
       for (const n of sim.npcs) advance(n, VISITOR_SPEED, dt);
       sim.npcs = sim.npcs.filter((n) => !(n.leaving && n.path.length === 0));
+      if (sim.aide) {
+        advance(sim.aide, VISITOR_SPEED, dt);
+        if (sim.aide.path.length === 0) {
+          if (sim.aide.leaving) sim.aide = null;
+          else sim.aide.facing = sim.pres.x >= sim.aide.x ? 1 : -1;
+        }
+      }
 
       if (sim.activity) {
         sim.activity.t += dt;
-        if (sim.activity.sleep) sim.fade = Math.min(1, sim.activity.t / sim.activity.dur);
+        const part = sim.activity.t / sim.activity.dur;
+        if (sim.activity.sleep) sim.fade = Math.min(1, part);
+        // Flights black out as they leave and clear as they come in, hiding the change of scene.
+        else if (sim.activity.flight === 'out') sim.fade = Math.max(0, Math.min(1, (part - 0.7) / 0.3));
+        else if (sim.activity.flight === 'in') sim.fade = Math.max(0, 1 - part / 0.35);
         if (sim.activity.t >= sim.activity.dur) {
           const finished = sim.activity;
           sim.activity = null;
@@ -211,6 +260,36 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
           const bed = BEDS[stateRef.current.place];
           walkTo(bed.spot, { type: 'object', id: bed.id });
         }
+      }
+
+      // Idle scenes: left standing about, he finds his own entertainment.
+      const idle = sim.idle;
+      if (idle?.walking) {
+        if (sim.pres.path.length === 0) {
+          // Arrived: sit down (or take the podium), and at the desk send for Natalie.
+          const seat = IDLE_SEATS[idle.kind as Exclude<typeof idle.kind, 'press'>];
+          Object.assign(sim.pres, seat.seat, { facing: seat.facing, seated: !seat.stand });
+          idle.walking = false;
+          if (idle.kind === 'dictate') {
+            sim.aide ??= { ...tileCenter(OVAL_DOOR), path: [], facing: -1, walk: 0, leaving: false };
+            sim.aide.leaving = false;
+            sim.aide.path = findPath(sim.aide, AIDE_SPOT);
+          }
+        }
+      } else if (idle) {
+        idle.t += dt;
+      } else if (
+        !sim.activity &&
+        !targetRef.current &&
+        !bedtime.current &&
+        !menuOpen.current &&
+        sim.pres.path.length === 0 &&
+        stateRef.current.status === 'playing'
+      ) {
+        idleFor.current += dt;
+        if (idleFor.current >= IDLE_AFTER) startIdle();
+      } else {
+        idleFor.current = 0;
       }
 
       for (const f of sim.floats) f.t += dt;
@@ -243,35 +322,44 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
   // ignored ones walk out.
   useEffect(() => {
     const prefix = `${state.month}:`;
-    const wanted = new Set(state.inbox.map((id) => prefix + id));
+    const guestPrefix = `g${state.month}:`;
+    const wanted = new Set([...state.inbox.map((id) => prefix + id), ...state.guests.map((id) => guestPrefix + id)]);
     for (const n of sim.npcs) {
       if (n.leaving || wanted.has(n.key)) continue;
       n.leaving = true;
-      n.angry = !n.key.startsWith(prefix);
-      n.path = findPath(n, ENTRANCE);
+      // Ignored visitors storm out. Guests at the club just drift home.
+      n.angry = n.place === 'dc' && !n.key.startsWith(prefix);
+      n.path = findPath(n, n.place === 'dc' ? ENTRANCE : CLUB_GATE);
     }
+    const taken = (place: Place) => sim.npcs.filter((n) => !n.leaving && n.place === place).map((n) => n.spot);
     for (const id of state.inbox) {
       const key = prefix + id;
       if (sim.npcs.some((n) => n.key === key)) continue;
       const kind = cardById(id).kind;
-      const spot = waitingSpot(
-        kind,
-        sim.npcs.filter((n) => !n.leaving).map((n) => n.spot),
-      );
-      const npc: Npc = { ...tileCenter(ENTRANCE), path: [], facing: -1, walk: 0, key, cardId: id, kind, spot, leaving: false, angry: false };
+      const spot = waitingSpot(kind, taken('dc'));
+      const npc: Npc = { ...tileCenter(ENTRANCE), path: [], facing: -1, walk: 0, key, cardId: id, kind, place: 'dc', spot, leaving: false, angry: false };
       npc.path = findPath(npc, spot);
       sim.npcs.push(npc);
     }
-  }, [state.inbox, state.month, sim]);
+    for (const id of state.guests) {
+      const key = guestPrefix + id;
+      if (sim.npcs.some((n) => n.key === key)) continue;
+      const spot = guestSpot(taken('maralago'));
+      const npc: Npc = { ...tileCenter(CLUB_GATE), path: [], facing: -1, walk: 0, key, cardId: id, kind: guestById(id).kind, place: 'maralago', spot, leaving: false, angry: false };
+      npc.path = findPath(npc, spot);
+      sim.npcs.push(npc);
+    }
+  }, [state.inbox, state.guests, state.month, sim]);
 
   // Float "+5 Ego" style numbers over the president when a meter changes.
-  const previous = useRef({ ego: state.ego, stability: state.stability });
+  const previous = useRef({ ego: state.ego, stability: state.stability, coin: state.coin });
   useEffect(() => {
     const changes: [number, string][] = [
       [state.ego - previous.current.ego, 'Ego'],
       [state.stability - previous.current.stability, 'Stability'],
+      [state.coin - previous.current.coin, 'Coin'],
     ];
-    previous.current = { ego: state.ego, stability: state.stability };
+    previous.current = { ego: state.ego, stability: state.stability, coin: state.coin };
     let row = 0;
     for (const [delta, name] of changes) {
       if (delta === 0) continue;
@@ -284,15 +372,27 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
       });
       row += 1;
     }
-  }, [state.ego, state.stability, sim]);
+  }, [state.ego, state.stability, state.coin, sim]);
 
   // Stepping off the plane or helicopter: appear at the arrival spot of the new place.
   const lastPlace = useRef(state.place);
+  const flew = useRef(false);
   useEffect(() => {
     if (state.place === lastPlace.current) return;
     lastPlace.current = state.place;
+    endIdle();
+    sim.aide = null;
     Object.assign(sim.pres, tileCenter(arrival(state)), { path: [] });
     targetRef.current = null;
+    // Arriving by air, as opposed to a new game: watch it come in to land.
+    if (flew.current) {
+      flew.current = false;
+      const heli = state.vehicle === 'heli';
+      const pad = heli ? (state.place === 'dc' ? 'garden' : 'mal-helipad') : state.place === 'dc' ? 'plane' : 'mal-plane';
+      sim.fade = 1;
+      perform('Landing', heli ? '🚁' : '✈️', FLIGHT_SECONDS, () => {}, { anim: heli ? 'land-heli' : 'land-plane', objectId: pad });
+      sim.activity!.flight = 'in';
+    }
   }, [state.place, sim]);
 
   // When the month's time runs out he walks to the nearest bed and sleeps.
@@ -328,10 +428,10 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
   };
 
   const hit = (p: Point): { target: Target; key: string; tile: Tile } | null => {
-    for (const n of stateRef.current.place === 'dc' ? sim.npcs : []) {
-      if (n.leaving) continue;
+    for (const n of sim.npcs) {
+      if (n.leaving || n.place !== stateRef.current.place) continue;
       if (Math.abs(p.x - n.x) < 20 && p.y > n.y - 102 && p.y < n.y + 8) {
-        return { target: { type: 'npc', cardId: n.cardId }, key: n.key, tile: besideVisitor(n.spot) };
+        return { target: { type: n.place === 'dc' ? 'npc' : 'guest', cardId: n.cardId }, key: n.key, tile: besideVisitor(n.spot) };
       }
     }
     // Smallest object first, so the phone wins over the carpet behind it.
@@ -373,7 +473,50 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
       : { left, bottom: Math.max(8, height - menu.sy + 34), maxHeight: height - Math.max(8, height - menu.sy + 34) - 8 };
 
     let body = null;
-    if (menu.type === 'npc') {
+    if (menu.type === 'guest') {
+      const guest = guestById(menu.cardId);
+      const affordable = TUNING.bribeCost <= state.blocks;
+      body = (
+        <article className="card kind-hybrid">
+          <div className="card-head">
+            <span className="kind">{guest.kind === 'ceo' ? 'Tech boss' : 'Media personality'}</span>
+            <Blocks n={TUNING.bribeCost} />
+          </div>
+          <h3>{guest.title}</h3>
+          <p>{guest.text}</p>
+          <div className="options">
+            <button
+              className="option"
+              disabled={!affordable}
+              onClick={() =>
+                perform('Taking the coin', '🪙', watchTime(TUNING.bribeCost), () => callbacks.current.onBribe(guest.id), {
+                  anim: 'duty-hybrid',
+                  cardId: guest.id,
+                })
+              }
+            >
+              <span>Take the coin</span>
+              <Fx effects={guest.effects} />
+            </button>
+            <button
+              className="option"
+              onClick={() => {
+                setMenu(null);
+                callbacks.current.onDecline(guest.id);
+              }}
+            >
+              <span>Send them away (no time)</span>
+              <Fx effects={{ ego: TUNING.declineEgo }} />
+            </button>
+          </div>
+          {!affordable && <div className="ignore">Not enough time left this month.</div>}
+          <div className="ignore">
+            One time in {Math.round(1 / TUNING.leakChance)} somebody talks. If the story runs, you lose {TUNING.leakTimes} times what
+            the deal gave you.
+          </div>
+        </article>
+      );
+    } else if (menu.type === 'npc') {
       const card = cardById(menu.cardId);
       const cost = dutyCost(state, card);
       const affordable = cost <= state.blocks;
@@ -463,12 +606,15 @@ export function World({ state, command, onDuty, onVanity, onEndMonth }: Props) {
                     perform(
                       action.title,
                       VANITY_EMOJI[action.id] ?? VANITY_EMOJI[action.category],
-                      action.travelTo ? 1.8 : watchTime(action.cost),
-                      () => callbacks.current.onVanity(action.id),
+                      action.travelTo ? FLIGHT_SECONDS : watchTime(action.cost),
+                      () => {
+                        flew.current = Boolean(action.travelTo);
+                        callbacks.current.onVanity(action.id);
+                      },
                       { anim: grouped ? action.category : action.id, objectId: object.id },
                     );
-                    // Flights fade to black so the change of scene is hidden.
-                    if (action.travelTo) sim.activity!.sleep = true;
+                    // The craft takes off, with him aboard, and the scene changes in the dark.
+                    if (action.travelTo) sim.activity!.flight = 'out';
                   }}
                 >
                   <span className="vanity-main">

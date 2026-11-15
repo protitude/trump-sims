@@ -826,5 +826,57 @@
       "text": "The calendar fills with lunches, and with a man you never invited."
     },
     "inspiredBy": "Tension and turnover around White House chiefs of staff and schedulers, reported 2025."
+  },
+  {
+    "id": "gov-paper-plan",
+    "kind": "briefing",
+    "title": "Continuity Without Email",
+    "text": "After the cloud outage, IT staff brief you on how the government runs when email, chat and the AI assistant all stop. The briefing is on paper, on purpose.",
+    "cost": 2,
+    "options": [
+      {
+        "label": "Read the paper plan",
+        "effects": {
+          "stability": 8,
+          "ego": -3
+        },
+        "result": "You now know where the fax machines are. There are four. One works, and it has been given a guard."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "Plan unread. In the next outage, agencies will coordinate by standing near each other."
+    },
+    "inspiredBy": "November 2026: a Microsoft 365 outage hit Outlook, Teams and Copilot in more than 70 countries for over a day."
+  },
+  {
+    "id": "gov-cable-call",
+    "kind": "call",
+    "title": "The Cable Call",
+    "text": "Your transport secretary calls after the nationwide ground stop. The air traffic system failed during an upgrade. He would like money to finish the upgrade.",
+    "cost": 1,
+    "options": [
+      {
+        "label": "Approve the full replacement",
+        "effects": {
+          "stability": 6,
+          "ego": -3
+        },
+        "result": "The replacement is funded. It is beige, it works, and it will be finished by a later president."
+      },
+      {
+        "label": "Ask if the towers can be gold",
+        "effects": {
+          "ego": 5,
+          "stability": -5
+        },
+        "result": "The towers will have gold trim. The system inside them is from 1994 and has started making a noise."
+      }
+    ],
+    "ignore": {
+      "stability": -4,
+      "text": "The call went unreturned. The secretary fixed the system himself, with tape. It is holding, he says."
+    },
+    "inspiredBy": "November 13, 2026: the FAA halted all US departures for over four hours after a communication outage; 10,000+ flights were disrupted."
   }
 ]
