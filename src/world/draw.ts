@@ -32,9 +32,10 @@ export interface Aide extends Actor {
   /**
    * What she is doing: trailing him, shut out of the Cabinet Room, taking
    * dictation at the desk, running after the golf cart, grabbing bills by
-   * the pool, kicking his ball into the hole, or at the bedside.
+   * the pool, kicking his ball into the hole, applauding his turn in the
+   * motorcade, or at the bedside.
    */
-  mode: 'follow' | 'barred' | 'dictate' | 'chase' | 'grab' | 'kick' | 'bedside';
+  mode: 'follow' | 'barred' | 'dictate' | 'chase' | 'grab' | 'kick' | 'clap' | 'bedside';
   /** Seconds until she next works out where he has gotten to. */
   think: number;
   /** Which end of the corridor she is pacing toward, and whether she has started. */
@@ -1834,6 +1835,262 @@ function bill(c: Ctx, x: number, y: number, angle: number, squash: number, alpha
   c.restore();
 }
 
+// The motorcade: a dump truck, a fire truck, a police cruiser and an electric
+// car pull up on the avenue one after another, and he sits in each.
+type Ride = 'dump' | 'fire' | 'police' | 'tesla';
+const RIDES: Ride[] = ['dump', 'fire', 'police', 'tesla'];
+/** Seconds each ride gets: it pulls up, he climbs in, makes his noise, and climbs out. */
+const RIDE_LEG = 6.2;
+const RIDE_ARRIVE = 1.4;
+const RIDE_BOARD = 0.45;
+const RIDE_ALIGHT = 5.3;
+/** Seconds the one before takes to drive off. */
+const RIDE_LEAVE = 1.1;
+/** The window he is seen through, measured from the middle of the vehicle at road level, as if its nose were to the right. */
+const RIDE_WINDOW: Record<Ride, Rect> = {
+  dump: { x: 32, y: -62, w: 26, h: 32 },
+  fire: { x: 38, y: -60, w: 26, h: 32 },
+  police: { x: -6, y: -52, w: 26, h: 26 },
+  tesla: { x: -8, y: -51, w: 26, h: 26 },
+};
+/** How far forward of its middle each one's nose is. */
+const RIDE_NOSE: Record<Ride, number> = { dump: 64, fire: 72, police: 52, tesla: 52 };
+const HONKS: Record<Exclude<Ride, 'tesla'>, string[]> = {
+  dump: ['HONK!', 'HOOONK!', 'HONK HONK!'],
+  fire: ['HOOOOONK!', 'WEE-OO!', 'HONK!'],
+  police: ['HONK!', 'WOOP WOOP!', 'HONK HONK!'],
+};
+const HONK_EVERY = 0.8;
+const PROUD = ["THAT'S MY BIG BOY!", 'SO PROUD, SIR!', 'WHAT A DRIVER!', 'BEAUTIFUL HONKING, SIR!', 'YOU DID IT, SIR!', 'SUCH A BIG TRUCK, SIR!', 'YAY, SIR!'];
+const COMPUTER_EVERY = 1.9;
+
+/** Where the motorcade has gotten to: which ride is at the curb, and whether he is in it. */
+function motorcadeAt(p: Point, t: number) {
+  const n = Math.floor(t / RIDE_LEG);
+  const a = t % RIDE_LEG;
+  const kind = RIDES[n % RIDES.length];
+  const win = RIDE_WINDOW[kind];
+  // The lane is just behind him, and each ride stops with its door where he stands.
+  const lane = p.y - 14;
+  // They come in from the right and drive off to the left.
+  const stopFor = (ride: Ride) => p.x + RIDE_WINDOW[ride].x + RIDE_WINDOW[ride].w / 2;
+  const stop = stopFor(kind);
+  const x = stop + (1 - clamp01(a / RIDE_ARRIVE)) ** 2 * (REGIONS.dc.w + 220 - stop);
+  const previous = n > 0 && a < RIDE_LEAVE ? RIDES[(n - 1) % RIDES.length] : null;
+  const leaving = previous ? stopFor(previous) - (a / RIDE_LEAVE) ** 2 * (stopFor(previous) + 220) : 0;
+  /** The left edge of the window, now that it is turned around. */
+  const glass = x - win.x - win.w;
+  // 0 standing at the curb, 1 in the seat, and in between on his way in or out.
+  const boarding = a < RIDE_ALIGHT ? clamp01((a - RIDE_ARRIVE) / RIDE_BOARD) : 1 - clamp01((a - RIDE_ALIGHT) / RIDE_BOARD);
+  /** Seconds he has been behind the wheel, or negative if he is not. */
+  const aboard = boarding === 1 ? a - RIDE_ARRIVE - RIDE_BOARD : -1;
+  return { a, kind, win, lane, x, glass, previous, leaving, boarding, aboard };
+}
+
+function wheels(c: Ctx, xs: number[], r: number, hub: string): void {
+  for (const wx of xs) {
+    c.fillStyle = '#1b1f2e';
+    c.beginPath();
+    c.arc(wx, -r + 1, r, 0, Math.PI * 2);
+    c.fill();
+    c.fillStyle = hub;
+    c.beginPath();
+    c.arc(wx, -r + 1, r * 0.45, 0, Math.PI * 2);
+    c.fill();
+  }
+}
+
+/** One of the motorcade, nose to the left, its wheels on the road at (x, y). `live` while he is making it go. */
+function ride(c: Ctx, kind: Ride, x: number, y: number, time: number, live: boolean): void {
+  const win = RIDE_WINDOW[kind];
+  const flash = Math.floor(time * 6) % 2 === 0;
+  c.save();
+  c.translate(x, y + (live ? Math.sin(time * 40) * 0.8 : 0));
+  // Drawn nose to the right, and turned around.
+  c.scale(-1, 1);
+  c.fillStyle = 'rgba(0,0,0,0.25)';
+  c.beginPath();
+  c.ellipse(0, 1, RIDE_NOSE[kind] + 6, 8, 0, 0, Math.PI * 2);
+  c.fill();
+
+  switch (kind) {
+    case 'dump': {
+      // The bed goes up while he leans on the horn.
+      const tip = live ? 0.16 + Math.sin(time * 3) * 0.14 : 0;
+      c.strokeStyle = '#8d939e';
+      c.lineWidth = 4;
+      c.beginPath();
+      c.moveTo(-6, -20);
+      c.lineTo(-56 + 52 * Math.cos(tip), -24 - 52 * Math.sin(tip));
+      c.stroke();
+      c.save();
+      c.translate(-56, -22);
+      c.rotate(-tip);
+      c.fillStyle = '#d9881c';
+      c.beginPath();
+      c.moveTo(-8, 0);
+      c.lineTo(-12, -38);
+      c.lineTo(84, -38);
+      c.lineTo(78, 0);
+      c.fill();
+      c.fillStyle = '#f2a52c';
+      c.fillRect(-10, -38, 92, 5);
+      c.fillStyle = 'rgba(0,0,0,0.14)';
+      for (let i = 0; i < 4; i++) c.fillRect(6 + i * 20, -32, 3, 30);
+      c.restore();
+      c.fillStyle = '#2b2f3a';
+      c.fillRect(-62, -22, 124, 9);
+      c.fillStyle = '#f2b632';
+      rr(c, 26, -68, 38, 54, 6);
+      c.fill();
+      c.fillStyle = '#2b2f3a';
+      c.fillRect(58, -20, 9, 7);
+      c.fillRect(22, -76, 4, 30);
+      wheels(c, [-44, -22, 44], 10, '#c9c9c4');
+      break;
+    }
+    case 'fire': {
+      c.fillStyle = '#c9212a';
+      rr(c, -72, -50, 106, 38, 5);
+      c.fill();
+      rr(c, 30, -66, 42, 54, 6);
+      c.fill();
+      c.fillStyle = '#f4f1ea';
+      c.fillRect(-72, -32, 142, 4);
+      // The ladder along the top, and the hose reel on the side.
+      c.strokeStyle = '#d7dbe2';
+      c.lineWidth = 2.5;
+      c.beginPath();
+      c.moveTo(-68, -60);
+      c.lineTo(26, -60);
+      c.moveTo(-68, -53);
+      c.lineTo(26, -53);
+      for (let lx = -62; lx <= 22; lx += 12) {
+        c.moveTo(lx, -60);
+        c.lineTo(lx, -53);
+      }
+      c.stroke();
+      c.strokeStyle = GOLD_LIGHT;
+      c.lineWidth = 3;
+      c.beginPath();
+      c.arc(-30, -40, 6, 0, Math.PI * 2);
+      c.stroke();
+      c.fillStyle = '#d7dbe2';
+      c.fillRect(66, -22, 9, 7);
+      c.fillStyle = live && flash ? '#ffffff' : '#ff4d4d';
+      rr(c, 44, -72, 14, 7, 3);
+      c.fill();
+      if (live) {
+        c.fillStyle = `rgba(255,80,80,${flash ? 0.28 : 0.12})`;
+        c.beginPath();
+        c.arc(51, -70, 22, 0, Math.PI * 2);
+        c.fill();
+      }
+      wheels(c, [-48, -24, 50], 10, '#d7dbe2');
+      break;
+    }
+    case 'police':
+    case 'tesla': {
+      const police = kind === 'police';
+      const paint = police ? '#1b1f2e' : '#c2222c';
+      // A low body, and the cabin on top of it: boxy for the cruiser, one long curve for the other.
+      c.fillStyle = paint;
+      rr(c, -52, -28, 104, 20, 8);
+      c.fill();
+      c.beginPath();
+      if (police) {
+        c.moveTo(-36, -26);
+        c.lineTo(-26, -55);
+        c.lineTo(22, -55);
+        c.lineTo(36, -26);
+      } else {
+        c.moveTo(-48, -24);
+        c.bezierCurveTo(-30, -56, 8, -62, 44, -24);
+      }
+      c.fill();
+      if (police) {
+        c.fillStyle = '#f4f6fa';
+        c.fillRect(-12, -28, 38, 17);
+        c.save();
+        c.scale(-1, 1);
+        label(c, 'POLICE', -7, -19, 7, '#1b1f2e');
+        c.restore();
+        c.fillStyle = live && !flash ? '#5a1418' : '#ff3b3b';
+        c.fillRect(-10, -61, 11, 6);
+        c.fillStyle = live && flash ? '#16245a' : '#3b6bff';
+        c.fillRect(1, -61, 11, 6);
+        if (live) {
+          c.fillStyle = flash ? 'rgba(255,60,60,0.25)' : 'rgba(60,110,255,0.25)';
+          c.beginPath();
+          c.arc(flash ? -5 : 7, -58, 22, 0, Math.PI * 2);
+          c.fill();
+        }
+      } else {
+        c.fillStyle = 'rgba(255,255,255,0.22)';
+        c.fillRect(-44, -20, 90, 2);
+      }
+      c.fillStyle = police ? '#ffe9a8' : '#ffffff';
+      c.fillRect(47, -24, 5, 5);
+      c.fillStyle = '#ff4d4d';
+      c.fillRect(-52, -24, 4, 5);
+      wheels(c, [-30, 30], 8, police ? '#8d939e' : '#d7dbe2');
+      break;
+    }
+  }
+
+  // The window he sits behind, drawn last so that he can be put in it.
+  c.fillStyle = '#a9d3e6';
+  rr(c, win.x, win.y, win.w, win.h, 4);
+  c.fill();
+  // The big screen, lit up, when there is someone to be impressed by it.
+  if (kind === 'tesla' && live) {
+    c.fillStyle = `rgba(190,235,255,${0.75 + Math.sin(time * 9) * 0.25})`;
+    c.fillRect(win.x + win.w - 5, win.y + 11, 4, 12);
+  }
+  if (live && kind !== 'tesla') {
+    // The horn.
+    c.strokeStyle = 'rgba(255,255,255,0.8)';
+    c.lineWidth = 2;
+    for (let i = 0; i < 3; i++) {
+      const age = (time * 2.5 + i / 3) % 1;
+      c.globalAlpha = 1 - age;
+      c.beginPath();
+      c.arc(RIDE_NOSE[kind] + 2, -24, 6 + age * 22, -0.7, 0.7);
+      c.stroke();
+    }
+    c.globalAlpha = 1;
+  }
+  c.restore();
+}
+
+/** The president and whatever has pulled up for him: at the curb, climbing in, or behind the wheel. */
+function motorcade(c: Ctx, sim: Sim, look: Look): void {
+  const p = sim.pres;
+  const m = motorcadeAt(p, sim.idle!.t);
+  const live = m.aboard > 0.15;
+  if (m.previous) ride(c, m.previous, m.leaving, m.lane, sim.time, false);
+  ride(c, m.kind, m.x, m.lane, sim.time, live);
+  if (m.boarding === 1) {
+    // Seen through the window, and nowhere else.
+    c.save();
+    c.beginPath();
+    c.rect(m.glass, m.lane + m.win.y - 1, m.win.w, m.win.h + 1);
+    c.clip();
+    person(c, { ...p, x: m.glass + m.win.w / 2 + 2, y: m.lane + m.win.y + 67, facing: -1 }, look, live ? Math.abs(Math.sin(sim.time * 9)) * 1.5 : 0);
+    c.restore();
+    c.strokeStyle = 'rgba(255,255,255,0.55)';
+    c.lineWidth = 2;
+    c.beginPath();
+    c.moveTo(m.glass + m.win.w - 5, m.lane + m.win.y + 13);
+    c.lineTo(m.glass + m.win.w - 13, m.lane + m.win.y + 4);
+    c.stroke();
+    return;
+  }
+  // At the curb he watches it come; then one hop to the door, or back down from it.
+  const k = m.boarding;
+  person(c, { ...p, y: p.y + (m.lane + 4 - p.y) * k - Math.sin(k * Math.PI) * 10, facing: m.a < RIDE_ARRIVE ? 1 : -1 }, look, 0);
+}
+
 /** Draws what the president does when left alone, on top of the scene. */
 function drawIdle(c: Ctx, sim: Sim): void {
   const idle = sim.idle;
@@ -2061,6 +2318,28 @@ function drawIdle(c: Ctx, sim: Sim): void {
         risingText(c, GRABBED[Math.floor((t + 1.2) / 3.1) % GRABBED.length], aide.x, aide.y - 92, (t + 1.2) % 3.1, 1.6, 10, GOLD_LIGHT);
       }
       risingText(c, RAIN[Math.floor(t / 2.6) % RAIN.length], p.x, p.y - 100, t % 2.6, 1.8, 12, '#ffffff');
+      break;
+    }
+    case 'motorcade': {
+      // The noise each one makes with him in it. The last has no horn worth the name, so he supplies his own.
+      const m = motorcadeAt(p, t);
+      // Natalie, behind him on the grass, could not be prouder.
+      const aide = sim.aide;
+      if (aide.mode === 'clap' && aide.path.length === 0) {
+        const clap = Math.abs(Math.sin(sim.time * 11));
+        emojiAt(c, '👏', aide.x + aide.facing * (9 + clap * 3), aide.y - 34 - clap * 3, 13);
+        risingText(c, PROUD[Math.floor((t + 0.9) / 2.3) % PROUD.length], aide.x, aide.y - 92, (t + 0.9) % 2.3, 1.7, 10, GOLD_LIGHT);
+      }
+      if (m.aboard < 0.15) break;
+      const h = m.aboard - 0.15;
+      if (m.kind === 'tesla') {
+        risingText(c, 'EVERYTHING IS COMPUTER!', p.x, m.lane - 84, h % COMPUTER_EVERY, 1.6, 13, '#ffffff');
+        emojiAt(c, '🖥️', m.x - 34, m.lane - 70 + Math.sin(sim.time * 5) * 2, 14);
+      } else {
+        const honks = HONKS[m.kind];
+        const x = m.x - RIDE_NOSE[m.kind] - 6 + Math.sin(sim.time * 30) * 1.5;
+        risingText(c, honks[Math.floor(h / HONK_EVERY) % honks.length], x, m.lane - 78, h % HONK_EVERY, HONK_EVERY, 13, GOLD_LIGHT);
+      }
       break;
     }
     case 'nap': {
@@ -2353,7 +2632,8 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
       draw: () => {
         const sobbing = aide.mode === 'barred';
         const kick = aide.mode === 'kick' && aide.path.length === 0 ? golfKick(sim.activity) : 0;
-        woman(c, aide, NATALIE, sobbing ? Math.abs(Math.sin(sim.time * 9)) * 2 : 0, kick);
+        const clapping = aide.mode === 'clap' && aide.path.length === 0;
+        woman(c, aide, NATALIE, sobbing ? Math.abs(Math.sin(sim.time * 9)) * 2 : clapping ? Math.abs(Math.sin(sim.time * 11)) * 3 : 0, kick);
         if (sobbing) {
           // Shut out of the Cabinet Room: tears, and a great deal of noise.
           c.fillStyle = '#7fc4ff';
@@ -2389,6 +2669,10 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   if (!act?.flight && !act?.sleep) standing.push({
     y: sim.pres.y,
     draw: () => {
+      if (idle === 'motorcade') {
+        motorcade(c, sim, { suit: '#1d2a52', skin: '#f2a35e', hair: '#f2c230', tie: '#d9282f', swoosh: true });
+        return;
+      }
       if (idle === 'cart') {
         golfCart(c, sim.pres.x, sim.pres.y, sim.pres.facing, sim.time, false);
         person(c, { ...sim.pres, y: sim.pres.y - 10 }, { suit: '#1d2a52', skin: '#f2a35e', hair: '#f2c230', tie: '#d9282f', swoosh: true }, 0);

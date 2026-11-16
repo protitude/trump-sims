@@ -212,7 +212,7 @@ export function guestSpot(taken: Tile[]): Tile {
 // ---------- Idle scenes ----------
 
 /** What the president drifts into when left standing about. */
-export type IdleKind = 'press' | 'briefing' | 'dictate' | 'toilet' | 'nap' | 'cart' | 'dinner' | 'rain';
+export type IdleKind = 'press' | 'briefing' | 'dictate' | 'toilet' | 'nap' | 'cart' | 'dinner' | 'rain' | 'motorcade';
 
 /** The club itself at Mar-a-Lago: the terrace, which counts as indoors. */
 const CLUB: Rect = { x: 4, y: 61, w: 28, h: 13 };
@@ -224,6 +224,15 @@ const inRoom = (t: Tile, name: string): boolean => {
   const r = ROOMS.find((room) => room.name === name)!.rect;
   return t[0] >= r.x && t[0] < r.x + r.w && t[1] >= r.y && t[1] < r.y + r.h;
 };
+
+/** The first row of the avenue along the bottom of Washington. */
+const AVENUE = 52;
+
+/** Where he waits on the avenue for his rides: the near curb, in from either end. */
+export const curbTile = (p: Point): Tile => [Math.max(8, Math.min(61, tileAt(p)[0])), 54];
+
+/** Where Natalie watches from: on the grass behind the avenue, clear of whatever has pulled up. */
+export const cheerTile = (p: Point): Tile => [tileAt(p)[0] - 6, 51];
 
 /** The idle scene that suits where he is standing, if any. */
 export function idleKindAt(place: Place, p: Point): IdleKind | null {
@@ -242,11 +251,13 @@ export function idleKindAt(place: Place, p: Point): IdleKind | null {
   if (inRoom(t, 'OVAL OFFICE')) return 'dictate';
   if (inRoom(t, 'CABINET ROOM')) return 'nap';
   if (inRoom(t, 'PRESS ROOM')) return 'briefing';
+  // On the avenue, things with horns pull up for him to sit in.
+  if (t[1] >= AVENUE) return 'motorcade';
   return t[1] >= 23 ? 'press' : null;
 }
 
 /** Where he walks to for an idle scene, and the exact pixel he sits (or stands) at. */
-export const IDLE_SEATS: Record<Exclude<IdleKind, 'press' | 'cart'>, { tile: Tile; seat: Point; facing: 1 | -1; stand?: boolean }> = {
+export const IDLE_SEATS: Record<Exclude<IdleKind, 'press' | 'cart' | 'motorcade'>, { tile: Tile; seat: Point; facing: 1 | -1; stand?: boolean }> = {
   // Behind the podium, looking out over the chairs.
   briefing: { tile: [60, 4], seat: { x: 61 * T, y: 5 * T - 1 }, facing: 1, stand: true },
   // Behind the desk, tucked against its back edge.

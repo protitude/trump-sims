@@ -12,7 +12,7 @@ import { Blocks, Fx, Why, needCoin, needTime } from '../ui.tsx';
 import { drawWorld, hitRectPx } from './draw.ts';
 import type { Actor, Aide, Npc, Sim } from './draw.ts';
 import { nextAffirmations } from './affirmations.ts';
-import { AIDE_GRAB, AIDE_PACE, AIDE_SPOT, BEDS, CLUB_GATE, IDLE_SEATS, arrival, cartLoop, inCabinetRoom, exists, golfShot, guestSpot, idleKindAt, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
+import { AIDE_GRAB, AIDE_PACE, AIDE_SPOT, BEDS, CLUB_GATE, IDLE_SEATS, arrival, cartLoop, cheerTile, curbTile, inCabinetRoom, exists, golfShot, guestSpot, idleKindAt, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
 import { T } from './map.ts';
 import type { Point, Tile } from './map.ts';
 
@@ -203,7 +203,8 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       // The cart is waiting at the right-hand end of its loop.
       const loop = cartLoop(stateRef.current.place);
       sim.pres.path = findPath(sim.pres, tileAt({ x: loop.cx + loop.rx, y: loop.cy }));
-    } else if (kind !== 'press') sim.pres.path = findPath(sim.pres, IDLE_SEATS[kind].tile);
+    } else if (kind === 'motorcade') sim.pres.path = findPath(sim.pres, curbTile(sim.pres));
+    else if (kind !== 'press') sim.pres.path = findPath(sim.pres, IDLE_SEATS[kind].tile);
   };
 
   /** Any instruction snaps him out of it. */
@@ -232,6 +233,8 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
           ? 'chase'
           : idle === 'rain'
             ? 'grab'
+            : idle === 'motorcade'
+            ? 'clap'
             : place === 'dc' && inCabinetRoom(p)
             ? 'barred'
             : 'follow';
@@ -241,6 +244,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       a.pacing = false;
       a.path = mode === 'bedside' ? findPath(a, BEDS[place].spot) : mode === 'dictate' ? findPath(a, AIDE_SPOT) : [];
       if (mode === 'kick' && shot) a.path = [...findPath(a, tileAt(shot.stand)), shot.stand];
+      if (mode === 'clap') a.path = findPath(a, cheerTile(p));
     }
     const gap = Math.hypot(p.x - a.x, p.y - a.y);
     let speed = AIDE_SPEED;
@@ -284,6 +288,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
         break;
       case 'dictate':
       case 'kick':
+      case 'clap':
         break;
     }
     advance(a, speed, dt);
@@ -393,7 +398,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
           if (idle.kind === 'cart') {
             // Arrived at the cart: climb in.
             sim.pres.seated = true;
-          } else {
+          } else if (idle.kind !== 'motorcade') {
             // Arrived: sit down (or take the podium). At the desk, Natalie comes around to take dictation.
             const seat = IDLE_SEATS[idle.kind as Exclude<typeof idle.kind, 'press' | 'cart'>];
             Object.assign(sim.pres, seat.seat, { facing: seat.facing, seated: !seat.stand });
