@@ -36,13 +36,13 @@ Each month plays out like one day:
 | Place | What you do there |
 |---|---|
 | **Residence** | The bed ends the month. The toilet can be gilded. |
-| **Oval Office** | Gild the desk, the soda button, the phone, the fireplace, the portraits and the carpet. Post at 3am from the phone. Rename things at the Big Map. Callers, generals and diplomats wait here. |
+| **Oval Office** | Gild the desk, the soda button, the phone, the fireplace, the portraits and the carpet. Pick up the phone to call someone and tell them off; who is on the line changes after every call and every month. Rename things at the Big Map. Callers, generals and diplomats wait here. |
 | **Cabinet Room** | Aides wait here with briefings and decisions. The Constitution's display case can be gilded. |
 | **Press Room** | Reporters wait here. |
 | **South Lawn** | Seven construction lots in two rows (four monuments above, three buildings below), the Rose Garden, the putting green, the rally stage, the parade stand and the plane. |
 | **Mar-a-Lago** | A separate place, reached by clicking the plane (or the helicopter, once the Rose Garden is a helipad). Golf, dinner on the patio, the playlist, the membership desk, a ballroom to re-gild, and a bed. |
 
-Activities are animated. Golf has a swing and a ball that always goes in, rallies draw a bouncing crowd and confetti, parades send tanks down the avenue, monuments rise out of their lots behind scaffolding, renames get stamped, posts float up in capital letters, and the club members applaud dinner. Visitors get their own touches too: camera flashes for the press, "blah blah" for briefings, a red alert for a crisis.
+Activities are animated. Golf has a swing and a ball that always goes in, rallies draw a bouncing crowd and confetti, parades send tanks down the avenue, monuments rise out of their lots behind scaffolding, renames get stamped, posts are bleated at Natalie in capital letters and typed up on the spot, and the club members applaud dinner. Visitors get their own touches too: camera flashes for the press, "blah blah" for briefings, a red alert for a crisis.
 
 Vanity is visible. Gilded things turn gold and sparkle, monuments rise on their plots, and every rename adds a gold pin to the Big Map.
 
@@ -62,7 +62,7 @@ Vanity is visible. Gilded things turn gold and sparkle, monuments rise on their 
 | **Build** | Seven big projects in two chains. Monuments: Triumphal Arch, 90-Foot Gold Statue, Your Face On The Mountain, Arch Visible From Space. Buildings: Grand Ballroom, Gift Shop, Golden Dome. Huge Ego, but each eats most of a month and hurts Stability. Each lot unlocks when the one before it in its chain is built. |
 | **Rename** | The airport, the gulf, the dollar, Tuesday, the Moon. One block each, but every rename gives a little less Ego than the one before. |
 | **Gild** | Gold-plate things around the house. Small, cheap and harmless. |
-| **Show** | Rallies, golf, parades, posting at 3am. Repeatable, with fading returns. |
+| **Show** | Rallies, golf, parades, posting at 3am, telling people off on the phone. Repeatable, with fading returns. |
 
 ### Trips to Mar-a-Lago
 
@@ -76,9 +76,18 @@ Click the plane on the South Lawn to fly to Mar-a-Lago. Flights are free in both
 
 Two guests are waiting at Mar-a-Lago every month: tech bosses and media people, each with an ask and a stake in your crypto coin. They are listed in the bar at the top wherever you are, but you have to fly down to talk to them. Anyone you do not get to has gone home by next month, at no cost.
 
-- **Take the coin.** One time block. You grant the ask, and get Ego, Stability and coin, all shown on the button. Coin does nothing during the game; it counts toward the final score.
+- **Take the coin.** One time block. You grant the ask, and get Ego, Stability and coin, all shown on the button. Coin is spent on Natalie's errands; whatever is left counts toward the final score.
 - **Send them away.** No time, −2 Ego.
 - **The catch.** Each bribe has a 10% chance of leaking, rolled in secret when you take it. A leak becomes news one to six months later (in the final month at the latest) and takes back three times the Ego and Stability the bribe gave: a deal worth +8 Ego and +10 Stability comes back as −24 and −30. You keep the coin.
+
+### Natalie's errands
+
+Click Natalie, wherever she is, to ask for something.
+
+- **Post at 3am.** One time block. You bleat it, she types it and posts it. Works in Washington and at Mar-a-Lago.
+- **Send her for a McBurger.** One coin, no time. She vanishes, comes back with the bag, and it is gone in seconds. Fast food is not without its risks.
+- **Press the Diet Coke button.** Two coin, no time. She arrives with a can on a silver tray and you get one time block back, up to the usual five. It does nothing in a month where you have not spent any time yet.
+- **Have her pull in the Lawyer.** Three coin, no time, once a month. He sues something, picked at random from `src/game/suits.ts`: +1 Ego, −2 Stability.
 
 The guests are parodies under made-up names. There are 26, in `src/game/cards/guests.json`; they come around again once all have visited.
 

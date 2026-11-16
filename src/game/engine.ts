@@ -4,6 +4,8 @@ import { CONSEQUENCES, SET_PIECE_MONTHS } from './story.ts';
 import { CHAOS, chaosById } from './chaos.ts';
 import type { ChaosOutcome } from './chaos.ts';
 import { GUESTS, guestById } from './guests.ts';
+import { CALLEES, calleeAt } from './calls.ts';
+import { SUITS } from './suits.ts';
 import { MIDTERM_BAR, MIDTERM_MONTH, WHIMS, WHIM_FAIL_EGO, WHIM_MONTHS, activeSeasons, whimById } from './calendar.ts';
 
 // Pure game rules. Every action takes a state and returns a new one, so the
@@ -55,6 +57,18 @@ export const TUNING = {
   leakTimes: 3,
   /** A leak becomes news this many months later, at the earliest and the latest. */
   leakDelay: [1, 6],
+  /** Coin it costs to send Natalie out for lunch. */
+  lunchCost: 1,
+  /** Chance that lunch disagrees with him and ends the month on the spot. */
+  lunchSickChance: 0.3,
+  /** Coin it costs to press the Diet Coke button. */
+  cokeCost: 2,
+  /** Time blocks a Diet Coke gives back. */
+  cokeBlocks: 1,
+  /** Coin the Lawyer bills for a lawsuit. */
+  sueCost: 3,
+  /** What a lawsuit does. It costs no time, once a month. */
+  sueEffects: { ego: 1, stability: -2 } as Effects,
 };
 
 /** mulberry32, with the seed carried in the state so games are replayable. */
@@ -337,6 +351,93 @@ export function declineGuest(state: GameState, guestId: string): GameState {
   return s;
 }
 
+/** Puts somebody else at the top of the phone list. Never the same person twice running. */
+function nextCallee(s: GameState): void {
+  s.callee = ((s.callee ?? 0) + 1 + Math.floor(rand(s) * (CALLEES.length - 1))) % CALLEES.length;
+}
+
+// ---------- Natalie's errands ----------
+
+/**
+ * Natalie fetches a McBurger, paid for in coin. It costs no time, unless it
+ * disagrees with him: then the rest of the month is gone and he is off to
+ * bed, leaving whoever was waiting to be ignored. The player is not warned;
+ * a notice says so when it happens.
+ */
+export function orderLunch(state: GameState): GameState {
+  if (state.status !== 'playing' || state.chaos || state.blocks === 0 || state.coin < TUNING.lunchCost) return state;
+  const s = structuredClone(state);
+  s.coin -= TUNING.lunchCost;
+  count(s, 'lunches');
+  if (rand(s) < TUNING.lunchSickChance) {
+    s.blocks = 0;
+    count(s, 'sick');
+    log(s, 'The McBurger did not agree with you. You have gone straight to bed. Everything else can wait, and will.', 'bad');
+    const waiting = s.inbox.filter((id) => cardById(id).kind !== 'hybrid').length;
+    s.reveals.push({
+      eyebrow: 'Lunch · it did not stay down',
+      title: 'The McBurger Strikes Back',
+      text:
+        'Four bites in, something shifted. You have diarrhea, the worst anybody has ever seen, and you are going to bed right now. ' +
+        (waiting > 0
+          ? `The ${waiting === 1 ? 'person' : `${waiting} people`} still waiting for you will be ignored.`
+          : 'Luckily nobody was waiting for you.') +
+        ' The rest of the month is gone.',
+      effects: {},
+    });
+  } else {
+    log(s, 'Natalie fetched a McBurger. It was gone in four bites. Best burger, everybody says so.', 'ego');
+  }
+  settleWhim(s);
+  checkEnd(s);
+  return s;
+}
+
+/** Whether the Diet Coke button will do anything: `full` means no time has been spent yet. */
+export function cokeStatus(state: GameState): 'ok' | 'no-coin' | 'full' {
+  if (state.blocks >= BLOCKS_PER_MONTH) return 'full';
+  return state.coin >= TUNING.cokeCost ? 'ok' : 'no-coin';
+}
+
+/**
+ * He presses the button on the desk and Natalie arrives with a Diet Coke,
+ * paid for in coin. It gives back a time block, up to a full month's worth.
+ */
+export function pressCokeButton(state: GameState): GameState {
+  if (state.status !== 'playing' || state.chaos || state.blocks === 0 || cokeStatus(state) !== 'ok') return state;
+  const s = structuredClone(state);
+  s.coin -= TUNING.cokeCost;
+  s.blocks = Math.min(BLOCKS_PER_MONTH, s.blocks + TUNING.cokeBlocks);
+  count(s, 'cokes');
+  log(s, 'You pressed the button. A Diet Coke arrived on a silver tray. You have never felt more awake, or more correct.', 'ego');
+  settleWhim(s);
+  checkEnd(s);
+  return s;
+}
+
+/** Whether the Lawyer will take the call: he files one suit a month, and bills in coin. */
+export function sueStatus(state: GameState): 'ok' | 'no-coin' | 'sued' {
+  if (state.sued === state.month) return 'sued';
+  return state.coin >= TUNING.sueCost ? 'ok' : 'no-coin';
+}
+
+/**
+ * Natalie pulls in the Lawyer and he sues something, picked at random. It
+ * costs coin but no time, and can be done once a month.
+ */
+export function sueSomething(state: GameState): GameState {
+  if (state.status !== 'playing' || state.chaos || state.blocks === 0 || sueStatus(state) !== 'ok') return state;
+  const s = structuredClone(state);
+  s.sued = s.month;
+  s.coin -= TUNING.sueCost;
+  apply(s, TUNING.sueEffects);
+  log(s, pick(s, SUITS).result, 'ego');
+  count(s, 'suits');
+  settleWhim(s);
+  checkEnd(s);
+  return s;
+}
+
 /** Leaked bribes whose story runs this month. */
 function landExposures(s: GameState): void {
   const due = s.exposures.filter((e) => e.due <= s.month);
@@ -390,6 +491,7 @@ export function newGame(seed: number = Date.now()): GameState {
   drawInbox(s);
   drawGuests(s);
   offerWhims(s);
+  nextCallee(s);
   return s;
 }
 
@@ -423,7 +525,7 @@ export type VanityAvailability = 'ok' | 'done' | 'locked' | 'no-time' | 'away' |
 
 export function vanityStatus(s: GameState, action: VanityAction): VanityAvailability {
   if (!action.repeatable && s.done[action.id]) return 'done';
-  if ((action.place ?? 'dc') !== s.place) return 'away';
+  if (!action.anywhere && (action.place ?? 'dc') !== s.place) return 'away';
   if (action.requires && !s.done[action.requires]) return 'locked';
   // The way home is whatever you flew out in; the other one is still in Washington.
   if (action.travelTo === 'dc' && (action.vehicle ?? 'plane') !== (s.vehicle ?? 'plane')) return 'no-ride';
@@ -469,6 +571,7 @@ const STAT_FOR_ACTION: Record<string, string> = {
   'resort-golf': 'golf',
   'show-rally': 'rally',
   'show-post': 'post',
+  'show-call': 'call',
   'show-parade': 'parade',
 };
 
@@ -487,7 +590,12 @@ export function doVanity(state: GameState, actionId: string): GameState {
     s.place = action.travelTo;
     s.vehicle = action.vehicle ?? 'plane';
   }
-  log(s, action.result, 'ego');
+  if (action.id === 'show-call') {
+    log(s, calleeAt(s.callee).result, 'ego');
+    nextCallee(s);
+  } else {
+    log(s, action.result, 'ego');
+  }
 
   count(s, action.category);
   if (STAT_FOR_ACTION[action.id]) count(s, STAT_FOR_ACTION[action.id]);
@@ -548,6 +656,7 @@ export function endMonth(state: GameState): GameState {
   }
 
   s.month += 1;
+  nextCallee(s);
   s.blocks = BLOCKS_PER_MONTH;
 
   if (s.whim && s.month > s.whim.deadline) {

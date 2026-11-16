@@ -55,6 +55,8 @@ export interface VanityAction {
   repeatable?: boolean;
   /** Where it can be done. Washington unless stated. */
   place?: Place;
+  /** Done through Natalie, so it can be done wherever he is. */
+  anywhere?: boolean;
   /** Trips move the president here when they finish. */
   travelTo?: Place;
   /** What a trip flies in. The plane unless stated. */
@@ -83,13 +85,15 @@ export type Mood = 'sulking' | 'normal' | 'unleashed';
 
 export interface GameState {
   seed: number;
+  /** Index into CALLEES of whoever is next on the phone list. Moves on after every call and every month. */
+  callee?: number;
   month: number;
   blocks: number;
   ego: number;
   stability: number;
   gold: number;
   names: number;
-  /** Crypto coin padded by guests at Mar-a-Lago. Only counts toward the score. */
+  /** Crypto coin padded by guests at Mar-a-Lago. Spent on Natalie's errands and the Diet Coke button; what is left counts toward the score. */
   coin: number;
   /** Builds + renames completed. Drives ego inflation. */
   monuments: number;
@@ -126,6 +130,8 @@ export interface GameState {
   guests: string[];
   /** Guests not yet dealt this time through the list. */
   guestDeck: string[];
+  /** The month the Lawyer last filed a suit. One a month. */
+  sued?: number;
   /** Bribes that leaked, waiting for the month the story runs. */
   exposures: { id: string; due: number; effects: Effects }[];
   inbox: string[];

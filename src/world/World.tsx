@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent } from 'react';
+import { calleeAt } from '../game/calls.ts';
 import { cardById, vanityById } from '../game/content.ts';
-import { TUNING, dutyCost, vanityEgo, vanityStatus } from '../game/engine.ts';
+import { COKE_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway } from './draw.ts';
+import { TUNING, cokeStatus, dutyCost, sueStatus, vanityEgo, vanityStatus } from '../game/engine.ts';
 import { guestById } from '../game/guests.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
 import { Blocks, Fx } from '../ui.tsx';
@@ -20,12 +22,16 @@ interface Props {
   onVanity: (actionId: string) => void;
   onBribe: (guestId: string) => void;
   onDecline: (guestId: string) => void;
+  onLunch: () => void;
+  onCoke: () => void;
+  onSue: () => void;
   onEndMonth: () => void;
 }
 
 /** `cardId` is a duty card for a visitor in Washington, or a guest id at the club. */
 export type Target = { type: 'object'; id: string } | { type: 'npc'; cardId: string } | { type: 'guest'; cardId: string };
-type Menu = Target & { sx: number; sy: number };
+/** Menus open on a target, or on Natalie, who is always within reach. */
+type Menu = (Target | { type: 'aide' }) & { sx: number; sy: number };
 
 const PRESIDENT_SPEED = 340;
 const VISITOR_SPEED = 210;
@@ -77,6 +83,7 @@ const VANITY_EMOJI: Record<string, string> = {
   gild: '✨',
   'show-golf': '⛳',
   'show-post': '📱',
+  'show-call': '📞',
   'show-rally': '📣',
   'show-parade': '🎖️',
 };
@@ -132,7 +139,7 @@ function besideVisitor(spot: Tile): Tile {
   return [spot[0] - 2, spot[1]];
 }
 
-export function World({ state, command, onDuty, onVanity, onBribe, onDecline, onEndMonth }: Props) {
+export function World({ state, command, onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onEndMonth }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const simRef = useRef<Sim | null>(null);
@@ -141,8 +148,8 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
 
   const stateRef = useRef(state);
   stateRef.current = state;
-  const callbacks = useRef({ onDuty, onVanity, onBribe, onDecline, onEndMonth });
-  callbacks.current = { onDuty, onVanity, onBribe, onDecline, onEndMonth };
+  const callbacks = useRef({ onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onEndMonth });
+  callbacks.current = { onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onEndMonth };
 
   const targetRef = useRef<Target | null>(null);
   const [menu, setMenu] = useState<Menu | null>(null);
@@ -458,6 +465,21 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
     }
   }, [state.ego, state.stability, state.coin, sim]);
 
+  // Lunch came back up: say so over his head before he heads for bed.
+  const sick = state.stats.sick ?? 0;
+  const lastSick = useRef(sick);
+  useEffect(() => {
+    if (sick > lastSick.current) {
+      sim.floats.push({ x: sim.pres.x, y: sim.pres.y - 114, text: '💩 Uh oh', color: '#d9a066', t: 0 });
+      sim.sick = true;
+    }
+    lastSick.current = sick;
+  }, [sick, sim]);
+  // A night's sleep and it is forgotten. Kennedy is not.
+  useEffect(() => {
+    sim.sick = false;
+  }, [state.month, sim]);
+
   // Stepping off the plane or helicopter: appear at the arrival spot of the new place.
   const lastPlace = useRef(state.place);
   const flew = useRef(false);
@@ -482,12 +504,13 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
 
   // When the month's time runs out he walks to the nearest bed and sleeps.
   useEffect(() => {
-    bedtime.current = state.blocks === 0 && state.status === 'playing';
+    // Not while a notice is up: he waits for it to be read before turning in.
+    bedtime.current = state.blocks === 0 && state.status === 'playing' && state.reveals.length === 0;
     if (!bedtime.current) return;
     const bed = BEDS[state.place];
     walkTo(bed.spot, { type: 'object', id: bed.id });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.blocks, state.month, state.place, state.status]);
+  }, [state.blocks, state.month, state.place, state.status, state.reveals.length]);
 
   const lastCommand = useRef(command?.n);
   useEffect(() => {
@@ -529,14 +552,18 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
     return o ? { target: { type: 'object', id: o.id }, key: o.id, tile: o.spot } : null;
   };
 
+  const onAide = (p: Point): boolean => {
+    const a = sim.aide;
+    return !sim.activity?.flight && !aideAway(sim.activity) && Math.abs(p.x - a.x) < 20 && p.y > a.y - 70 && p.y < a.y + 8;
+  };
+
   const onPointerMove = (e: PointerEvent) => {
     const p = worldPoint(e);
     const found = hit(p);
-    // Natalie cannot be clicked, but pointing at her says who she is.
-    const a = sim.aide;
-    const onAide = !sim.activity?.flight && Math.abs(p.x - a.x) < 20 && p.y > a.y - 70 && p.y < a.y + 8;
-    sim.hover = found?.key ?? (onAide ? 'aide' : null);
-    canvasRef.current!.style.cursor = found ? 'pointer' : 'default';
+    // Pointing at Natalie says who she is; clicking her opens her errands.
+    const aide = !found && onAide(p);
+    sim.hover = found?.key ?? (aide ? 'aide' : null);
+    canvasRef.current!.style.cursor = found || aide ? 'pointer' : 'default';
   };
 
   const onPointerDown = (e: PointerEvent) => {
@@ -545,7 +572,13 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
     const p = worldPoint(e);
     const found = hit(p);
     if (found) walkTo(found.tile, found.target);
-    else walkTo(nearestFree(tileAt(p)), null);
+    else if (onAide(p)) {
+      // She is already at his elbow: no walk, just ask.
+      endIdle();
+      sim.pres.path = [];
+      targetRef.current = null;
+      setMenu({ type: 'aide', ...toScreen({ x: sim.aide.x, y: sim.aide.y - 30 }) });
+    } else walkTo(nearestFree(tileAt(p)), null);
   };
 
   // ---------- Interaction menu ----------
@@ -562,7 +595,92 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       : { left, bottom: Math.max(8, height - menu.sy + 34), maxHeight: height - Math.max(8, height - menu.sy + 34) - 8 };
 
     let body = null;
-    if (menu.type === 'guest') {
+    if (menu.type === 'aide') {
+      const affordable = state.coin >= TUNING.lunchCost;
+      const coke = cokeStatus(state);
+      const sue = sueStatus(state);
+      const post = vanityById('show-post');
+      const postStatus = vanityStatus(state, post);
+      body = (
+        <>
+          <h3 className="menu-title">Natalie Harp</h3>
+          <p className="menu-note">"Anything, sir. Anything at all."</p>
+          <button
+            className={`vanity status-${postStatus}`}
+            disabled={postStatus !== 'ok'}
+            onClick={() =>
+              perform(post.title, VANITY_EMOJI[post.id], watchTime(post.cost), () => callbacks.current.onVanity(post.id), { anim: post.id })
+            }
+          >
+            <span className="vanity-main">
+              <span className="vanity-title">{post.title}</span>
+              <span className="vanity-text">{postStatus === 'no-time' ? 'Not enough time left this month.' : post.text}</span>
+            </span>
+            <span className="vanity-side">
+              <Blocks n={post.cost} />
+              <Fx effects={{ ego: vanityEgo(state, post), stability: post.stability }} />
+            </span>
+          </button>
+          <button
+            className={`vanity status-${affordable ? 'ok' : 'no-time'}`}
+            disabled={!affordable}
+            onClick={() => perform('Lunch', '🍔', LUNCH_SECONDS, () => callbacks.current.onLunch(), { anim: 'lunch' })}
+          >
+            <span className="vanity-main">
+              <span className="vanity-title">Send her for a McBurger</span>
+              <span className="vanity-text">
+                {affordable
+                  ? 'Lunch, eaten at speed. Two all-beef patties, no questions.'
+                  : 'You have no coin. Guests at Mar-a-Lago can help with that.'}
+              </span>
+            </span>
+            <span className="vanity-side">
+              <span className="chip bad">−{TUNING.lunchCost} Coin</span>
+            </span>
+          </button>
+          <button
+            className={`vanity status-${coke === 'ok' ? 'ok' : 'no-time'}`}
+            disabled={coke !== 'ok'}
+            onClick={() => perform('Diet Coke', '🥤', COKE_SECONDS, () => callbacks.current.onCoke(), { anim: 'coke' })}
+          >
+            <span className="vanity-main">
+              <span className="vanity-title">Press the Diet Coke button</span>
+              <span className="vanity-text">
+                {coke === 'ok'
+                  ? 'One press, one can, on a silver tray. Buys back a time block.'
+                  : coke === 'full'
+                    ? 'You have not done anything yet this month. Save it.'
+                    : `The button takes ${TUNING.cokeCost} coin. Guests at Mar-a-Lago can help with that.`}
+              </span>
+            </span>
+            <span className="vanity-side">
+              <span className="chip good">+{TUNING.cokeBlocks} Time</span>
+              <span className="chip bad">−{TUNING.cokeCost} Coin</span>
+            </span>
+          </button>
+          <button
+            className={`vanity status-${sue === 'ok' ? 'ok' : 'no-time'}`}
+            disabled={sue !== 'ok'}
+            onClick={() => perform('Suing', '⚖️', SUE_SECONDS, () => callbacks.current.onSue(), { anim: 'sue' })}
+          >
+            <span className="vanity-main">
+              <span className="vanity-title">Have her pull in the Lawyer</span>
+              <span className="vanity-text">
+                {sue === 'sued'
+                  ? 'The Lawyer has filed his one for the month. He is billing for it now.'
+                  : sue === 'no-coin'
+                    ? `The Lawyer wants ${TUNING.sueCost} coin up front. Guests at Mar-a-Lago can help with that.`
+                    : 'He will sue something. He does not know what yet either. No time, once a month.'}
+              </span>
+            </span>
+            <span className="vanity-side">
+              <Fx effects={TUNING.sueEffects} />
+              <span className="chip bad">−{TUNING.sueCost} Coin</span>
+            </span>
+          </button>
+        </>
+      );
+    } else if (menu.type === 'guest') {
       const guest = guestById(menu.cardId);
       const affordable = TUNING.bribeCost <= state.blocks;
       body = (
@@ -669,6 +787,8 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
             {object.actions.map((id) => {
               const action = vanityById(id);
               const status = vanityStatus(state, action);
+              // The phone list has a different name on it every time.
+              const title = action.id === 'show-call' ? `Call ${calleeAt(state.callee).who} and tell them off` : action.title;
               // Off the building lots, an option only appears once it is unlocked.
               if (status === 'locked' && object.kind !== 'plot') return null;
               const note =
@@ -684,7 +804,9 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
                           ? action.vehicle === 'heli'
                             ? 'The helicopter is in Washington. You came by plane.'
                             : 'The plane is in Washington. You came by helicopter.'
-                        : action.text;
+                        : action.id === 'show-call'
+                          ? calleeAt(state.callee).gripe
+                          : action.text;
               return (
                 <button
                   key={id}
@@ -693,7 +815,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
                   onClick={() => {
                     const grouped = ['gild', 'build', 'rename'].includes(action.category);
                     perform(
-                      action.title,
+                      title,
                       VANITY_EMOJI[action.id] ?? VANITY_EMOJI[action.category],
                       action.travelTo ? FLIGHT_SECONDS : watchTime(action.cost),
                       () => {
@@ -707,7 +829,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
                   }}
                 >
                   <span className="vanity-main">
-                    <span className="vanity-title">{action.title}</span>
+                    <span className="vanity-title">{title}</span>
                     <span className="vanity-text">{note}</span>
                   </span>
                   {status !== 'done' && (

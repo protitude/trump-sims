@@ -11,6 +11,9 @@ import {
   endMonth,
   mood,
   newGame,
+  orderLunch,
+  pressCokeButton,
+  sueSomething,
   playDuty,
   resolveChaos,
   score,
@@ -416,6 +419,9 @@ function Game({ music }: { music: Music }) {
         onVanity={(actionId) => setState((s) => s && doVanity(s, actionId))}
         onBribe={(guestId) => setState((s) => s && takeBribe(s, guestId))}
         onDecline={(guestId) => setState((s) => s && declineGuest(s, guestId))}
+        onLunch={() => setState((s) => s && orderLunch(s))}
+        onCoke={() => setState((s) => s && pressCokeButton(s))}
+        onSue={() => setState((s) => s && sueSomething(s))}
         onEndMonth={() => setState((s) => s && endMonth(s))}
       />
 

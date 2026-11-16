@@ -85,7 +85,7 @@ export const OBJECTS: WorldObject[] = [
   // Oval Office
   { id: 'fireplace', name: 'Fireplace', kind: 'fireplace', rect: { x: 19, y: 3, w: 4, h: 2 }, spot: [21, 5], actions: ['gild-fireplace'], blocking: true },
   { id: 'desk', name: 'The Desk', kind: 'desk', rect: { x: 25, y: 5, w: 6, h: 3 }, spot: [28, 8], actions: ['gild-desk', 'gild-soda-button'], blocking: true },
-  { id: 'phone', name: 'The Phone', kind: 'phone', rect: { x: 33, y: 5, w: 2, h: 2 }, spot: [33, 7], actions: ['show-post', 'gild-phone'], blocking: true },
+  { id: 'phone', name: 'The Phone', kind: 'phone', rect: { x: 33, y: 5, w: 2, h: 2 }, spot: [33, 7], actions: ['show-call', 'gild-phone'], blocking: true },
   { id: 'portraits', name: 'Presidential Portraits', kind: 'portraits', rect: { x: 32, y: 2, w: 6, h: 1 }, spot: [35, 3], actions: ['gild-portraits'], blocking: false },
   { id: 'carpet', name: 'The Carpet', kind: 'carpet', rect: { x: 22, y: 10, w: 12, h: 6 }, spot: [28, 12], actions: ['gild-carpet'], blocking: false },
   { id: 'bigmap', name: 'The Big Map', kind: 'bigmap', rect: { x: 18, y: 11, w: 2, h: 4 }, spot: [20, 13], actions: RENAMES, blocking: true },

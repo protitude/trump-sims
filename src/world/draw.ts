@@ -69,6 +69,25 @@ export interface Activity {
   done: () => void;
 }
 
+/** Lunch: Natalie vanishes, is back with the bag, and he eats it. */
+export const LUNCH_SECONDS = 5.5;
+const LUNCH_GONE = 0.35;
+const LUNCH_BACK = 2.4;
+const LUNCH_EAT = 3;
+
+/** Diet Coke: he presses the button, she is there with the tray, he drinks it. */
+export const COKE_SECONDS = 3.6;
+const COKE_PRESS = 0.9;
+const COKE_DRINK = 2;
+/** A lawsuit: Natalie dials, the Lawyer answers, the papers fly. */
+export const SUE_SECONDS = 4;
+const SUE_FILED = 1.6;
+
+/** True while Natalie is out fetching lunch, and so nowhere to be seen. */
+export function aideAway(act: Activity | null): boolean {
+  return act?.anim === 'lunch' && act.t >= LUNCH_GONE && act.t < LUNCH_BACK;
+}
+
 export interface Float {
   x: number;
   y: number;
@@ -90,6 +109,8 @@ export interface Sim {
   time: number;
   /** 0..1 blackout used when sleeping. */
   fade: number;
+  /** Lunch disagreed with him: he blames Kennedy all the way to bed. */
+  sick?: boolean;
   cam: { x: number; y: number; scale: number };
 }
 
@@ -1062,6 +1083,7 @@ function emojiAt(c: Ctx, emoji: string, x: number, y: number, size: number, alph
   c.globalAlpha = 1;
 }
 
+const TELLING_OFF = ['VERY UNFAIR!', 'YOU ARE A LOSER', 'NASTY. VERY NASTY.', 'I MADE YOU', 'NOBODY LIKES YOU', 'DO NOT INTERRUPT', "YOU'RE FIRED!"];
 const POSTS = ['SAD!', 'WITCH HUNT', 'TREMENDOUS', 'FAKE!', 'WINNING!!!', 'MANY PEOPLE'];
 const CROWD_SHIRTS = ['#b3282d', '#3b4f8f', '#e9e2d0', '#56627a'];
 
@@ -1099,6 +1121,16 @@ function speech(c: Ctx, text: string, x: number, y: number, alpha: number): void
   c.textBaseline = 'middle';
   lines.forEach((l, i) => c.fillText(l, x, y - h + 12 + i * 14));
   c.globalAlpha = 1;
+}
+
+/** Whose fault the McBurger was. */
+const KENNEDY = ['KENNEDY DID THIS!', 'BOBBY SAID IT WAS FINE!', 'FIRE KENNEDY!', 'SEED OILS, BOBBY!', 'WHERE WAS KENNEDY?', 'I BLAME BOBBY', 'SOME HEALTH SECRETARY!', 'MAKE ME HEALTHY AGAIN!'];
+const KENNEDY_EVERY = 1.5;
+
+/** One complaint about Kennedy after another, shouted from (x, y). */
+function kennedyRant(c: Ctx, time: number, x: number, y: number): void {
+  const line = KENNEDY[Math.floor(time / KENNEDY_EVERY) % KENNEDY.length];
+  driftingText(c, line, x + Math.sin(time * 30) * 1.5, y, time % KENNEDY_EVERY, KENNEDY_EVERY, 13, '#ffd27a');
 }
 
 const SOBS = ['*sob*', 'SIR?', '*sniff*', 'HE NEEDS ME', '*sob*', 'IS IT OVER YET?', 'I HAVE HIS PRINTOUTS', '*wail*'];
@@ -1255,9 +1287,28 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
       for (let j = 0; j < 9; j++) fan(c, r.x - 30 + j * 26, r.y + r.h + 26, Math.abs(Math.sin(sim.time * 5 + j)) * 3, CROWD_SHIRTS[j % 4], null);
       break;
     }
+    case 'show-call': {
+      // Receiver to his ear, both barrels. Whoever it is gets a word in at the end, into a dead line.
+      const every = 0.6;
+      const n = Math.floor(t / every);
+      const hung = t > act.dur - 0.5;
+      emojiAt(c, '📞', p.x + p.facing * 13 + (hung ? 0 : Math.sin(sim.time * 40) * 1.5), p.y - 44, 15);
+      if (hung) risingText(c, '*CLICK*', p.x, p.y - 84, t - (act.dur - 0.5), 0.5, 13, GOLD_LIGHT);
+      else {
+        driftingText(c, TELLING_OFF[n % TELLING_OFF.length], p.x + Math.sin(sim.time * 30) * 1.5, p.y - 84, t - n * every, every, 13, '#ffffff');
+        risingText(c, 'but sir—', cx, r.y - 6, (t % 1.2) - 0.5, 0.7, 9, '#c9d1dc');
+      }
+      break;
+    }
     case 'show-post': {
-      POSTS.forEach((word, j) => risingText(c, word, p.x + ((j % 3) - 1) * 46, p.y - 92, t - j * 0.35, 1.5, 12, '#ffffff'));
-      emojiAt(c, '📱', p.x + p.facing * 16, p.y - 34, 15);
+      // He bleats it at Natalie; she types it up and sends it, word for word.
+      const a = sim.aide;
+      const every = 0.8;
+      const n = Math.floor(t / every);
+      const age = t - n * every;
+      driftingText(c, POSTS[n % POSTS.length], p.x + Math.sin(sim.time * 30) * 1.5, p.y - 80, age, every, 13, '#ffffff');
+      emojiAt(c, '💻', a.x + a.facing * 15, a.y - 28 + Math.abs(Math.sin(sim.time * 16)) * 2, 15);
+      risingText(c, 'POSTED ✓', a.x, a.y - 84, age - every * 0.55, every * 0.45, 10, GOLD_LIGHT);
       break;
     }
     case 'gild': {
@@ -1376,6 +1427,73 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
       emojiAt(c, '🤝', (p.x + (npc?.x ?? p.x)) / 2, p.y - 36, 18);
       break;
     }
+    case 'coke': {
+      const a = sim.aide;
+      if (t < COKE_PRESS) {
+        // The red button, pressed more than once to be sure.
+        emojiAt(c, '🔴', p.x + p.facing * 14, p.y - 40 + Math.abs(Math.sin(t * 20)) * 3, 13);
+        driftingText(c, 'DIET COKE!', p.x, p.y - 80, t, COKE_PRESS, 11, '#ffffff');
+      } else if (t < COKE_DRINK) {
+        emojiAt(c, '🥤', a.x + a.facing * 14, a.y - 36, 16);
+        driftingText(c, 'RIGHT HERE, SIR!', a.x, a.y - 80, t - COKE_PRESS, COKE_DRINK - COKE_PRESS, 11, '#ffffff');
+      } else {
+        // Tipped right back, then wide awake.
+        const e = t - COKE_DRINK;
+        const gulp = COKE_SECONDS - COKE_DRINK - 0.5;
+        const left = clamp01(1 - e / gulp);
+        if (left > 0) emojiAt(c, '🥤', p.x + p.facing * 8, p.y - 46 + Math.sin(e * 18) * 2, 10 + 8 * left);
+        else emojiAt(c, '⚡', p.x, p.y - 74 - (e - gulp) * 30, 20);
+      }
+      break;
+    }
+    case 'sue': {
+      const a = sim.aide;
+      if (t < SUE_FILED) {
+        emojiAt(c, '📞', a.x + a.facing * 14, a.y - 40 + Math.sin(t * 30) * 1.5, 15);
+        driftingText(c, 'GET ME THE LAWYER!', p.x, p.y - 80, t, SUE_FILED, 11, '#ffffff');
+      } else {
+        // Filed. The papers go out in every direction.
+        const e = t - SUE_FILED;
+        emojiAt(c, '⚖️', p.x, p.y - 78 - Math.min(e, 0.4) * 20, 22);
+        for (let j = 0; j < 5; j++) {
+          const age = clamp01((e - j * 0.18) / 1.6);
+          if (age <= 0 || age >= 1) continue;
+          const angle = -Math.PI / 2 + (j - 2) * 0.55;
+          emojiAt(c, '📜', p.x + Math.cos(angle) * age * 90, p.y - 60 + Math.sin(angle) * age * 70 + age * age * 30, 14, 1 - age);
+        }
+        driftingText(c, 'SEE YOU IN COURT!', p.x, p.y - 96, e, SUE_SECONDS - SUE_FILED, 11, '#ffffff');
+      }
+      break;
+    }
+    case 'lunch': {
+      const a = sim.aide;
+      // A puff of dust where she was, and another when she is back.
+      if (t < LUNCH_GONE + 0.5) emojiAt(c, '💨', a.x, a.y - 30 - t * 10, 22, 1 - t / (LUNCH_GONE + 0.5));
+      else if (t >= LUNCH_BACK - 0.2 && t < LUNCH_BACK + 0.4) emojiAt(c, '💨', a.x, a.y - 30, 22, 1 - (t - LUNCH_BACK + 0.2) / 0.6);
+      if (t < LUNCH_BACK) {
+        driftingText(c, t < 1.2 ? 'RIGHT AWAY, SIR!' : 'WHERE IS SHE?', t < 1.2 ? a.x : p.x + 30, (t < 1.2 ? a.y : p.y) - 80, t < 1.2 ? t : t - 1.2, 1.2, 11, '#ffffff');
+      } else if (t < LUNCH_EAT) {
+        // Back, with the bag held out.
+        emojiAt(c, '🍔', a.x + a.facing * 16, a.y - 36, 18);
+        emojiAt(c, '🥤', a.x + a.facing * 4, a.y - 34, 13);
+      } else {
+        // Both hands, no pauses.
+        const e = t - LUNCH_EAT;
+        const left = clamp01(1 - e / (LUNCH_SECONDS - LUNCH_EAT - 0.3));
+        if (left > 0) emojiAt(c, '🍔', p.x + p.facing * 6 + Math.sin(e * 40) * 2, p.y - 44 + Math.abs(Math.sin(e * 22)) * 3, 8 + 12 * left);
+        c.fillStyle = '#c98a3c';
+        for (let j = 0; j < 6; j++) {
+          const age = (e * 2.4 + j / 6) % 1;
+          const side = j % 2 ? 1 : -1;
+          c.globalAlpha = 1 - age;
+          c.fillRect(p.x + side * (6 + age * 16 + j), p.y - 42 + age * age * 34, 2.5, 2.5);
+        }
+        c.globalAlpha = 1;
+        const noms = ['NOM', 'CHOMP', 'NOM NOM', 'GULP'];
+        risingText(c, noms[Math.floor(e / 0.6) % noms.length], p.x - p.facing * 28, p.y - 56, e % 0.6, 0.6, 12, '#ffe9a8');
+      }
+      break;
+    }
     case 'sleep': {
       // Tucked in: head on the pillow, hands holding the top of the comforter.
       const hx = cx;
@@ -1424,6 +1542,11 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
       }
       const lines = act.lines ?? [];
       const n = Math.floor((t - AFFIRM_START) / AFFIRM_EVERY);
+      // Still on about Kennedy, until he drops off.
+      if (sim.sick && n < lines.length) {
+        emojiAt(c, '🤢', hx - 20, hy - 12, 14);
+        kennedyRant(c, sim.time, hx - 30, hy - 30);
+      }
       const age = t - AFFIRM_START - n * AFFIRM_EVERY;
       if (t >= AFFIRM_START && n < lines.length) {
         const alpha = clamp01(Math.min(age / 0.2, (AFFIRM_EVERY - age) / 0.25));
@@ -1782,7 +1905,7 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   }
   const aide = sim.aide;
   // She is aboard too while a flight is in the air.
-  if (!sim.activity?.flight) {
+  if (!sim.activity?.flight && !aideAway(sim.activity)) {
     standing.push({
       y: aide.y,
       draw: () => {
@@ -1859,6 +1982,10 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
     c.fillStyle = GOLD_LIGHT;
     rr(c, p.x - w / 2, p.y - 76, w * Math.min(1, act.t / act.dur), 6, 3);
     c.fill();
+  } else if (sim.sick) {
+    // Green, clutching nothing in particular, and sure whose fault it is.
+    bubble(c, p.x, p.y - 74 + Math.sin(sim.time * 12) * 2, '🤢', '#dff5c8');
+    kennedyRant(c, sim.time, p.x, p.y - 112);
   } else {
     const m = mood(s);
     if (m !== 'normal') bubble(c, p.x, p.y - 74 + Math.sin(sim.time * 3) * 2, m === 'sulking' ? '🌧️' : '🔥');
