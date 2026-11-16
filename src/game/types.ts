@@ -35,7 +35,7 @@ export interface DutyCard {
 
 export type VanityCategory = 'build' | 'rename' | 'gild' | 'show' | 'trip' | 'resort';
 
-export type Place = 'dc' | 'maralago';
+export type Place = 'dc' | 'maralago' | 'newyork';
 
 export type Vehicle = 'plane' | 'heli';
 
@@ -132,6 +132,12 @@ export interface GameState {
   guestDeck: string[];
   /** The month the Lawyer last filed a suit. One a month. */
   sued?: number;
+  /** Melania is paid for and will stand beside him at the next rally, parade or build. */
+  melania?: boolean;
+  /** The year of the term in which she was last booked. Once a year. */
+  melaniaYear?: number;
+  /** Index into MELANIA_INSULTS of the last thing she said to him. */
+  insult?: number;
   /** Bribes that leaked, waiting for the month the story runs. */
   exposures: { id: string; due: number; effects: Effects }[];
   inbox: string[];

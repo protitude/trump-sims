@@ -1,8 +1,8 @@
-import { BLOCKS_PER_MONTH, mood } from '../game/engine.ts';
+import { BLOCKS_PER_MONTH, melaniaStatus, mood } from '../game/engine.ts';
 import { vanityById } from '../game/content.ts';
 import type { GuestKind } from '../game/guests.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
-import { OBJECTS, REGIONS, ROOMS, T, exists, isWall, objectName } from './map.ts';
+import { OBJECTS, REGIONS, ROOF, ROOMS, T, exists, isWall, objectName } from './map.ts';
 import type { IdleKind, Point, Rect, Tile, WorldObject } from './map.ts';
 
 // Everything on screen is drawn with canvas shapes; there are no image files.
@@ -107,7 +107,7 @@ export interface Sim {
   /** Object id or npc key under the pointer, or 'aide' for Natalie. */
   hover: string | null;
   time: number;
-  /** 0..1 blackout used when sleeping. */
+  /** 0..1 blackout used when sleeping, and to hide the change of scene on a flight. */
   fade: number;
   /** Lunch disagreed with him: he blames Kennedy all the way to bed. */
   sick?: boolean;
@@ -200,8 +200,6 @@ interface Look {
   hair: string;
   tie?: string;
   swoosh?: boolean;
-  /** Hair down to the shoulders. */
-  long?: boolean;
 }
 
 function person(c: Ctx, a: Actor, look: Look, bob: number): void {
@@ -238,12 +236,6 @@ function person(c: Ctx, a: Actor, look: Look, bob: number): void {
     c.fillRect(-2, -38, 4, 23);
   }
 
-  if (look.long) {
-    c.fillStyle = look.hair;
-    rr(c, -11, -54, 22, 20, 5);
-    c.fill();
-  }
-
   c.fillStyle = look.skin;
   c.beginPath();
   c.arc(0, -50, 10, 0, Math.PI * 2);
@@ -264,6 +256,100 @@ function person(c: Ctx, a: Actor, look: Look, bob: number): void {
   c.fillRect(6, -50, 2, 3);
   c.restore();
 }
+
+interface WomanLook {
+  skin: string;
+  hair: string;
+  dress: string;
+  /** The belt, a shade off the dress. */
+  trim: string;
+}
+
+/** A woman: long hair worn over the shoulders, a fitted dress with a flared skirt, and heels. */
+function woman(c: Ctx, a: Actor, look: WomanLook, bob: number): void {
+  const swing = a.path.length > 0 ? Math.sin(a.walk * 14) : 0;
+  c.save();
+  c.translate(a.x, a.y);
+  c.fillStyle = 'rgba(0,0,0,0.25)';
+  c.beginPath();
+  c.ellipse(0, 0, 12, 5, 0, 0, Math.PI * 2);
+  c.fill();
+  c.translate(0, -bob);
+  c.scale(a.facing, 1);
+
+  // Hair first, so it falls behind the shoulders and never under the chin.
+  c.fillStyle = look.hair;
+  rr(c, -12, -58, 24, 26, 8);
+  c.fill();
+
+  // Legs and heels, each foot lifting in turn on the move.
+  const liftL = Math.max(0, swing) * 4;
+  const liftR = Math.max(0, -swing) * 4;
+  c.fillStyle = look.skin;
+  c.fillRect(-5, -14, 3.5, 12 - liftL);
+  c.fillRect(1.5, -14, 3.5, 12 - liftR);
+  c.fillStyle = '#1b1f2e';
+  c.fillRect(-5.5, -2.5 - liftL, 6, 2.5);
+  c.fillRect(1, -2.5 - liftR, 6, 2.5);
+
+  // The dress: narrow shoulders, a waist, and a skirt that flares to the knee.
+  c.fillStyle = look.dress;
+  c.beginPath();
+  c.moveTo(-8, -40);
+  c.lineTo(8, -40);
+  c.lineTo(5.5, -28);
+  c.lineTo(10.5, -12);
+  c.lineTo(-10.5, -12);
+  c.lineTo(-5.5, -28);
+  c.closePath();
+  c.fill();
+  c.fillStyle = look.trim;
+  c.fillRect(-5.5, -29, 11, 2);
+  // Sleeves to the wrist, hands at her sides.
+  c.fillStyle = look.dress;
+  c.fillRect(-11.5, -39, 3.5, 14 + swing * 2);
+  c.fillRect(8, -39, 3.5, 14 - swing * 2);
+  c.fillStyle = look.skin;
+  c.fillRect(-11.5, -25 + swing * 2, 3.5, 3);
+  c.fillRect(8, -25 - swing * 2, 3.5, 3);
+
+  // Neck and face.
+  c.fillRect(-2, -43, 4, 4);
+  c.beginPath();
+  c.arc(0, -50, 9, 0, Math.PI * 2);
+  c.fill();
+
+  // A side part on top, and one lock forward over the far shoulder.
+  c.fillStyle = look.hair;
+  c.beginPath();
+  c.arc(0, -52, 9.6, Math.PI, 0);
+  c.fill();
+  c.beginPath();
+  c.ellipse(-3, -57, 9, 4.5, 0.2, 0, Math.PI * 2);
+  c.fill();
+  rr(c, -11.5, -54, 5, 20, 2.5);
+  c.fill();
+
+  c.fillStyle = '#1b1f2e';
+  c.fillRect(1.5, -51, 2, 2.5);
+  c.fillRect(6, -51, 2, 2.5);
+  c.fillStyle = '#c2334d';
+  rr(c, 2.5, -45.5, 4.5, 1.8, 0.9);
+  c.fill();
+  c.restore();
+}
+
+/** Natalie: blond, in white, a step behind him. */
+const NATALIE: WomanLook = { skin: '#f0c9a8', hair: '#e8cf7a', dress: '#f4f1ea', trim: '#cfc8b6' };
+
+/** Melania: honey-brown hair and a dark navy dress. Not here to be liked. */
+function melaniaFigure(c: Ctx, x: number, y: number, facing: 1 | -1): void {
+  woman(c, { x, y, path: [], facing, walk: 0 }, { skin: '#f0cfb0', hair: '#8a5f34', dress: '#16213f', trim: '#0c1430' }, 0);
+}
+
+/** The activities she turns up at, by animation: the two big shows and anything being built. */
+const withMelania = (act: Activity | null, s: GameState): boolean =>
+  Boolean(s.melania) && (act?.anim === 'show-rally' || act?.anim === 'show-parade' || act?.anim === 'build');
 
 function bubble(c: Ctx, x: number, y: number, emoji: string, fill = '#ffffff'): void {
   c.fillStyle = 'rgba(0,0,0,0.2)';
@@ -524,6 +610,13 @@ function drawObject(c: Ctx, o: WorldObject, s: GameState, time: number, hovered:
       c.fillStyle = '#ffffff';
       rr(c, r.x + 12, r.y + 7, r.w - 24, 20, 6);
       c.fill();
+      break;
+    }
+    case 'melania': {
+      const feet = r.y + r.h - 6;
+      melaniaFigure(c, cx, feet, -1);
+      // Open to offers, or done for the year and rolling her eyes.
+      if (!hovered) bubble(c, cx, feet - 82 + Math.sin(time * 3) * 2, melaniaStatus(s) === 'used' ? '🙄' : '💅', '#fff0b8');
       break;
     }
     case 'toilet': {
@@ -859,6 +952,15 @@ function drawObject(c: Ctx, o: WorldObject, s: GameState, time: number, hovered:
         rr(c, r.x + 14 + i * 44, r.y - 10, 22, 14, 4);
         c.fill();
       }
+      // More chairs along the near side and at either end.
+      for (let i = 0; i < 3; i++) {
+        rr(c, r.x + 14 + i * 44, r.y + r.h + 6, 22, 12, 4);
+        c.fill();
+      }
+      rr(c, r.x - 20, r.y + 18, 14, 20, 4);
+      c.fill();
+      rr(c, r.x + r.w + 6, r.y + 18, 14, 20, 4);
+      c.fill();
       box(c, r, '#ffffff', '#cfcfcf', 8);
       c.fillStyle = GOLD;
       for (let i = 0; i < 3; i++) {
@@ -1084,6 +1186,7 @@ function emojiAt(c: Ctx, emoji: string, x: number, y: number, size: number, alph
 }
 
 const TELLING_OFF = ['VERY UNFAIR!', 'YOU ARE A LOSER', 'NASTY. VERY NASTY.', 'I MADE YOU', 'NOBODY LIKES YOU', 'DO NOT INTERRUPT', "YOU'RE FIRED!"];
+const PLEADING = ['PLEASE?', 'ONE EVENT', 'I WILL PAY', 'PEOPLE ARE ASKING', 'JUST STAND THERE', 'FIVE COIN'];
 const POSTS = ['SAD!', 'WITCH HUNT', 'TREMENDOUS', 'FAKE!', 'WINNING!!!', 'MANY PEOPLE'];
 const CROWD_SHIRTS = ['#b3282d', '#3b4f8f', '#e9e2d0', '#56627a'];
 
@@ -1260,7 +1363,8 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
         for (let x = r.x - 50 + (row % 2) * 11; x <= r.x + r.w + 50; x += 22) {
           i += 1;
           const y = p.y - 34 - row * 18;
-          if (Math.abs(x - p.x) < 24 && row < 2) continue;
+          // The crowd leaves room for him, and for Melania on his right if she came.
+          if (x - p.x > -24 && x - p.x < (withMelania(act, s) ? 54 : 24) && row < 2) continue;
           const bob = Math.abs(Math.sin(sim.time * 7 + i * 1.3)) * 6;
           fan(c, x, y, bob, CROWD_SHIRTS[i % 4], i % 3 === 0 ? null : '#d9282f');
           if (i % 5 === 0) {
@@ -1285,6 +1389,14 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
       const span = REGIONS.dc.w + 300;
       for (let j = 0; j < 5; j++) tank(c, ((t * 170 + j * 260) % span) - 150, y);
       for (let j = 0; j < 9; j++) fan(c, r.x - 30 + j * 26, r.y + r.h + 26, Math.abs(Math.sin(sim.time * 5 + j)) * 3, CROWD_SHIRTS[j % 4], null);
+      break;
+    }
+    case 'melania-ask': {
+      // He asks, several ways. She lets him finish.
+      const every = 0.6;
+      const n = Math.floor(t / every);
+      driftingText(c, PLEADING[n % PLEADING.length], p.x + Math.sin(sim.time * 30) * 1.5, p.y - 84, t - n * every, every, 13, '#ffffff');
+      risingText(c, '*sigh*', cx, r.y - 14, (t % 1.2) - 0.5, 0.7, 9, '#c9d1dc');
       break;
     }
     case 'show-call': {
@@ -1549,15 +1661,25 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
       }
       const age = t - AFFIRM_START - n * AFFIRM_EVERY;
       if (t >= AFFIRM_START && n < lines.length) {
-        const alpha = clamp01(Math.min(age / 0.2, (AFFIRM_EVERY - age) / 0.25));
-        speech(c, lines[n], aide.x + 6, aide.y - 92, alpha);
-        // Each one lands.
+        // Each one lands. The words themselves are drawn last, over the dimmed room: see affirmation().
+
         emojiAt(c, '💛', hx + 16 + Math.sin(age * 5) * 4, hy - 12 - age * 11, 12, 1 - age / AFFIRM_EVERY);
       }
       if (n >= lines.length) for (let j = 0; j < 3; j++) risingText(c, 'Z', hx + 18 + j * 8, hy - 8, (t + j * 0.5) % 1.5, 1.5, 12 + j * 4, '#ffffff');
       break;
     }
   }
+}
+
+/** Tonight's affirmation, in Natalie's speech balloon. Drawn after the room is dimmed, so it stays bright. */
+function affirmation(c: Ctx, sim: Sim): void {
+  const act = sim.activity;
+  if (!act?.sleep || sim.aide.path.length > 0) return;
+  const lines = act.lines ?? [];
+  const n = Math.floor((act.t - AFFIRM_START) / AFFIRM_EVERY);
+  if (act.t < AFFIRM_START || n >= lines.length) return;
+  const age = act.t - AFFIRM_START - n * AFFIRM_EVERY;
+  speech(c, lines[n], sim.aide.x + 6, sim.aide.y - 92, clamp01(Math.min(age / 0.2, (AFFIRM_EVERY - age) / 0.25)));
 }
 
 // ---------- Idle scenes ----------
@@ -1592,6 +1714,33 @@ const SEAT_ORDER = [2, 7, 0, 9, 4, 5, 1, 8, 3, 6];
 const seatAt = (i: number): Point => ({ x: 56.3 * T + (i % 5) * 42 + 13, y: (12.6 + Math.floor(i / 5) * 1.9) * T + 15 });
 const SEAT_EVERY = 0.9;
 const QUESTION_EVERY = 2.8;
+
+/** What the members say once they have sat down at his table. */
+const PRAISE = [
+  'SIR, YOU LOOK SO STRONG',
+  'BEST PRESIDENT EVER',
+  'NOBODY DOES IT LIKE YOU',
+  'THE STEAK IS PERFECT, SIR',
+  'YOU WERE RIGHT ABOUT EVERYTHING',
+  'SUCH BEAUTIFUL HANDS',
+  'GREATER THAN LINCOLN',
+  'THEY WILL STUDY YOU, SIR',
+  'THE CLUB HAS NEVER BEEN BETTER',
+  'YOU HAVE NOT AGED A DAY',
+];
+const BASKING = ['SO TRUE', 'KEEP GOING', 'PEOPLE SAY THAT', 'THANK YOU. GO ON.', 'VERY TRUE'];
+/** Where the members sit, relative to the table's top left corner, in the order they arrive. */
+const DINNER_SEATS: [number, number][] = [
+  [25, -1],
+  [113, -1],
+  [-13, 40],
+  [153, 40],
+  [25, 76],
+  [113, 76],
+  [69, 76],
+];
+const DINNER_SHIRTS = ['#f3ead6', '#2f8f83', '#e9b99a', '#3b4f8f'];
+const PRAISE_EVERY = 2.4;
 
 /** Draws what the president does when left alone, on top of the scene. */
 function drawIdle(c: Ctx, sim: Sim): void {
@@ -1703,6 +1852,35 @@ function drawIdle(c: Ctx, sim: Sim): void {
       risingText(c, JOYRIDE[Math.floor(t / 2.6) % JOYRIDE.length], p.x, p.y - 100, t % 2.6, 1.6, 11, '#ffffff');
       risingText(c, CHASE[Math.floor((t + 1.3) / 2.6) % CHASE.length], aide.x, aide.y - 92, (t + 1.3) % 2.6, 1.6, 10, GOLD_LIGHT);
       emojiAt(c, '💦', aide.x - aide.facing * 14, aide.y - 56 + Math.sin(sim.time * 12) * 2, 11);
+      break;
+    }
+    case 'dinner': {
+      // His table at the club: the chairs fill up, and everyone in them has something nice to say.
+      const r = px(OBJECTS.find((o) => o.id === 'mal-patio')!.rect);
+      const seated = Math.min(DINNER_SEATS.length, Math.floor(t / SEAT_EVERY));
+      const n = Math.floor(t / PRAISE_EVERY);
+      const age = t % PRAISE_EVERY;
+      // Whoever is speaking was already sitting when their turn began.
+      const there = Math.min(DINNER_SEATS.length, Math.floor((n * PRAISE_EVERY) / SEAT_EVERY));
+      const speaker = there > 0 && age < 1.7 ? (n * 3) % there : -1;
+      DINNER_SEATS.forEach(([dx, dy], j) => {
+        if (j >= seated) return;
+        const x = r.x + dx;
+        const y = r.y + dy;
+        const k = Math.min(1, (t - (j + 1) * SEAT_EVERY) / 0.35);
+        const speaking = j === speaker;
+        const bob = speaking ? 2 + Math.abs(Math.sin(sim.time * 9)) * 2 : Math.abs(Math.sin(sim.time * 2 + j)) * 0.8;
+        c.globalAlpha = k;
+        fan(c, x, y + (1 - k) * 8, bob, DINNER_SHIRTS[j % 4], null);
+        c.globalAlpha = 1;
+        if (!speaking && k === 1) emojiAt(c, j % 3 === 0 ? '🥂' : '👏', x + 9, y - 28 - bob, 10, 0.5 + Math.sin(sim.time * 7 + j) * 0.5);
+      });
+      if (speaker >= 0) {
+        const [dx, dy] = DINNER_SEATS[speaker];
+        risingText(c, PRAISE[n % PRAISE.length], r.x + dx, r.y + dy - 40, age, 1.7, 10, GOLD_LIGHT);
+      }
+      // He takes it all in, and asks for more.
+      if (there > 0) driftingText(c, BASKING[n % BASKING.length], p.x + 10, p.y - 72, age - 1.5, 0.9, 11, '#ffffff');
       break;
     }
     case 'nap': {
@@ -1840,6 +2018,89 @@ function maralago(c: Ctx, time: number): void {
   }
 }
 
+/** New York from above: lower roofs and streets all around, and the roof of the tower. */
+function newyork(c: Ctx, time: number): void {
+  const region = REGIONS.newyork;
+  const left = region.x - 900;
+  const top = region.y - 420;
+  const w = region.w + 1800;
+  const h = region.h + 840;
+  c.fillStyle = '#33363f';
+  c.fillRect(left, top, w, h);
+
+  // City blocks, far below, with a street between each.
+  const shades = ['#565b68', '#4b505c', '#646a78', '#515663', '#5d5a66'];
+  for (let j = 0; j * 140 < h; j++) {
+    for (let i = 0; i * 180 < w; i++) {
+      const x = left + i * 180;
+      const y = top + j * 140;
+      const n = (i * 7 + j * 13) % 5;
+      c.fillStyle = shades[n];
+      c.fillRect(x, y, 150, 110);
+      c.fillStyle = 'rgba(255,255,255,0.06)';
+      c.fillRect(x + 8, y + 8, 134, 94);
+      // Whatever is on the roof: a water tank, or a couple of vents.
+      c.fillStyle = n % 2 ? '#7a5a3c' : '#3d414b';
+      if (n % 2) {
+        c.beginPath();
+        c.arc(x + 30 + n * 18, y + 34 + n * 9, 13, 0, Math.PI * 2);
+        c.fill();
+      } else {
+        c.fillRect(x + 22 + n * 14, y + 24, 26, 18);
+        c.fillRect(x + 90 - n * 9, y + 66, 20, 20);
+      }
+    }
+    // Lane markings, and a taxi going nowhere quickly.
+    const street = top + j * 140 + 125;
+    c.fillStyle = 'rgba(255,255,255,0.18)';
+    for (let x = left; x < left + w; x += 40) c.fillRect(x, street - 1, 18, 2);
+    const taxi = left + ((time * (26 + (j % 3) * 9) + j * 310) % w);
+    c.fillStyle = '#f2c230';
+    rr(c, taxi, street - 6, 20, 10, 3);
+    c.fill();
+  }
+
+  // The tower: a long shadow down the side, a parapet, and the roof deck inside it.
+  const roof = px(ROOF);
+  c.fillStyle = 'rgba(0,0,0,0.35)';
+  c.fillRect(roof.x + 26, roof.y + 30, roof.w, roof.h);
+  c.fillStyle = '#2a2420';
+  rr(c, roof.x, roof.y, roof.w, roof.h, 4);
+  c.fill();
+  c.fillStyle = GOLD;
+  rr(c, roof.x + 5, roof.y + 5, roof.w - 10, roof.h - 10, 3);
+  c.fill();
+  c.fillStyle = '#9a9ca6';
+  c.fillRect(roof.x + 10, roof.y + 10, roof.w - 20, roof.h - 20);
+  c.fillStyle = 'rgba(255,255,255,0.07)';
+  for (let x = roof.x + 10; x < roof.x + roof.w - 20; x += 80) c.fillRect(x, roof.y + 10, 40, roof.h - 20);
+
+  // Along the back parapet: the water tank, the air conditioning, and the name.
+  c.fillStyle = '#6b4a2e';
+  c.beginPath();
+  c.arc(roof.x + 40, roof.y + 36, 20, 0, Math.PI * 2);
+  c.fill();
+  c.fillStyle = '#8a6a3b';
+  c.beginPath();
+  c.arc(roof.x + 40, roof.y + 36, 13, 0, Math.PI * 2);
+  c.fill();
+  for (let i = 0; i < 2; i++) {
+    const x = roof.x + roof.w - 78 + i * 34;
+    c.fillStyle = '#6f737d';
+    rr(c, x, roof.y + 20, 28, 28, 4);
+    c.fill();
+    c.strokeStyle = '#3d414b';
+    c.lineWidth = 2;
+    c.beginPath();
+    c.arc(x + 14, roof.y + 34, 9, 0, Math.PI * 2);
+    c.moveTo(x + 14 + Math.cos(time * 6 + i) * 9, roof.y + 34 + Math.sin(time * 6 + i) * 9);
+    c.lineTo(x + 14 - Math.cos(time * 6 + i) * 9, roof.y + 34 - Math.sin(time * 6 + i) * 9);
+    c.stroke();
+  }
+  label(c, 'THE TOWER', roof.x + roof.w / 2, roof.y + roof.h - 42, 18, GOLD_LIGHT);
+  label(c, 'NEW YORK', roof.x + roof.w / 2, roof.y + roof.h - 22, 11, 'rgba(0,0,0,0.3)');
+}
+
 // ---------- Frame ----------
 
 export function hitRectPx(o: WorldObject): Rect {
@@ -1862,13 +2123,14 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
     scale,
   };
 
-  c.fillStyle = s.place === 'dc' ? '#2f5f3a' : '#2f8fc4';
+  c.fillStyle = s.place === 'dc' ? '#2f5f3a' : s.place === 'newyork' ? '#33363f' : '#2f8fc4';
   c.fillRect(0, 0, viewW, viewH);
   c.save();
   c.scale(scale, scale);
   c.translate(-sim.cam.x, -sim.cam.y);
 
   if (s.place === 'dc') washington(c);
+  else if (s.place === 'newyork') newyork(c, sim.time);
   else maralago(c, sim.time);
 
   currentAct = sim.activity;
@@ -1910,7 +2172,7 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
       y: aide.y,
       draw: () => {
         const sobbing = aide.mode === 'barred';
-        person(c, aide, { suit: '#f4f1ea', skin: '#f0c9a8', hair: '#e8cf7a', long: true }, sobbing ? Math.abs(Math.sin(sim.time * 9)) * 2 : 0);
+        woman(c, aide, NATALIE, sobbing ? Math.abs(Math.sin(sim.time * 9)) * 2 : 0);
         if (sobbing) {
           // Shut out of the Cabinet Room: tears, and a great deal of noise.
           c.fillStyle = '#7fc4ff';
@@ -1939,6 +2201,8 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   }
   const act = sim.activity;
   const idle = sim.idle && !sim.idle.walking ? sim.idle.kind : null;
+  // Paid for and present: Melania at his side for the event, one step to his right.
+  if (withMelania(act, s)) standing.push({ y: sim.pres.y - 1, draw: () => melaniaFigure(c, sim.pres.x + 32, sim.pres.y, sim.pres.facing) });
   // He is aboard while a flight is in the air.
   // Nor is he standing about while he is in bed.
   if (!act?.flight && !act?.sleep) standing.push({
@@ -2019,7 +2283,7 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
 
   c.restore();
 
-  // The day darkens as the month's time is used up, and blacks out for sleep.
+  // The day darkens as the month's time is used up, and blacks out for sleep and for flights.
   const used = 1 - s.blocks / BLOCKS_PER_MONTH;
   c.fillStyle = `rgba(16,22,60,${used * 0.28})`;
   c.fillRect(0, 0, viewW, viewH);
@@ -2027,4 +2291,11 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
     c.fillStyle = `rgba(5,7,18,${sim.fade})`;
     c.fillRect(0, 0, viewW, viewH);
   }
+
+  // The affirmations go on top of all that, at full brightness.
+  c.save();
+  c.scale(scale, scale);
+  c.translate(-sim.cam.x, -sim.cam.y);
+  affirmation(c, sim);
+  c.restore();
 }

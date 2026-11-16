@@ -6,6 +6,7 @@ import type { ChaosOutcome } from './chaos.ts';
 import { GUESTS, guestById } from './guests.ts';
 import { CALLEES, calleeAt } from './calls.ts';
 import { SUITS } from './suits.ts';
+import { MELANIA_INSULTS } from './melania.ts';
 import { MIDTERM_BAR, MIDTERM_MONTH, WHIMS, WHIM_FAIL_EGO, WHIM_MONTHS, activeSeasons, whimById } from './calendar.ts';
 
 // Pure game rules. Every action takes a state and returns a new one, so the
@@ -69,6 +70,12 @@ export const TUNING = {
   sueCost: 3,
   /** What a lawsuit does. It costs no time, once a month. */
   sueEffects: { ego: 1, stability: -2 } as Effects,
+  /** Coin Melania takes to turn up at an event. */
+  melaniaCost: 5,
+  /** What asking her does to him. */
+  melaniaEgo: -2,
+  /** Stability her appearance adds to the event she turns up at. */
+  melaniaStability: 2,
 };
 
 /** mulberry32, with the seed carried in the state so games are replayable. */
@@ -438,6 +445,54 @@ export function sueSomething(state: GameState): GameState {
   return s;
 }
 
+// ---------- Melania ----------
+
+/** Whether she can be booked: once a year of the term, and paid in coin. */
+export function melaniaStatus(state: GameState): 'ok' | 'no-coin' | 'used' {
+  if (state.melaniaYear === yearOf(state.month)) return 'used';
+  return state.coin >= TUNING.melaniaCost ? 'ok' : 'no-coin';
+}
+
+/** The events she will turn up at: rallies, parades and the big building projects. */
+export function melaniaAttends(action: VanityAction): boolean {
+  return action.category === 'build' || action.id === 'show-rally' || action.id === 'show-parade';
+}
+
+/** Stability a vanity action would cost right now, with Melania at his side if she is booked. */
+export function vanityStability(s: GameState, action: VanityAction): number {
+  return action.stability + (s.melania && melaniaAttends(action) ? TUNING.melaniaStability : 0);
+}
+
+/**
+ * He asks her, on the roof in New York, to come to an event. It costs coin
+ * and pride but no time. She then appears at his next rally, parade or build.
+ */
+export function askMelania(state: GameState): GameState {
+  if (state.status !== 'playing' || state.chaos || state.place !== 'newyork' || state.blocks === 0) return state;
+  if (melaniaStatus(state) !== 'ok') return state;
+  const s = structuredClone(state);
+  s.coin -= TUNING.melaniaCost;
+  apply(s, { ego: TUNING.melaniaEgo });
+  s.melania = true;
+  s.melaniaYear = yearOf(s.month);
+  log(s, 'You asked Melania to come to an event. She named a price, counted the coin twice and said "one."', 'neutral');
+  count(s, 'melania');
+  settleWhim(s);
+  checkEnd(s);
+  return s;
+}
+
+/** Already booked this year: all she has left for him is an insult. Free, and never the same one twice running. */
+export function hearMelania(state: GameState): GameState {
+  if (state.status !== 'playing' || state.chaos || state.place !== 'newyork' || melaniaStatus(state) !== 'used') return state;
+  const s = structuredClone(state);
+  const n = MELANIA_INSULTS.length;
+  s.insult = s.insult === undefined ? Math.floor(rand(s) * n) : (s.insult + 1 + Math.floor(rand(s) * (n - 1))) % n;
+  log(s, `Melania: "${MELANIA_INSULTS[s.insult]}"`, 'bad');
+  count(s, 'insults');
+  return s;
+}
+
 /** Leaked bribes whose story runs this month. */
 function landExposures(s: GameState): void {
   const due = s.exposures.filter((e) => e.due <= s.month);
@@ -583,7 +638,9 @@ export function doVanity(state: GameState, actionId: string): GameState {
   const s = structuredClone(state);
   const ego = vanityEgo(s, action);
   s.blocks -= action.cost;
-  apply(s, { ego, stability: action.stability, gold: action.gold, names: action.names });
+  const withMelania = Boolean(s.melania) && melaniaAttends(action);
+  apply(s, { ego, stability: vanityStability(s, action), gold: action.gold, names: action.names });
+  if (withMelania) s.melania = false;
   s.done[action.id] = (s.done[action.id] ?? 0) + 1;
   if (action.category === 'build' || action.category === 'rename') s.monuments += 1;
   if (action.travelTo) {
@@ -596,6 +653,7 @@ export function doVanity(state: GameState, actionId: string): GameState {
   } else {
     log(s, action.result, 'ego');
   }
+  if (withMelania) log(s, 'Melania stood beside you for the whole thing. She did not smile, and the world relaxed slightly.', 'good');
 
   count(s, action.category);
   if (STAT_FOR_ACTION[action.id]) count(s, STAT_FOR_ACTION[action.id]);

@@ -3,7 +3,8 @@ import type { PointerEvent } from 'react';
 import { calleeAt } from '../game/calls.ts';
 import { cardById, vanityById } from '../game/content.ts';
 import { COKE_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway } from './draw.ts';
-import { TUNING, cokeStatus, dutyCost, sueStatus, vanityEgo, vanityStatus } from '../game/engine.ts';
+import { TUNING, cokeStatus, dutyCost, melaniaAttends, melaniaStatus, sueStatus, vanityEgo, vanityStability, vanityStatus } from '../game/engine.ts';
+import { MELANIA_INSULTS } from '../game/melania.ts';
 import { guestById } from '../game/guests.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
 import { Blocks, Fx } from '../ui.tsx';
@@ -25,6 +26,8 @@ interface Props {
   onLunch: () => void;
   onCoke: () => void;
   onSue: () => void;
+  onMelania: () => void;
+  onAbuse: () => void;
   onEndMonth: () => void;
 }
 
@@ -74,6 +77,8 @@ const VANITY_EMOJI: Record<string, string> = {
   trip: '✈️',
   'trip-maralago-heli': '🚁',
   'trip-home-heli': '🚁',
+  'trip-newyork-heli': '🚁',
+  'trip-home-heli-ny': '🚁',
   resort: '🌴',
   'resort-golf': '⛳',
   'resort-dinner': '🍽️',
@@ -131,6 +136,10 @@ function createSim(place: Place): Sim {
   };
 }
 
+/** Seconds it takes to ask Melania for something. It feels longer. */
+const BEG_SECONDS = 3;
+/** Where the helicopter sets down in each place. */
+const HELIPADS: Record<Place, string> = { dc: 'garden', maralago: 'mal-helipad', newyork: 'ny-helipad' };
 /** Seconds a take-off or a landing takes to watch. */
 const FLIGHT_SECONDS = 2.4;
 
@@ -139,7 +148,7 @@ function besideVisitor(spot: Tile): Tile {
   return [spot[0] - 2, spot[1]];
 }
 
-export function World({ state, command, onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onEndMonth }: Props) {
+export function World({ state, command, onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onMelania, onAbuse, onEndMonth }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const simRef = useRef<Sim | null>(null);
@@ -148,12 +157,14 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
 
   const stateRef = useRef(state);
   stateRef.current = state;
-  const callbacks = useRef({ onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onEndMonth });
-  callbacks.current = { onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onEndMonth };
+  const callbacks = useRef({ onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onMelania, onAbuse, onEndMonth });
+  callbacks.current = { onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onMelania, onAbuse, onEndMonth };
 
   const targetRef = useRef<Target | null>(null);
   const [menu, setMenu] = useState<Menu | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
+  /** True once Melania has said something in the menu that is open now. */
+  const [heard, setHeard] = useState(false);
 
   const toScreen = (p: Point) => ({ sx: (p.x - sim.cam.x) * sim.cam.scale, sy: (p.y - sim.cam.y) * sim.cam.scale });
 
@@ -169,6 +180,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       sim.pres.facing = npc.x >= sim.pres.x ? 1 : -1;
       npc.facing = sim.pres.facing === 1 ? -1 : 1;
     }
+    setHeard(false);
     setMenu({ ...target, ...toScreen(anchor) });
   };
 
@@ -495,7 +507,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
     if (flew.current) {
       flew.current = false;
       const heli = state.vehicle === 'heli';
-      const pad = heli ? (state.place === 'dc' ? 'garden' : 'mal-helipad') : state.place === 'dc' ? 'plane' : 'mal-plane';
+      const pad = heli ? HELIPADS[state.place] : state.place === 'dc' ? 'plane' : 'mal-plane';
       sim.fade = 1;
       perform('Landing', heli ? '🚁' : '✈️', FLIGHT_SECONDS, () => {}, { anim: heli ? 'land-heli' : 'land-plane', objectId: pad });
       sim.activity!.flight = 'in';
@@ -764,7 +776,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
         const waiting = state.inbox.filter((id) => cardById(id).kind !== 'hybrid').length;
         body = (
           <>
-            <h3 className="menu-title">Bed</h3>
+            <h3 className="menu-title">{object.name}</h3>
             <p className="menu-note">
               {waiting > 0
                 ? `${waiting} ${waiting === 1 ? 'person is' : 'people are'} still waiting for you${
@@ -778,6 +790,55 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
             >
               Go to sleep (end the month)
             </button>
+          </>
+        );
+      } else if (object.special === 'melania') {
+        const status = melaniaStatus(state);
+        body = (
+          <>
+            <h3 className="menu-title">Melania</h3>
+            <p className="menu-note">
+              {heard && state.insult !== undefined
+                ? `"${MELANIA_INSULTS[state.insult]}"`
+                : state.melania
+                  ? 'She is booked for your next rally, parade or building project. She would like you to leave now.'
+                  : status === 'used'
+                    ? 'She has made her one appearance for the year. She has not run out of things to say.'
+                    : '"What do you want, Donald."'}
+            </p>
+            {status === 'used' ? (
+              <button className="vanity status-ok" onClick={() => {
+                setHeard(true);
+                callbacks.current.onAbuse();
+              }}>
+                <span className="vanity-main">
+                  <span className="vanity-title">Free abuse</span>
+                  <span className="vanity-text">She has something to say to you. It costs nothing, and she has plenty.</span>
+                </span>
+                <span className="vanity-side">
+                  <Blocks n={0} />
+                </span>
+              </button>
+            ) : (
+              <button
+                className={`vanity status-${status === 'ok' ? 'ok' : 'no-time'}`}
+                disabled={status !== 'ok'}
+                onClick={() => perform('Begging', '🙏', BEG_SECONDS, () => callbacks.current.onMelania(), { anim: 'melania-ask', objectId: object.id })}
+              >
+                <span className="vanity-main">
+                  <span className="vanity-title">Beg her to come to an event</span>
+                  <span className="vanity-text">
+                    {status === 'ok'
+                      ? `She stands beside you at your next rally, parade or building project: +${TUNING.melaniaStability} Stability for that event. No time, once a year.`
+                      : `She wants ${TUNING.melaniaCost} coin up front. Guests at Mar-a-Lago can help with that.`}
+                  </span>
+                </span>
+                <span className="vanity-side">
+                  <Fx effects={{ ego: TUNING.melaniaEgo }} />
+                  <span className="chip bad">−{TUNING.melaniaCost} Coin</span>
+                </span>
+              </button>
+            )}
           </>
         );
       } else {
@@ -807,6 +868,8 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
                         : action.id === 'show-call'
                           ? calleeAt(state.callee).gripe
                           : action.text;
+              // Booked and paid for: she turns up at the next event that qualifies.
+              const withHer = Boolean(state.melania) && melaniaAttends(action) && (status === 'ok' || status === 'no-time');
               return (
                 <button
                   key={id}
@@ -830,12 +893,15 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
                 >
                   <span className="vanity-main">
                     <span className="vanity-title">{title}</span>
-                    <span className="vanity-text">{note}</span>
+                    <span className="vanity-text">
+                      {note}
+                      {withHer && ' Melania will be at your side.'}
+                    </span>
                   </span>
                   {status !== 'done' && (
                     <span className="vanity-side">
                       <Blocks n={action.cost} />
-                      <Fx effects={{ ego: vanityEgo(state, action), stability: action.stability, gold: action.gold, names: action.names }} />
+                      <Fx effects={{ ego: vanityEgo(state, action), stability: vanityStability(state, action), gold: action.gold, names: action.names }} />
                     </span>
                   )}
                 </button>

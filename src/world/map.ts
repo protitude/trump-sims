@@ -1,10 +1,11 @@
 import type { DutyKind, GameState, Place, Vehicle } from '../game/types.ts';
 
-// The world is a grid of 20px tiles holding two separate places. Washington
+// The world is a grid of 20px tiles holding three separate places. Washington
 // fills the top: the White House (four rooms over a corridor) with the South
-// Lawn below it. Mar-a-Lago sits further down the grid, cut off by blocked
-// tiles, and is reached only by air. Everything here is measured in tiles
-// unless a name says "px".
+// Lawn below it. Mar-a-Lago sits further down the grid, and the roof of the
+// tower in New York is tucked in beside it. Each is cut off by blocked tiles
+// and reached only by air. Everything here is measured in tiles unless a name
+// says "px".
 
 export const T = 20;
 export const COLS = 70;
@@ -28,7 +29,12 @@ export interface Rect {
 export const REGIONS: Record<Place, Rect> = {
   dc: { x: 0, y: 0, w: 70 * T, h: 55 * T },
   maralago: { x: 0, y: 58 * T, w: 50 * T, h: 32 * T },
+  newyork: { x: 50 * T, y: 60 * T, w: 20 * T, h: 25 * T },
 };
+
+/** The roof of the tower in New York: all of it, and the part that can be walked on. */
+export const ROOF: Rect = { x: 52, y: 62, w: 16, h: 21 };
+const ROOF_FLOOR: Rect = { x: 53, y: 65, w: 14, h: 17 };
 
 export interface Room {
   name: string;
@@ -61,7 +67,7 @@ export interface WorldObject {
   inert?: boolean;
   /** Vanity action that must be done before this exists at all. */
   needs?: string;
-  special?: 'bed';
+  special?: 'bed' | 'melania';
 }
 
 const RENAMES = [
@@ -98,7 +104,7 @@ export const OBJECTS: WorldObject[] = [
   { id: 'podium', name: 'Podium', kind: 'podium', rect: { x: 60, y: 5, w: 2, h: 2 }, spot: [60, 7], actions: [], blocking: true, inert: true },
 
   // South Lawn: garden, then two rows of building lots, then the showgrounds.
-  { id: 'garden', name: 'Rose Garden', kind: 'garden', rect: { x: 6, y: 25, w: 9, h: 5 }, spot: [10, 30], actions: ['gild-garden', 'build-helipad', 'gild-helicopter', 'trip-maralago-heli'], blocking: true },
+  { id: 'garden', name: 'Rose Garden', kind: 'garden', rect: { x: 6, y: 25, w: 9, h: 5 }, spot: [10, 30], actions: ['gild-garden', 'build-helipad', 'gild-helicopter', 'trip-maralago-heli', 'trip-newyork-heli'], blocking: true },
   { id: 'plot-arch', name: 'Triumphal Arch', kind: 'plot', rect: { x: 18, y: 27, w: 6, h: 5 }, spot: [21, 32], actions: ['build-arch'], blocking: true },
   { id: 'plot-statue', name: '90-Foot Gold Statue', kind: 'plot', rect: { x: 29, y: 27, w: 4, h: 5 }, spot: [31, 32], actions: ['build-statue'], blocking: true },
   { id: 'plot-mountain', name: 'Your Face On The Mountain', kind: 'plot', rect: { x: 38, y: 27, w: 7, h: 5 }, spot: [41, 32], actions: ['build-mountain'], blocking: true },
@@ -121,15 +127,21 @@ export const OBJECTS: WorldObject[] = [
   { id: 'mal-golf', name: 'The Course', kind: 'malgolf', rect: { x: 5, y: 76, w: 18, h: 8 }, spot: [14, 80], actions: ['resort-golf'], blocking: false, place: 'maralago' },
   { id: 'mal-plane', name: 'The Plane', kind: 'plane', rect: { x: 29, y: 80, w: 15, h: 6 }, spot: [36, 79], actions: ['trip-home'], blocking: true, place: 'maralago' },
   { id: 'mal-helipad', name: 'Helipad', kind: 'helipad', rect: { x: 37, y: 72, w: 5, h: 5 }, spot: [39, 77], actions: ['trip-home-heli'], blocking: true, place: 'maralago', needs: 'build-helipad' },
+
+  // New York: the roof of the tower. Only the helicopter can land here.
+  { id: 'ny-melania', name: 'Melania', kind: 'melania', rect: { x: 58, y: 66, w: 2, h: 3 }, spot: [56, 68], actions: [], blocking: true, place: 'newyork', special: 'melania' },
+  { id: 'ny-bed', name: 'The Spare Bed', kind: 'bed', rect: { x: 54, y: 75, w: 4, h: 4 }, spot: [58, 77], actions: [], blocking: true, special: 'bed', place: 'newyork' },
+  { id: 'ny-helipad', name: 'Helipad', kind: 'helipad', rect: { x: 61, y: 73, w: 5, h: 5 }, spot: [63, 78], actions: ['trip-home-heli-ny'], blocking: true, place: 'newyork' },
 ];
 
 const byId = (id: string) => OBJECTS.find((o) => o.id === id)!;
 
 /** The bed that ends the month in each place. */
-export const BEDS: Record<Place, WorldObject> = { dc: byId('bed'), maralago: byId('mal-bed') };
+export const BEDS: Record<Place, WorldObject> = { dc: byId('bed'), maralago: byId('mal-bed'), newyork: byId('ny-bed') };
 const ARRIVALS: Record<Vehicle, Record<Place, Tile>> = {
-  plane: { dc: byId('plane').spot, maralago: byId('mal-plane').spot },
-  heli: { dc: byId('garden').spot, maralago: byId('mal-helipad').spot },
+  // No plane can land on the roof in New York; the entry is there for completeness.
+  plane: { dc: byId('plane').spot, maralago: byId('mal-plane').spot, newyork: byId('ny-helipad').spot },
+  heli: { dc: byId('garden').spot, maralago: byId('mal-helipad').spot, newyork: byId('ny-helipad').spot },
 };
 
 /** Where the president steps out after a trip. */
@@ -200,7 +212,10 @@ export function guestSpot(taken: Tile[]): Tile {
 // ---------- Idle scenes ----------
 
 /** What the president drifts into when left standing about. */
-export type IdleKind = 'press' | 'briefing' | 'dictate' | 'toilet' | 'nap' | 'cart';
+export type IdleKind = 'press' | 'briefing' | 'dictate' | 'toilet' | 'nap' | 'cart' | 'dinner';
+
+/** The club itself at Mar-a-Lago: the terrace, which counts as indoors. */
+const CLUB: Rect = { x: 4, y: 61, w: 28, h: 13 };
 
 const inRoom = (t: Tile, name: string): boolean => {
   const r = ROOMS.find((room) => room.name === name)!.rect;
@@ -211,10 +226,13 @@ const inRoom = (t: Tile, name: string): boolean => {
 export function idleKindAt(place: Place, p: Point): IdleKind | null {
   const t = tileAt(p);
   // On the grass with nobody watching, he takes the cart out.
-  const g = GOLF[place].rect;
-  if (t[0] >= g.x && t[0] < g.x + g.w && t[1] >= g.y && t[1] < g.y + g.h) return 'cart';
-  // The rest of the club is out of doors, so the press can always find him there.
-  if (place === 'maralago') return 'press';
+  const g = GOLF[place]?.rect;
+  if (g && t[0] >= g.x && t[0] < g.x + g.w && t[1] >= g.y && t[1] < g.y + g.h) return 'cart';
+  // On the roof he is being watched, and behaves.
+  if (place === 'newyork') return null;
+  // Inside the club he takes his table, and the members come to him.
+  // Out in the grounds, the press can always find him.
+  if (place === 'maralago') return t[0] >= CLUB.x && t[0] < CLUB.x + CLUB.w && t[1] >= CLUB.y && t[1] < CLUB.y + CLUB.h ? 'dinner' : 'press';
   if (inRoom(t, 'RESIDENCE')) return 'toilet';
   if (inRoom(t, 'OVAL OFFICE')) return 'dictate';
   if (inRoom(t, 'CABINET ROOM')) return 'nap';
@@ -232,6 +250,8 @@ export const IDLE_SEATS: Record<Exclude<IdleKind, 'press' | 'cart'>, { tile: Til
   toilet: { tile: [13, 6], seat: { x: 14 * T, y: 6 * T + 1 }, facing: 1 },
   // The second chair along the far side of the cabinet table.
   nap: { tile: [46, 6], seat: { x: 46 * T + 2, y: 7 * T - 1 }, facing: 1 },
+  // The middle chair on the far side of his table at the club.
+  dinner: { tile: [15, 66], seat: { x: 12 * T + 69, y: 67 * T - 1 }, facing: 1 },
 };
 
 /** The aide takes dictation in front of the desk. */
@@ -247,9 +267,9 @@ export const AIDE_PACE: [Tile, Tile] = [
 ];
 
 /** The golf in each place, and the loop the cart is driven around on it, in pixels. */
-const GOLF: Record<Place, WorldObject> = { dc: byId('golf'), maralago: byId('mal-golf') };
+const GOLF: Partial<Record<Place, WorldObject>> = { dc: byId('golf'), maralago: byId('mal-golf') };
 export function cartLoop(place: Place): { cx: number; cy: number; rx: number; ry: number } {
-  const r = GOLF[place].rect;
+  const r = GOLF[place]!.rect;
   const ry = (r.h * T) / 2 - 24;
   return { cx: (r.x + r.w / 2) * T, cy: (r.y + r.h / 2) * T + 8, rx: Math.min((r.w * T) / 2 - 40, ry * 1.8), ry };
 }
@@ -291,6 +311,8 @@ blocked.set(wall);
 // which leaves a ring of sea around the resort.
 fill(blocked, { x: 0, y: 55, w: COLS, h: ROWS - 55 }, 1);
 fill(blocked, { x: 2, y: 60, w: 46, h: 28 }, 0);
+// The roof in New York, inside its parapet.
+fill(blocked, ROOF_FLOOR, 0);
 for (const o of OBJECTS) if (o.blocking) fill(blocked, o.rect, 1);
 
 export function isWall(tx: number, ty: number): boolean {

@@ -14,6 +14,8 @@ import {
   orderLunch,
   pressCokeButton,
   sueSomething,
+  askMelania,
+  hearMelania,
   playDuty,
   resolveChaos,
   score,
@@ -285,7 +287,7 @@ function Game({ music }: { music: Music }) {
               ? 'Nobody is waiting for you.'
               : state.place === 'dc'
                 ? 'Waiting for you:'
-                : 'Waiting in Washington while you are at Mar-a-Lago:'}
+                : `Waiting in Washington while you are ${state.place === 'newyork' ? 'in New York' : 'at Mar-a-Lago'}:`}
           </span>
           {state.inbox.map((id) => {
             const card = cardById(id);
@@ -309,6 +311,11 @@ function Game({ music }: { music: Music }) {
                 </button>
               );
             })}
+          </div>
+        )}
+        {state.melania && (
+          <div className="waiting">
+            <span className="waiting-label">Melania is booked: she will be at your side for your next rally, parade or building project.</span>
           </div>
         )}
       </header>
@@ -422,6 +429,8 @@ function Game({ music }: { music: Music }) {
         onLunch={() => setState((s) => s && orderLunch(s))}
         onCoke={() => setState((s) => s && pressCokeButton(s))}
         onSue={() => setState((s) => s && sueSomething(s))}
+        onMelania={() => setState((s) => s && askMelania(s))}
+        onAbuse={() => setState((s) => s && hearMelania(s))}
         onEndMonth={() => setState((s) => s && endMonth(s))}
       />
 

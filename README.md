@@ -72,6 +72,13 @@ Click the plane on the South Lawn to fly to Mar-a-Lago. Flights are free in both
 - **What it costs.** The job cannot follow you. Visitors keep waiting in Washington, and you cannot deal with any of them until you fly back. If you go to bed in Florida, everyone waiting that month is ignored.
 - **Staying over.** There is a bed at the club, so you can stay for several months. Stability will not thank you.
 
+### Melania, in New York
+
+Once the Rose Garden is a helipad, the helicopter can also fly to New York. It lands on the roof of the tower, where Melania is standing. The plane cannot go there, and the helicopter is the only way back. The flight is free; there is a spare bed on the roof if the month runs out.
+
+- **Beg her to come to an event.** Five coin, −2 Ego, no time. She then stands beside you at your next rally, parade or building project, which gives that one event +2 Stability: a rally goes from −2 Stability to 0. She can be booked once in each year of the term.
+- **Free abuse.** Once she has been booked for the year, the offer is replaced by an insult, picked at random from the 50 in `src/game/melania.ts`. It costs nothing and changes nothing.
+
 ### Guests at the club
 
 Two guests are waiting at Mar-a-Lago every month: tech bosses and media people, each with an ask and a stake in your crypto coin. They are listed in the bar at the top wherever you are, but you have to fly down to talk to them. Anyone you do not get to has gone home by next month, at no cost.
@@ -211,7 +218,7 @@ Three things are worth knowing before changing anything:
 
 - **Rules and world are separate.** `engine.ts` knows nothing about walking or drawing. The world is a way of showing the rules and choosing actions; it never changes a meter itself. This is what lets the simulator play the real game without a screen.
 - **Content is data.** To add a scenario, add a card to one of the files in `src/game/cards/`; a visitor will turn up with it. Then run `node scripts/validate-cards.mjs src/game/cards/<file>.json`, which checks the card's shape, its text lengths and that its numbers are in the range the balance expects. To add a vanity action, add it to `content.ts` and then list its id on an object in `map.ts` so there is somewhere to do it.
-- **The map is a grid.** The world is a grid of 20-pixel tiles holding two places: Washington at the top and Mar-a-Lago further down, separated by impassable tiles. Objects in `map.ts` are placed in tile coordinates, and anything marked `blocking` is walked around automatically. The camera shows whichever place the President is in.
+- **The map is a grid.** The world is a grid of 20-pixel tiles holding three places: Washington at the top, with Mar-a-Lago and the roof in New York further down, separated by impassable tiles. Objects in `map.ts` are placed in tile coordinates, and anything marked `blocking` is walked around automatically. The camera shows whichever place the President is in.
 
 ### Tuning the balance
 
