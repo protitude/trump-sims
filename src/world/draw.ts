@@ -31,9 +31,10 @@ export interface Idle {
 export interface Aide extends Actor {
   /**
    * What she is doing: trailing him, shut out of the Cabinet Room, taking
-   * dictation at the desk, running after the golf cart, or at the bedside.
+   * dictation at the desk, running after the golf cart, grabbing bills by
+   * the pool, or at the bedside.
    */
-  mode: 'follow' | 'barred' | 'dictate' | 'chase' | 'bedside';
+  mode: 'follow' | 'barred' | 'dictate' | 'chase' | 'grab' | 'bedside';
   /** Seconds until she next works out where he has gotten to. */
   think: number;
   /** Which end of the corridor she is pacing toward, and whether she has started. */
@@ -1748,6 +1749,49 @@ const DINNER_SEATS: [number, number][] = [
 const DINNER_SHIRTS = ['#f3ead6', '#2f8f83', '#e9b99a', '#3b4f8f'];
 const PRAISE_EVERY = 2.4;
 
+/** Making it rain by the pool. */
+const RAIN = ['MAKING IT RAIN', 'WHO WANTS IT?', "PLENTY MORE WHERE THAT CAME FROM", 'VERY RICH. VERY, VERY RICH.', 'GO ON, JUMP IN', 'TREMENDOUS MONEY'];
+const SCRAMBLE = ['MINE!', 'OVER HERE, SIR!', 'I SAW IT FIRST', 'THANK YOU, SIR!', 'ONE MORE, SIR!', 'HANDS OFF', 'SO GENEROUS, SIR'];
+const GRABBED = ['GOT ONE, SIR!', 'FOR THE SCRAPBOOK', 'YOU DROPPED THIS, SIR', 'SIR, YOUR MONEY!', 'SO MANY, SIR!'];
+/**
+ * Where the members crowd the pool, as fractions of its width and height
+ * (outside 0..1 is on the deck), in the order they come running.
+ */
+const POOL_CROWD: [number, number][] = [
+  [0.3, -0.06],
+  [1.08, 0.45],
+  [0.55, 1.16],
+  [0.72, -0.06],
+  [0.25, 1.16],
+  [1.08, 0.85],
+  [0.85, 1.16],
+];
+const BILLS = 12;
+const BILL_LIFE = 3;
+const BILL_FLIGHT = 1;
+/** A repeatable scatter in 0..1 from any number. */
+const scatter = (n: number): number => {
+  const s = Math.sin(n * 127.1) * 43758.5453;
+  return s - Math.floor(s);
+};
+
+function bill(c: Ctx, x: number, y: number, angle: number, squash: number, alpha: number): void {
+  c.save();
+  c.globalAlpha = alpha;
+  c.translate(x, y);
+  c.rotate(angle);
+  c.scale(1, squash);
+  c.fillStyle = '#2f7d3c';
+  c.fillRect(-7, -4, 14, 8);
+  c.fillStyle = '#9bd68f';
+  c.fillRect(-6, -3, 12, 6);
+  c.fillStyle = '#2f7d3c';
+  c.beginPath();
+  c.arc(0, 0, 2, 0, Math.PI * 2);
+  c.fill();
+  c.restore();
+}
+
 /** Draws what the president does when left alone, on top of the scene. */
 function drawIdle(c: Ctx, sim: Sim): void {
   const idle = sim.idle;
@@ -1887,6 +1931,94 @@ function drawIdle(c: Ctx, sim: Sim): void {
       }
       // He takes it all in, and asks for more.
       if (there > 0) driftingText(c, BASKING[n % BASKING.length], p.x + 10, p.y - 72, age - 1.5, 0.9, 11, '#ffffff');
+      break;
+    }
+    case 'rain': {
+      // Dollar bills into the pool, and everyone at the club after them.
+      const r = px(OBJECTS.find((o) => o.id === 'mal-pool')!.rect);
+      const mx = r.x + r.w / 2;
+      const my = r.y + r.h / 2;
+
+      // The members come running, then lunge at the water whenever a bill lands near them.
+      const crowd = Math.min(POOL_CROWD.length, Math.floor(t / 0.6));
+      const n = Math.floor(t / 2.2);
+      const age = t % 2.2;
+      const there = Math.min(POOL_CROWD.length, Math.floor((n * 2.2) / 0.6));
+      const shouter = there > 0 && age < 1.6 ? (n * 3) % there : -1;
+      const drawFan = (j: number) => {
+        const [fx, fy] = POOL_CROWD[j];
+        const hx = r.x + fx * r.w;
+        const hy = r.y + fy * r.h;
+        const k = Math.min(1, (t - (j + 1) * 0.6) / 0.4);
+        // In from the gate side, then leaning in over the edge.
+        const lunge = Math.max(0, Math.sin(t * 3.1 + j * 1.9)) * 7;
+        const d = Math.hypot(mx - hx, my - hy);
+        const x = hx + ((mx - hx) / d) * lunge + (1 - k) * 60;
+        const y = hy + ((my - hy) / d) * lunge * 0.5;
+        const bob = Math.abs(Math.sin(sim.time * 10 + j * 1.3)) * 3;
+        c.globalAlpha = k;
+        fan(c, x, y, bob, DINNER_SHIRTS[j % 4], null);
+        c.globalAlpha = 1;
+        if (k === 1) emojiAt(c, j % 3 === 1 ? '💵' : '🙌', x + (hx < mx ? 9 : -9), y - 32 - bob, 11, j % 3 === 1 ? 0.5 + Math.sin(sim.time * 6 + j) * 0.5 : 1);
+        if (j === shouter) risingText(c, SCRAMBLE[n % SCRAMBLE.length], Math.max(r.x + 20, Math.min(r.x + r.w - 10, x)), y - 44, age, 1.6, 10, GOLD_LIGHT);
+      };
+      // Those along the far edge go behind the water, the rest in front of it.
+      for (let j = 0; j < crowd; j++) if (POOL_CROWD[j][1] < 0) drawFan(j);
+
+      // Two of them could not wait, and went in after it.
+      for (let j = 0; j < 2; j++) {
+        const k = clamp01((t - 3 - j * 2.5) / 0.5);
+        if (k === 0) continue;
+        const sx = mx + Math.sin(t * 0.7 + j * 2.4) * r.w * 0.3;
+        const sy = my + Math.cos(t * 0.5 + j * 1.7) * r.h * 0.26;
+        c.strokeStyle = `rgba(255,255,255,${0.6 * k})`;
+        c.lineWidth = 1.5;
+        c.beginPath();
+        c.ellipse(sx, sy + 4, 11 + Math.sin(sim.time * 6 + j) * 2, 4, 0, 0, Math.PI * 2);
+        c.stroke();
+        emojiAt(c, '🏊', sx, sy, 16, k);
+      }
+
+      // The bills: out of his hand in an arc, then adrift on the water.
+      const hand = { x: p.x + 14, y: p.y - 44 };
+      for (let j = 0; j < BILLS; j++) {
+        const phase = t + (j * BILL_LIFE) / BILLS;
+        const cycle = Math.floor(phase / BILL_LIFE);
+        const a = phase % BILL_LIFE;
+        // Nothing lands before he has thrown it.
+        if (a > t) continue;
+        const seed = cycle * BILLS + j;
+        const lx = r.x + 22 + scatter(seed) * (r.w - 44);
+        const ly = r.y + 20 + scatter(seed + 0.5) * (r.h - 40);
+        if (a < BILL_FLIGHT) {
+          const f = a / BILL_FLIGHT;
+          const x = hand.x + (lx - hand.x) * f + Math.sin(a * 14 + j) * 5;
+          const y = hand.y + (ly - hand.y) * f - Math.sin(f * Math.PI) * (50 + scatter(seed + 0.2) * 40);
+          bill(c, x, y, a * 9 + j, Math.cos(a * 12 + j), 1);
+        } else {
+          const afloat = a - BILL_FLIGHT;
+          if (afloat < 0.3) {
+            c.strokeStyle = `rgba(255,255,255,${0.8 - afloat * 2.6})`;
+            c.lineWidth = 1.5;
+            c.beginPath();
+            c.ellipse(lx, ly, 6 + afloat * 40, 2 + afloat * 14, 0, 0, Math.PI * 2);
+            c.stroke();
+          }
+          bill(c, lx + Math.sin(sim.time * 2 + j) * 3, ly + Math.sin(sim.time * 2.6 + j) * 1.5, scatter(seed + 0.7) * 3, 0.6, clamp01((BILL_LIFE - a) / 0.5));
+        }
+      }
+      emojiAt(c, '💸', hand.x + 4, hand.y - 6 - Math.abs(Math.sin(t * 7)) * 5, 15);
+
+      for (let j = 0; j < crowd; j++) if (POOL_CROWD[j][1] >= 0) drawFan(j);
+
+      // Natalie brings back what she can reach.
+      const aide = sim.aide;
+      if (aide.mode === 'grab') {
+        if (aide.path.length === 0) emojiAt(c, '💵', aide.x + aide.facing * 12, aide.y - 22, 12);
+        else emojiAt(c, '💦', aide.x - aide.facing * 14, aide.y - 56 + Math.sin(sim.time * 12) * 2, 11);
+        risingText(c, GRABBED[Math.floor((t + 1.2) / 3.1) % GRABBED.length], aide.x, aide.y - 92, (t + 1.2) % 3.1, 1.6, 10, GOLD_LIGHT);
+      }
+      risingText(c, RAIN[Math.floor(t / 2.6) % RAIN.length], p.x, p.y - 100, t % 2.6, 1.8, 12, '#ffffff');
       break;
     }
     case 'nap': {
@@ -2220,7 +2352,7 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
         golfCart(c, sim.pres.x, sim.pres.y, sim.pres.facing, sim.time, true);
         return;
       }
-      const bob = act ? Math.abs(Math.sin(sim.time * 8)) * 3 : idle === 'press' || idle === 'briefing' ? Math.abs(Math.sin(sim.time * 5)) * 1.5 : 0;
+      const bob = act ? Math.abs(Math.sin(sim.time * 8)) * 3 : idle === 'press' || idle === 'briefing' || idle === 'rain' ? Math.abs(Math.sin(sim.time * 5)) * 1.5 : 0;
       if (idle === 'dictate') {
         // The chair behind the desk.
         c.fillStyle = '#3a2416';

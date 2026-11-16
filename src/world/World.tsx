@@ -12,7 +12,7 @@ import { Blocks, Fx, Why, needCoin, needTime } from '../ui.tsx';
 import { drawWorld, hitRectPx } from './draw.ts';
 import type { Actor, Aide, Npc, Sim } from './draw.ts';
 import { nextAffirmations } from './affirmations.ts';
-import { AIDE_PACE, AIDE_SPOT, BEDS, CLUB_GATE, IDLE_SEATS, arrival, cartLoop, inCabinetRoom, exists, guestSpot, idleKindAt, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
+import { AIDE_GRAB, AIDE_PACE, AIDE_SPOT, BEDS, CLUB_GATE, IDLE_SEATS, arrival, cartLoop, inCabinetRoom, exists, guestSpot, idleKindAt, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
 import { T } from './map.ts';
 import type { Point, Tile } from './map.ts';
 
@@ -226,7 +226,9 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
         ? 'dictate'
         : idle === 'cart'
           ? 'chase'
-          : place === 'dc' && inCabinetRoom(p)
+          : idle === 'rain'
+            ? 'grab'
+            : place === 'dc' && inCabinetRoom(p)
             ? 'barred'
             : 'follow';
     if (mode !== a.mode) {
@@ -261,6 +263,17 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
         a.path = gap > 30 ? [{ x: p.x, y: p.y }] : [];
         speed = AIDE_CHASE_SPEED;
         break;
+      case 'grab':
+        // From one bill to the next around the pool, stooping briefly at each.
+        if (a.path.length === 0) {
+          a.think -= dt;
+          if (a.think <= 0) {
+            const spots = AIDE_GRAB.filter((s) => Math.hypot(tileCenter(s).x - a.x, tileCenter(s).y - a.y) > T);
+            a.path = findPath(a, spots[Math.floor(Math.random() * spots.length)]);
+            a.think = 0.5;
+          }
+        }
+        break;
       case 'bedside':
         speed = AIDE_BEDTIME_SPEED;
         break;
@@ -271,6 +284,8 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
     if (a.path.length === 0) {
       // The bed is to the left of where she stands; otherwise she watches him.
       if (mode === 'bedside') a.facing = -1;
+      // Scrambling for bills, her eyes are on the pool, which is to his right.
+      else if (mode === 'grab') a.facing = p.x + 5 * T >= a.x ? 1 : -1;
       else if (mode !== 'barred') a.facing = p.x >= a.x ? 1 : -1;
     }
   }

@@ -212,10 +212,13 @@ export function guestSpot(taken: Tile[]): Tile {
 // ---------- Idle scenes ----------
 
 /** What the president drifts into when left standing about. */
-export type IdleKind = 'press' | 'briefing' | 'dictate' | 'toilet' | 'nap' | 'cart' | 'dinner';
+export type IdleKind = 'press' | 'briefing' | 'dictate' | 'toilet' | 'nap' | 'cart' | 'dinner' | 'rain';
 
 /** The club itself at Mar-a-Lago: the terrace, which counts as indoors. */
 const CLUB: Rect = { x: 4, y: 61, w: 28, h: 13 };
+
+/** Poolside at Mar-a-Lago: right of the club, above the helipad. */
+const POOLSIDE: Rect = { x: 32, y: 60, w: 16, h: 12 };
 
 const inRoom = (t: Tile, name: string): boolean => {
   const r = ROOMS.find((room) => room.name === name)!.rect;
@@ -230,6 +233,8 @@ export function idleKindAt(place: Place, p: Point): IdleKind | null {
   if (g && t[0] >= g.x && t[0] < g.x + g.w && t[1] >= g.y && t[1] < g.y + g.h) return 'cart';
   // On the roof he is being watched, and behaves.
   if (place === 'newyork') return null;
+  // By the pool he throws money in it, and watches them scramble.
+  if (place === 'maralago' && t[0] >= POOLSIDE.x && t[0] < POOLSIDE.x + POOLSIDE.w && t[1] >= POOLSIDE.y && t[1] < POOLSIDE.y + POOLSIDE.h) return 'rain';
   // Inside the club he takes his table, and the members come to him.
   // Out in the grounds, the press can always find him.
   if (place === 'maralago') return t[0] >= CLUB.x && t[0] < CLUB.x + CLUB.w && t[1] >= CLUB.y && t[1] < CLUB.y + CLUB.h ? 'dinner' : 'press';
@@ -252,7 +257,19 @@ export const IDLE_SEATS: Record<Exclude<IdleKind, 'press' | 'cart'>, { tile: Til
   nap: { tile: [46, 6], seat: { x: 46 * T + 2, y: 7 * T - 1 }, facing: 1 },
   // The middle chair on the far side of his table at the club.
   dinner: { tile: [15, 66], seat: { x: 12 * T + 69, y: 67 * T - 1 }, facing: 1 },
+  // At the left edge of the pool, facing the water.
+  rain: { tile: [34, 65], seat: { x: 34 * T + 6, y: 65 * T + 14 }, facing: 1, stand: true },
 };
+
+/** Around the pool's edge, where the aide scrambles after the bills. */
+export const AIDE_GRAB: Tile[] = [
+  [34, 63],
+  [37, 69],
+  [34, 67],
+  [41, 69],
+  [36, 61],
+  [40, 61],
+];
 
 /** The aide takes dictation in front of the desk. */
 export const AIDE_SPOT: Tile = [26, 9];
