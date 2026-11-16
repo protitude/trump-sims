@@ -1,9 +1,9 @@
 import { BLOCKS_PER_MONTH, melaniaStatus, mood } from '../game/engine.ts';
 import type { Meal } from '../game/engine.ts';
 import { vanityById } from '../game/content.ts';
-import type { GuestKind } from '../game/guests.ts';
+import type { GuestKind, Show } from '../game/guests.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
-import { OBJECTS, REGIONS, ROOF, ROOMS, T, exists, golfShot, isWall, objectName } from './map.ts';
+import { CAGE, OBJECTS, REGIONS, RINGSIDE, ROOF, ROOMS, T, exists, golfShot, isWall, objectName, tileCenter } from './map.ts';
 import type { IdleKind, Point, Rect, Tile, WorldObject } from './map.ts';
 
 // Everything on screen is drawn with canvas shapes; there are no image files.
@@ -69,8 +69,21 @@ export interface Activity {
   /** The object being used, or the card being dealt with. */
   objectId?: string;
   cardId?: string;
+  /** A paid interview, played on a tablet over the scene while the activity runs. */
+  screen?: { kind: Show; host: string };
   done: () => void;
 }
+
+/** An interview: the tablet slides in, he talks about himself, and it flies off again. */
+export const INTERVIEW_SECONDS = 7;
+const TABLET_SLIDE = 0.55;
+const BRAG_EVERY = 2;
+
+/** Fight night on the lawn: the bell, a few rounds' worth of punching in one, the knockout, and the gloating. */
+export const FIGHT_SECONDS = 10;
+const FIGHT_BELL = 1.2;
+const FIGHT_BEAT = 0.55;
+const FIGHT_KO = 7.6;
 
 /** Lunch: Natalie vanishes, is back with the bag, and he eats it. */
 export const LUNCH_SECONDS = 5.5;
@@ -280,6 +293,8 @@ function person(c: Ctx, a: Actor, look: Look, bob: number): void {
   c.fillRect(6, -50, 2, 3);
   c.restore();
 }
+
+const PRESIDENT: Look = { suit: '#1d2a52', skin: '#f2a35e', hair: '#f2c230', tie: '#d9282f', swoosh: true };
 
 interface WomanLook {
   skin: string;
@@ -1165,6 +1180,79 @@ function fan(c: Ctx, x: number, y: number, bob: number, shirt: string, cap: stri
   }
 }
 
+/** A cage fighter: trunks, gloves, and not much else. `punch` throws the lead hand; `down` lays him out on his back. */
+function fighter(c: Ctx, x: number, y: number, facing: 1 | -1, trunks: string, skin: string, hair: string, bob: number, punch: number, down: number, cheer: boolean): void {
+  c.fillStyle = 'rgba(0,0,0,0.25)';
+  c.beginPath();
+  c.ellipse(x + facing * -22 * down, y, 12 + down * 14, 4.5, 0, 0, Math.PI * 2);
+  c.fill();
+  c.save();
+  c.translate(x, y - bob - down * 5);
+  c.scale(facing, 1);
+  c.rotate((-down * Math.PI) / 2);
+  c.fillStyle = skin;
+  c.fillRect(-7, -12, 5, 12);
+  c.fillRect(2, -12, 5, 12);
+  rr(c, -10, -40, 20, 20, 5);
+  c.fill();
+  c.fillStyle = trunks;
+  rr(c, -9, -23, 18, 12, 3);
+  c.fill();
+  // Arms: both up for the crowd, or a guard and a lead hand.
+  const reach = punch * 13;
+  c.fillStyle = skin;
+  if (cheer) {
+    c.fillRect(-14, -56, 5, 18);
+    c.fillRect(9, -56, 5, 18);
+  } else {
+    c.fillRect(4, -35, 7 + reach, 5);
+  }
+  c.fillStyle = trunks;
+  for (const [gx, gy] of cheer ? [[-11.5, -58], [11.5, -58]] : [[7, -41], [13 + reach, -32.5]]) {
+    c.beginPath();
+    c.arc(gx, gy, 4.5, 0, Math.PI * 2);
+    c.fill();
+  }
+  c.fillStyle = skin;
+  c.beginPath();
+  c.arc(0, -49, 9, 0, Math.PI * 2);
+  c.fill();
+  c.fillStyle = hair;
+  c.beginPath();
+  c.arc(0, -51, 9.5, Math.PI, 0);
+  c.fill();
+  c.fillStyle = '#1b1f2e';
+  c.fillRect(4, -50, 2, 3);
+  c.restore();
+}
+
+/** One half of the cage fence: the panels behind the fighters, or the ones in front of them. */
+function cageFence(c: Ctx, cx: number, cy: number, rx: number, ry: number, front: boolean): void {
+  const high = 26;
+  const corner = (i: number): Point => ({ x: cx + Math.cos(Math.PI / 8 + (i * Math.PI) / 4) * rx, y: cy + Math.sin(Math.PI / 8 + (i * Math.PI) / 4) * ry });
+  for (let i = 0; i < 8; i++) {
+    const a = corner(i);
+    const b = corner(i + 1);
+    if ((a.y + b.y) / 2 > cy !== front) continue;
+    c.fillStyle = front ? 'rgba(20,22,28,0.16)' : 'rgba(20,22,28,0.34)';
+    c.beginPath();
+    c.moveTo(a.x, a.y);
+    c.lineTo(b.x, b.y);
+    c.lineTo(b.x, b.y - high);
+    c.lineTo(a.x, a.y - high);
+    c.fill();
+    c.strokeStyle = '#14161c';
+    c.lineWidth = 2;
+    c.beginPath();
+    c.moveTo(a.x, a.y - high);
+    c.lineTo(b.x, b.y - high);
+    c.stroke();
+    c.fillStyle = GOLD_DARK;
+    c.fillRect(a.x - 1.5, a.y - high - 2, 3, high + 2);
+    c.fillRect(b.x - 1.5, b.y - high - 2, 3, high + 2);
+  }
+}
+
 function tank(c: Ctx, x: number, y: number): void {
   c.fillStyle = '#2b2f22';
   rr(c, x - 30, y - 6, 60, 14, 7);
@@ -1224,6 +1312,9 @@ const TELLING_OFF = ['VERY UNFAIR!', 'YOU ARE A LOSER', 'NASTY. VERY NASTY.', 'I
 const PLEADING = ['PLEASE?', 'ONE EVENT', 'I WILL PAY', 'PEOPLE ARE ASKING', 'JUST STAND THERE', 'FIVE COIN'];
 const POSTS = ['SAD!', 'WITCH HUNT', 'TREMENDOUS', 'FAKE!', 'WINNING!!!', 'MANY PEOPLE'];
 const CROWD_SHIRTS = ['#b3282d', '#3b4f8f', '#e9e2d0', '#56627a'];
+const FIGHT_HITS = ['POW!', 'BAM!', 'OOF!', 'WHAM!', 'CRACK!'];
+const FIGHT_CALLS = ['BEST SEAT. MY SEAT.', 'I COULD TAKE BOTH OF THEM', 'MY WALK-OUT SONG WAS BETTER', 'GREATEST FIGHT EVER ON A LAWN', 'I TAUGHT HIM THAT PUNCH'];
+const DANA: Look = { suit: '#17181d', skin: '#e9b99a', hair: '#e9b99a' };
 
 /** Bedtime: a short settle, then one affirmation after another. */
 const AFFIRM_START = 0.2;
@@ -1430,6 +1521,85 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
         const fy = p.y - 150 + ((sim.time * 70 + j * 41) % 150);
         c.fillStyle = ['#d9282f', '#ffffff', '#3b4f8f', GOLD_LIGHT][j % 4];
         c.fillRect(fx + Math.sin(sim.time * 3 + j) * 6, fy, 4, 6);
+      }
+      break;
+    }
+    case 'fight': {
+      // The cage is up and the crowd is in before he gets there; the bell waits for him.
+      const { x: gx, y: gy } = CAGE;
+      const rx = 70;
+      const ry = 38;
+      const seated = p.path.length === 0;
+      if (seated) p.facing = -1;
+      const ko = t - FIGHT_KO;
+      const over = ko >= 0;
+      const wild = over ? 7 : 3;
+      const crowd = (x: number, y: number, i: number) =>
+        fan(c, x, y, Math.abs(Math.sin(sim.time * (over ? 10 : 6) + i * 1.7)) * wild, CROWD_SHIRTS[i % 4], i % 3 === 0 ? null : '#d9282f');
+
+      for (let i = 0; i < 7; i++) crowd(gx - 66 + i * 22, gy - ry - 8, i);
+      for (let i = 0; i < 3; i++) crowd(gx - rx - 16, gy - 20 + i * 20, i + 7);
+
+      // The mat, with the back of the fence behind the fighters.
+      c.beginPath();
+      for (let i = 0; i < 8; i++) c.lineTo(gx + Math.cos(Math.PI / 8 + (i * Math.PI) / 4) * rx, gy + Math.sin(Math.PI / 8 + (i * Math.PI) / 4) * ry);
+      c.closePath();
+      c.fillStyle = '#2b2f3a';
+      c.fill();
+      c.strokeStyle = GOLD;
+      c.lineWidth = 2;
+      c.stroke();
+      c.strokeStyle = 'rgba(255,255,255,0.18)';
+      c.lineWidth = 1.5;
+      c.beginPath();
+      c.ellipse(gx, gy, rx * 0.5, ry * 0.5, 0, 0, Math.PI * 2);
+      c.stroke();
+      label(c, 'SOUTH LAWN', gx, gy + ry * 0.72, 8, 'rgba(255,255,255,0.3)');
+      cageFence(c, gx, gy, rx, ry, false);
+
+      // Out from the corners, then one exchange a beat: red lands two of every three.
+      const round = Math.max(0, Math.min(t, FIGHT_KO) - FIGHT_BELL);
+      const mid = gx - 14 + Math.sin(round * 0.9) * 8;
+      const gap = 46 - 30 * clamp01(t / FIGHT_BELL) + Math.sin(round * 2.3) * 3;
+      const beat = Math.floor(round / FIGHT_BEAT);
+      const u = round / FIGHT_BEAT - beat;
+      const jab = t >= FIGHT_BELL && !over && u < 0.5 ? Math.sin((u / 0.5) * Math.PI) : 0;
+      const redHits = beat % 3 !== 1;
+      const landed = jab > 0.7;
+      const feet = gy + 8;
+      const down = clamp01((ko - 0.15) / 0.35);
+      const redX = mid - gap - (landed && !redHits ? 3 : 0);
+      const blueX = mid + gap + (landed && redHits ? 3 : 0);
+      const hop = (phase: number) => (over ? 0 : Math.abs(Math.sin(t * 9 + phase)) * 2);
+      const haymaker = over && ko < 0.3 ? Math.sin((ko / 0.3) * Math.PI) * 1.3 : 0;
+      fighter(c, blueX, feet, -1, '#3b6fd9', '#c98f6b', '#1f1a17', hop(1.4), redHits ? 0 : jab, down, false);
+      fighter(c, redX, feet, 1, '#d9282f', '#e9c09a', '#6b4a2b', ko > 0.5 ? Math.abs(Math.sin(t * 10)) * 4 : hop(0), over ? haymaker : redHits ? jab : 0, 0, ko > 0.5);
+      if (landed) emojiAt(c, '💥', (redHits ? blueX : redX) + (redHits ? -6 : 6), feet - 46, 14);
+      if (over && ko < 0.35) emojiAt(c, '💥', blueX - 6, feet - 46, 22);
+      // Flat out, with the stars going around.
+      if (down >= 1) for (let j = 0; j < 3; j++) emojiAt(c, '⭐', blueX + 46 + Math.cos(sim.time * 5 + j * 2.09) * 10, feet - 22 + Math.sin(sim.time * 5 + j * 2.09) * 3, 8);
+      cageFence(c, gx, gy, rx, ry, true);
+
+      if (t < FIGHT_BELL) risingText(c, '🔔 DING DING', gx, gy - 70, t - 0.4, 0.8, 12, GOLD_LIGHT);
+      else if (!over) risingText(c, FIGHT_HITS[beat % FIGHT_HITS.length], redHits ? blueX : redX, feet - 66, u * FIGHT_BEAT - 0.15, 0.4, 11, '#ffffff');
+      else risingText(c, 'K.O.!', gx, gy - 64, ko - 0.2, 2, 22, GOLD_LIGHT);
+
+      for (let row = 0; row < 2; row++) for (let i = 0; i < 7; i++) crowd(gx - 66 + row * 11 + i * 22, gy + ry + 12 + row * 15, i + row * 7 + 10);
+      // Flashbulbs, going off faster once somebody is on the floor.
+      for (let j = 0; j < 6; j++) {
+        if (Math.sin(sim.time * (over ? 13 : 7) + j * 2.3) < 0.9) continue;
+        c.fillStyle = 'rgba(255,255,255,0.9)';
+        c.beginPath();
+        c.arc(gx - 60 + j * 24, j % 2 ? gy + ry - 8 : gy - ry - 34, 3.5, 0, Math.PI * 2);
+        c.fill();
+      }
+
+      // The promoter, at the elbow of his best customer.
+      const seat = tileCenter(RINGSIDE);
+      person(c, { x: seat.x - 27, y: seat.y + 13, path: [], facing: -1, walk: 0 }, DANA, over ? Math.abs(Math.sin(sim.time * 10)) * 4 : 0);
+      if (seated) {
+        const n = Math.floor(t / 2);
+        risingText(c, over && ko > 0.6 ? 'I CALLED IT. EVERYBODY SAW.' : FIGHT_CALLS[n % FIGHT_CALLS.length], p.x, p.y - 104, t - n * 2 - 0.2, 1.6, 10, '#ffffff');
       }
       break;
     }
@@ -1722,6 +1892,168 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
 }
 
 /** Tonight's affirmation, in Natalie's speech balloon. Drawn after the room is dimmed, so it stays bright. */
+const INTERVIEW_BRAGS = [
+  'Nobody does interviews like me. Nobody.',
+  'My ratings? Through the roof. Bigger than the moon landing.',
+  'People say I am the best guest in history. Smart people.',
+  'I aced the cognitive test. The doctors cried.',
+  'I know more about television than the people who invented it.',
+  'Many are calling this the greatest interview ever. I am one of them.',
+  'Frankly, I should be interviewing myself.',
+  'I am very humble. Probably the most humble. Ask anyone.',
+  'They wanted an hour. I gave them the best hour of their lives.',
+  'Look at this face. Central casting. Everybody says it.',
+];
+const TV_TICKER = ['EXCLUSIVE: PRESIDENT SAYS HE IS DOING GREAT', 'BREAKING: STILL TALKING', 'SOURCES: "TREMENDOUS," SAYS PRESIDENT'];
+const PODCAST_TICKER = ['HOUR 3 OF 3 · NO QUESTIONS ASKED YET', 'EPISODE 2,417 · SPONSORED BY THE COIN', 'NOW STREAMING · HOST HAS NOT SPOKEN'];
+
+/**
+ * The tablet: slides in from the left, plays the interview, and flies out to the right.
+ * Drawn over the scene in screen space, on a 300 by 216 design grid.
+ */
+function tablet(c: Ctx, act: Activity, viewW: number, viewH: number): void {
+  const screen = act.screen;
+  if (!screen) return;
+  const t = act.t;
+  const W = 300;
+  const H = 216;
+  const scale = Math.min((viewW * 0.72) / W, (viewH * 0.7) / H, 1.5);
+  const w = W * scale;
+  const arrive = clamp01(t / TABLET_SLIDE);
+  const leave = clamp01((t - (act.dur - TABLET_SLIDE)) / TABLET_SLIDE);
+  // Eases to a stop in the middle, then accelerates away.
+  const cx = viewW / 2 - (viewW / 2 + w) * (1 - arrive) ** 3 + (viewW / 2 + w) * leave ** 3;
+  const shown = Math.min(arrive, 1 - leave);
+
+  c.fillStyle = `rgba(5,7,18,${0.45 * shown})`;
+  c.fillRect(0, 0, viewW, viewH);
+
+  c.save();
+  c.translate(cx, viewH * 0.46);
+  c.rotate(-0.16 * (1 - arrive) ** 2 + 0.2 * leave ** 2);
+  c.scale(scale, scale);
+  c.translate(-W / 2, -H / 2);
+
+  // The case, and the camera in the bezel.
+  c.fillStyle = 'rgba(0,0,0,0.35)';
+  rr(c, 5, 9, W, H, 18);
+  c.fill();
+  c.fillStyle = '#14161c';
+  rr(c, 0, 0, W, H, 18);
+  c.fill();
+  c.strokeStyle = '#4a4f5c';
+  c.lineWidth = 1.5;
+  rr(c, 0.75, 0.75, W - 1.5, H - 1.5, 17.5);
+  c.stroke();
+  c.fillStyle = '#2c303b';
+  c.beginPath();
+  c.arc(W / 2, 5.5, 1.8, 0, Math.PI * 2);
+  c.fill();
+
+  c.save();
+  rr(c, 11, 11, W - 22, H - 22, 7);
+  c.clip();
+
+  const podcast = screen.kind === 'podcast';
+  if (podcast) {
+    // A dim studio: brick, and a sign that is on.
+    c.fillStyle = '#2a1a15';
+    c.fillRect(0, 0, W, H);
+    c.fillStyle = 'rgba(0,0,0,0.25)';
+    for (let row = 0; row < 12; row++) {
+      c.fillRect(0, 11 + row * 15, W, 1.5);
+      for (let col = 0; col < 9; col++) c.fillRect(col * 36 + (row % 2) * 18, 11 + row * 15, 1.5, 15);
+    }
+    const glow = 0.75 + 0.25 * Math.sin(t * 9);
+    c.strokeStyle = `rgba(255,70,80,${glow})`;
+    c.lineWidth = 2;
+    rr(c, 214, 22, 62, 22, 5);
+    c.stroke();
+    label(c, 'ON AIR', 245, 33.5, 12, `rgba(255,110,115,${glow})`);
+  } else {
+    // A news set: studio blue, with the lights sweeping about.
+    const sky = c.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, '#0f1f52');
+    sky.addColorStop(1, '#2f6fc4');
+    c.fillStyle = sky;
+    c.fillRect(0, 0, W, H);
+    c.fillStyle = 'rgba(255,255,255,0.07)';
+    for (let i = 0; i < 5; i++) {
+      const x = ((i * 80 + t * 22) % 400) - 60;
+      c.beginPath();
+      c.moveTo(x, 0);
+      c.lineTo(x + 26, 0);
+      c.lineTo(x - 44, H);
+      c.lineTo(x - 70, H);
+      c.fill();
+    }
+    if (Math.sin(t * 6) > -0.3) {
+      c.fillStyle = '#d9282f';
+      rr(c, 234, 20, 44, 18, 4);
+      c.fill();
+      label(c, '● LIVE', 256, 29.5, 10, '#ffffff');
+    }
+  }
+
+  // The guest, from the chest up, and never not talking.
+  const talking = shown >= 1;
+  c.save();
+  c.translate(84, 238 + (talking ? Math.sin(t * 7) * 1.5 : 0));
+  c.rotate(talking ? Math.sin(t * 2.3) * 0.03 : 0);
+  c.scale(3.3, 3.3);
+  person(c, { x: 0, y: 0, path: [], facing: 1, walk: 0 }, PRESIDENT, 0);
+  c.fillStyle = '#7a2a1c';
+  const open = talking ? 0.7 + Math.abs(Math.sin(t * 15)) * 2.4 : 0.7;
+  rr(c, 2.5, -45.5, 5, open, Math.min(1, open / 2));
+  c.fill();
+  c.restore();
+
+  // The microphone he is leaning into.
+  c.strokeStyle = '#8b909c';
+  c.lineWidth = 3;
+  c.beginPath();
+  c.moveTo(podcast ? 190 : 150, 180);
+  c.lineTo(146, 150);
+  c.stroke();
+  c.fillStyle = '#23262e';
+  rr(c, 134, 132, podcast ? 22 : 14, podcast ? 30 : 22, 7);
+  c.fill();
+  c.fillStyle = 'rgba(255,255,255,0.18)';
+  for (let i = 0; i < 3; i++) c.fillRect(137, 138 + i * 6, podcast ? 16 : 8, 1.5);
+
+  // The lower third.
+  const ticker = podcast ? PODCAST_TICKER : TV_TICKER;
+  c.fillStyle = podcast ? '#f2c230' : '#ffffff';
+  c.fillRect(11, 168, W - 22, 20);
+  c.fillStyle = podcast ? '#14161c' : '#d9282f';
+  c.fillRect(11, 168, 6, 20);
+  label(c, `${podcast ? '🎙 ' : ''}${screen.host.toUpperCase()}${podcast ? '' : ' · EXCLUSIVE'}`, 24, 178.5, 11, '#14161c', 'left');
+  c.fillStyle = '#0a0f1f';
+  c.fillRect(11, 188, W - 22, 17);
+  label(c, ticker[Math.floor(t / 2.4) % ticker.length], 24, 197, 8.5, '#ffe9a8', 'left');
+
+  // One boast after another.
+  if (talking) {
+    const said = t - TABLET_SLIDE;
+    const age = said % BRAG_EVERY;
+    let start = 0;
+    for (const ch of screen.host) start += ch.charCodeAt(0);
+    const line = INTERVIEW_BRAGS[(start + Math.floor(said / BRAG_EVERY)) % INTERVIEW_BRAGS.length];
+    speech(c, line, 206, 118, Math.min(1, age / 0.2, (BRAG_EVERY - age) / 0.25));
+  }
+
+  // Glass.
+  c.fillStyle = 'rgba(255,255,255,0.05)';
+  c.beginPath();
+  c.moveTo(11, 11);
+  c.lineTo(150, 11);
+  c.lineTo(60, H - 11);
+  c.lineTo(11, H - 11);
+  c.fill();
+  c.restore();
+  c.restore();
+}
+
 function affirmation(c: Ctx, sim: Sim): void {
   const act = sim.activity;
   if (!act?.sleep || sim.aide.path.length > 0) return;
@@ -2670,12 +3002,12 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
     y: sim.pres.y,
     draw: () => {
       if (idle === 'motorcade') {
-        motorcade(c, sim, { suit: '#1d2a52', skin: '#f2a35e', hair: '#f2c230', tie: '#d9282f', swoosh: true });
+        motorcade(c, sim, PRESIDENT);
         return;
       }
       if (idle === 'cart') {
         golfCart(c, sim.pres.x, sim.pres.y, sim.pres.facing, sim.time, false);
-        person(c, { ...sim.pres, y: sim.pres.y - 10 }, { suit: '#1d2a52', skin: '#f2a35e', hair: '#f2c230', tie: '#d9282f', swoosh: true }, 0);
+        person(c, { ...sim.pres, y: sim.pres.y - 10 }, PRESIDENT, 0);
         golfCart(c, sim.pres.x, sim.pres.y, sim.pres.facing, sim.time, true);
         return;
       }
@@ -2689,7 +3021,7 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
         rr(c, sim.pres.x - 12, sim.pres.y - 47, 24, 40, 5);
         c.fill();
       }
-      person(c, sim.pres, { suit: '#1d2a52', skin: '#f2a35e', hair: '#f2c230', tie: '#d9282f', swoosh: true }, bob);
+      person(c, sim.pres, PRESIDENT, bob);
     },
   });
   standing.sort((a, b) => a.y - b.y);
@@ -2756,6 +3088,9 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
     c.fillStyle = `rgba(5,7,18,${sim.fade})`;
     c.fillRect(0, 0, viewW, viewH);
   }
+
+  // A paid interview plays on a tablet, over everything.
+  if (sim.activity) tablet(c, sim.activity, viewW, viewH);
 
   // The affirmations go on top of all that, at full brightness.
   c.save();

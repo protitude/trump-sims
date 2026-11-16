@@ -294,6 +294,12 @@ export const AIDE_PACE: [Tile, Tile] = [
   [50, 20],
 ];
 
+/** Fight night: the cage goes up on the grass between the reviewing stand and the plane. Its center, in pixels. */
+export const CAGE: Point = { x: 32.4 * T, y: 48 * T };
+/** His front-row seat, and the corner he comes around to reach it without walking through the cage. */
+export const RINGSIDE: Tile = [38, 48];
+export const RINGSIDE_VIA: Tile = [38, 44];
+
 /** The golf in each place, and the loop the cart is driven around on it, in pixels. */
 const GOLF: Partial<Record<Place, WorldObject>> = { dc: byId('golf'), maralago: byId('mal-golf') };
 export function cartLoop(place: Place): { cx: number; cy: number; rx: number; ry: number } {

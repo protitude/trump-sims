@@ -2,17 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent } from 'react';
 import { calleeAt } from '../game/calls.ts';
 import { cardById, vanityById } from '../game/content.ts';
-import { COKE_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway, golfing } from './draw.ts';
+import { COKE_SECONDS, FIGHT_SECONDS, INTERVIEW_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway, golfing } from './draw.ts';
 import { TUNING, bragsAboutPhysical, leakChanceAt, cokeStatus, domeShields, dutyCost, melaniaAttends, melaniaStatus, sueStatus, vanityEgo, vanityStability, vanityStatus } from '../game/engine.ts';
 import type { Meal } from '../game/engine.ts';
 import { MELANIA_INSULTS } from '../game/melania.ts';
-import { guestById } from '../game/guests.ts';
+import { guestById, showOf } from '../game/guests.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
 import { Blocks, Fx, Why, needCoin, needTime } from '../ui.tsx';
 import { drawWorld, hitRectPx } from './draw.ts';
-import type { Actor, Aide, Npc, Sim } from './draw.ts';
+import type { Activity, Actor, Aide, Npc, Sim } from './draw.ts';
 import { nextAffirmations } from './affirmations.ts';
-import { AIDE_GRAB, AIDE_PACE, AIDE_SPOT, BEDS, CLUB_GATE, IDLE_SEATS, arrival, cartLoop, cheerTile, curbTile, inCabinetRoom, exists, golfShot, guestSpot, idleKindAt, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
+import { AIDE_GRAB, AIDE_PACE, AIDE_SPOT, BEDS, CLUB_GATE, IDLE_SEATS, RINGSIDE, RINGSIDE_VIA, arrival, cartLoop, cheerTile, curbTile, inCabinetRoom, exists, golfShot, guestSpot, idleKindAt, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
 import { T } from './map.ts';
 import type { Point, Tile } from './map.ts';
 
@@ -329,7 +329,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
     emoji: string,
     seconds: number,
     done: () => void,
-    scene: { anim?: string; objectId?: string; cardId?: string } = {},
+    scene: Pick<Activity, 'anim' | 'objectId' | 'cardId' | 'screen'> = {},
   ) {
     setMenu(null);
     endIdle();
@@ -362,8 +362,9 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       updateAide(dt);
 
       if (sim.activity) {
-        // Bedtime does not start until Natalie has reached the bedside.
-        if (!(sim.activity.sleep && sim.aide.path.length > 0)) sim.activity.t += dt;
+        // Bedtime does not start until Natalie has reached the bedside, nor the fight until he has reached his seat.
+        const waiting = sim.activity.sleep ? sim.aide.path.length > 0 : sim.activity.anim === 'fight' && sim.pres.path.length > 0;
+        if (!waiting) sim.activity.t += dt;
         const part = sim.activity.t / sim.activity.dur;
         // The lights go down for the affirmations, then out.
         if (sim.activity.sleep) sim.fade = Math.max(0.35 * Math.min(1, sim.activity.t / 0.8), 1 - (sim.activity.dur - sim.activity.t) / 0.8);
@@ -530,6 +531,8 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
   // Stepping off the plane or helicopter: appear at the arrival spot of the new place.
   const lastPlace = useRef(state.place);
   const flew = useRef(false);
+  /** Cage Fight Dana paid, and this is the flight home: the fight is on as soon as he lands. */
+  const fightDue = useRef(false);
   useEffect(() => {
     if (state.place === lastPlace.current) return;
     lastPlace.current = state.place;
@@ -544,7 +547,15 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       const heli = state.vehicle === 'heli';
       const pad = heli ? HELIPADS[state.place] : state.place === 'dc' ? 'plane' : 'mal-plane';
       sim.fade = 1;
-      perform('Landing', heli ? '🚁' : '✈️', FLIGHT_SECONDS, () => {}, { anim: heli ? 'land-heli' : 'land-plane', objectId: pad });
+      const fight = fightDue.current && state.place === 'dc';
+      fightDue.current = false;
+      // Off the craft and straight to ringside, around the top of the cage.
+      const fightNight = () => {
+        perform('Fight night', '🥊', FIGHT_SECONDS, () => {}, { anim: 'fight' });
+        sim.pres.path = [...findPath(sim.pres, RINGSIDE_VIA), ...findPath(tileCenter(RINGSIDE_VIA), RINGSIDE)];
+        targetRef.current = null;
+      };
+      perform('Landing', heli ? '🚁' : '✈️', FLIGHT_SECONDS, fight ? fightNight : () => {}, { anim: heli ? 'land-heli' : 'land-plane', objectId: pad });
       sim.activity!.flight = 'in';
     }
   }, [state.place, sim]);
@@ -776,11 +787,15 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
               className="option"
               disabled={!affordable}
               onClick={() =>
-                perform('Taking the coin', '🪙', watchTime(TUNING.bribeCost), () => callbacks.current.onBribe(guest.id), {
+              {
+                // Airtime was the ask: the interview plays on a tablet while the coin changes hands.
+                const show = showOf(guest);
+                perform(show ? 'On the air' : 'Taking the coin', show ? '🎙️' : '🪙', show ? INTERVIEW_SECONDS : watchTime(TUNING.bribeCost), () => callbacks.current.onBribe(guest.id), {
                   anim: 'duty-hybrid',
                   cardId: guest.id,
-                })
-              }
+                  ...(show && { screen: { kind: show, host: guest.title } }),
+                });
+              }}
             >
               <span>Take the coin</span>
               <Fx effects={guest.effects} />
@@ -966,6 +981,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
                       action.travelTo ? FLIGHT_SECONDS : watchTime(action.cost),
                       () => {
                         flew.current = Boolean(action.travelTo);
+                        fightDue.current = action.travelTo === 'dc' && Boolean(stateRef.current.fight);
                         callbacks.current.onVanity(action.id);
                       },
                       { anim: grouped ? action.category : (ANIM[action.id] ?? action.id), objectId: object.id },

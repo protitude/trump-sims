@@ -142,6 +142,8 @@ export interface GameState {
   melaniaYear?: number;
   /** Index into MELANIA_INSULTS of the last thing she said to him. */
   insult?: number;
+  /** Cage Fight Dana has paid: the fight is on the South Lawn the next time he flies in to Washington. */
+  fight?: boolean;
   /** Fresh from a physical: he will brag about it at his next rally, for a little extra Ego. */
   physical?: boolean;
   /** The Golden Dome has already taken the edge off one crisis. It does that once. */

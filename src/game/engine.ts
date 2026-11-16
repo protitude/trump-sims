@@ -3,7 +3,7 @@ import { CRISES, DUTIES, HYBRIDS, VANITY, cardById, vanityById } from './content
 import { CHOICE_STATS, CONSEQUENCES, HEARING_MONTHS, SET_PIECE_MONTHS, VOTE_MONTH } from './story.ts';
 import { CHAOS, chaosById } from './chaos.ts';
 import type { ChaosOutcome } from './chaos.ts';
-import { GUESTS, guestById } from './guests.ts';
+import { FIGHT_GUEST, GUESTS, guestById } from './guests.ts';
 import { CALLEES, calleeAt } from './calls.ts';
 import { SUITS } from './suits.ts';
 import { MELANIA_INSULTS } from './melania.ts';
@@ -366,6 +366,7 @@ export function takeBribe(state: GameState, guestId: string): GameState {
   s.guests = s.guests.filter((id) => id !== guestId);
   apply(s, guest.effects);
   log(s, guest.result, 'ego');
+  if (guestId === FIGHT_GUEST) s.fight = true;
   if (rand(s) < leakChanceAt(s.month)) {
     const [soonest, latest] = TUNING.leakDelay;
     const delay = soonest + Math.floor(rand(s) * (latest - soonest + 1));
@@ -771,6 +772,11 @@ export function doVanity(state: GameState, actionId: string): GameState {
     nextCallee(s);
   } else {
     log(s, action.result, 'ego');
+  }
+  if (action.travelTo === 'dc' && s.fight) {
+    // Paid for at the club, and built while he was away.
+    s.fight = false;
+    log(s, 'The cage was up on the South Lawn when you landed. You had the front-row seat. The grass will be back by spring.', 'ego');
   }
   if (withMelania) log(s, 'Melania stood beside you for the whole thing. She did not smile, and the world relaxed slightly.', 'good');
   if (bragging) log(s, 'You opened with the physical. Passed it biggly, you said: the doctor wept. The crowd chanted your blood pressure.', 'ego');
