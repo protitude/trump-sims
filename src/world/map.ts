@@ -109,7 +109,7 @@ export const OBJECTS: WorldObject[] = [
   { id: 'plot-statue', name: '90-Foot Gold Statue', kind: 'plot', rect: { x: 29, y: 27, w: 4, h: 5 }, spot: [31, 32], actions: ['build-statue'], blocking: true },
   { id: 'plot-mountain', name: 'Your Face On The Mountain', kind: 'plot', rect: { x: 38, y: 27, w: 7, h: 5 }, spot: [41, 32], actions: ['build-mountain'], blocking: true },
   { id: 'plot-space-arch', name: 'Arch Visible From Space', kind: 'plot', rect: { x: 51, y: 27, w: 8, h: 5 }, spot: [55, 32], actions: ['build-space-arch'], blocking: true },
-  { id: 'plot-ballroom', name: 'The Grand Ballroom', kind: 'plot', rect: { x: 18, y: 37, w: 7, h: 5 }, spot: [21, 42], actions: ['build-ballroom'], blocking: true },
+  { id: 'plot-ballroom', name: 'The Grand Ballroom', kind: 'plot', rect: { x: 18, y: 37, w: 7, h: 5 }, spot: [21, 42], actions: ['build-ballroom', 'show-state-dinner'], blocking: true },
   { id: 'plot-giftshop', name: 'The Gift Shop', kind: 'plot', rect: { x: 31, y: 37, w: 7, h: 5 }, spot: [34, 42], actions: ['build-giftshop'], blocking: true },
   { id: 'plot-dome', name: 'The Golden Dome', kind: 'plot', rect: { x: 44, y: 37, w: 7, h: 5 }, spot: [47, 42], actions: ['build-dome'], blocking: true },
   { id: 'golf', name: 'Putting Green', kind: 'golf', rect: { x: 4, y: 34, w: 11, h: 7 }, spot: [9, 37], actions: ['show-golf'], blocking: false },

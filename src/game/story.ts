@@ -5,6 +5,7 @@ import type { DutyCard, DutyKind, Effects } from './types.ts';
 //   SEQUELS       Cards that only appear because of an earlier choice.
 //   CONSEQUENCES  Which choice plants which sequel, and how many months later.
 //   SET_PIECES    Cards that arrive on fixed months of the term.
+//   HEARINGS      Cards a hostile Congress sends in year three, ending in a vote.
 //
 // None of these are in the shuffled deck; the engine deals them in.
 
@@ -261,6 +262,116 @@ export const SEQUELS: DutyCard[] = [
     ['Declare the coins legal tender', { ego: 4, stability: -6, gold: 1 }, 'The coins are money now. The Treasury has asked to be informed of such things in advance.'],
     [-5, 'The coins are trading at a discount to chocolate ones.']),
 
+  // ----- The gold, the names and the monuments come back too -----
+  two('seq-archivist-squints', 'decision', 'The Archivist Squints',
+    'You gilded the Constitution display.',
+    'Nobody can read the document through the glare. A school group has gone home believing there are four amendments and one of them is about golf.',
+    ['Fit anti-glare glass', { stability: 5, ego: -4 }, 'The glass is in. The words are legible again, including several you had hoped were not.'],
+    ['"They can buy the copy"', { ego: 4, stability: -4 }, 'Visitors are directed to a souvenir copy. It is shorter, and it is signed by you.'],
+    [-3, 'The archivist has started handing out welding masks at the door.']),
+  two('seq-hotline-rang', 'call', 'The Hotline Rang',
+    'You gilded the red phone.',
+    'The hotline rang at 4am and the duty officer could not lift the receiver. A nuclear power has been waiting for a callback ever since.',
+    ['Call back on a normal phone', { stability: 6, ego: -4 }, 'You returned the call on a plastic handset. It was a wrong number, but a tense one.'],
+    ['Hire a stronger duty officer', { ego: 4, stability: -5 }, 'The new duty officer is a former shot-putter. He lifted it once, and is resting.'],
+    [-5, 'The phone rang out. The other side has taken the silence as a position.']),
+  two('seq-ambassador-slides', 'press', 'The Ambassador Slid',
+    'You gilded the carpet.',
+    'An ambassador stepped onto the gold carpet mid-handshake and slid slowly out of the Oval Office, still holding your hand. There is footage.',
+    ['Lay a rug over it', { stability: 5, ego: -4 }, 'There is a rug now. It is beige. Visitors arrive and leave at the speed they intended.'],
+    ['Call it the traditional exit', { ego: 4, stability: -4 }, 'All visitors now leave by sliding. Protocol has issued guidance on posture.'],
+    [-3, 'Three more diplomats have slid out since. One of them reached the Rose Garden.']),
+  two('seq-throne-missing', 'decision', 'The Throne Is Missing',
+    'You gilded the toilet.',
+    'The gold toilet is gone. It was there on Tuesday. The Secret Service is describing the gap in the floor as "an active scene."',
+    ['Let them investigate quietly', { stability: 5, ego: -4 }, 'It was found in a storage unit in Delaware, unharmed. Nobody has been allowed to say where it had been.'],
+    ['Offer a reward and blame a country', { ego: 5, stability: -5 }, 'You named a country. The country has denied taking the toilet, in a statement its diplomats visibly enjoyed.'],
+    [-3, 'The gap in the floor is still there. Staff have put a cone on it.']),
+  two('seq-heavy-plane', 'decision', 'The Plane Is Heavy',
+    'You gilded the plane.',
+    'The gold plane now needs a runway two miles longer than most of the country has. It can land in four places, and one of them is a salt flat.',
+    ['Strip the gold off the wings', { stability: 5, ego: -4 }, 'The wings are aluminum again. The plane can land in cities, like it used to.'],
+    ['Lengthen the runways', { ego: 5, stability: -4 }, 'Forty runways are being extended through whatever was at the end of them.'],
+    [-3, 'The plane has been circling since Thursday. The pilot would like a decision.']),
+  two('seq-rose-society', 'press', 'The Rose People',
+    'You turned the Rose Garden into a helipad.',
+    'A national society of gardeners has assembled at the fence. They are very polite, there are four thousand of them, and they have brought cuttings.',
+    ['Give them a corner to replant', { stability: 5, ego: -3 }, 'There is a small rose bed by the fence now. The rotor wash has been asked to be considerate.'],
+    ['Paint roses on the helipad', { ego: 4, stability: -4 }, 'The H has a rose painted through it. The gardeners have described it as "a provocation."'],
+    [-3, 'The gardeners have begun planting along the motorcade route, at night.']),
+  two('seq-lost-luggage', 'decision', 'Lost Luggage',
+    'You renamed the airport.',
+    'Bags tagged for the new airport are arriving at your hotels, your golf courses and a steakhouse. Forty thousand suitcases are in a ballroom in Florida.',
+    ['Give the airport a code of its own', { stability: 5, ego: -4 }, 'The airport has a code now, and it is three dull letters. The suitcases have gone home.'],
+    ['Keep the bags and open a store', { ego: 4, stability: -4, gold: 1 }, 'Unclaimed luggage is now sold at the club. Several guests have bought back their own.'],
+    [-3, 'The suitcases have been there a month. One of them has started to hum.']),
+  two('seq-gulf-renames-back', 'call', 'The Gulf Renames Back',
+    'You renamed the gulf.',
+    'The neighbor to the south has responded on its own maps. Your country is now labeled with a phrase the translators would prefer not to read aloud.',
+    ['Agree to print both names', { stability: 6, ego: -5 }, 'Maps carry both names now, yours second and smaller. The translators have relaxed.'],
+    ['Rename their capital', { ego: 5, stability: -6 }, 'You renamed their capital after your son. They have renamed your son.'],
+    [-4, 'Their maps are selling well here. People like the new label.']),
+  two('seq-all-roads', 'briefing', 'All Roads Lead To Trump',
+    'You renamed the highway system.',
+    'Every exit on every interstate now says Trump Highway. Truckers are navigating by the sun, and a shipment of insulin has arrived in the wrong Dakota.',
+    ['Put the numbers back, under your name', { stability: 6, ego: -4 }, 'The signs carry numbers again, small ones, beneath your name. Freight is finding its way.'],
+    ['Tell drivers to follow their hearts', { ego: 4, stability: -5 }, 'Drivers followed their hearts. Most of their hearts led to the same rest stop in Ohio.'],
+    [-4, 'A convoy of forty trucks has been circling Atlanta for nine days.']),
+  two('seq-fourth-of-what', 'decision', 'The Fourth Of What',
+    'You renamed a month.',
+    'Tax deadlines, court dates and a great many weddings are scheduled in a month that half the country says does not exist.',
+    ['Let both names stand', { stability: 5, ego: -4 }, 'The old name is legal again, alongside yours. Calendars now have a footnote.'],
+    ['Rename August as well', { ego: 5, stability: -5 }, 'Two months are yours. The summer is now mostly you. Wedding planners are in open revolt.'],
+    [-3, 'A man has been released from jail early on the grounds that his sentence ended in a month nobody can find.']),
+  two('seq-missed-trumpsday', 'decision', 'Nobody Came On Trumpsday',
+    'You renamed Tuesday.',
+    'Half the country showed up on Trumpsday and half came on Tuesday, which are the same day. Somehow they still missed each other.',
+    ['Allow "Tuesday" as a nickname', { stability: 5, ego: -4 }, 'Tuesday is back, unofficially. Meetings are being attended again, with visible relief.'],
+    ['Rename Wednesday, to settle it', { ego: 5, stability: -5 }, 'Wednesday is now Trumpsday Two. The week has five days and three of them are arguments.'],
+    [-3, 'Elections are held on a Tuesday. Lawyers have begun to notice this.']),
+  two('seq-exact-change', 'decision', 'Exact Change Only',
+    'You renamed the dollar.',
+    'Vending machines, parking meters and three foreign central banks are refusing the Trump. A senator has been unable to buy a soda since Monday.',
+    ['Let the Treasury print both', { stability: 7, ego: -5 }, 'Bills now say "One Dollar (Trump)." The machines accept them. The senator has his soda.'],
+    ['Order the machines to comply', { ego: 5, stability: -7 }, 'An executive order was read aloud to a vending machine in the lobby. It kept the money.'],
+    [-6, 'People have started paying for things in commemorative coins and loose batteries.'], 2),
+  two('seq-high-trump', 'press', 'High Trump Is At 6:14',
+    'You renamed the Moon.',
+    'Tide tables now list "high Trump" and "low Trump." A fishing fleet misread them, and a reporter would like to know if you control the sea.',
+    ['Say the Moon may keep its old name at sea', { stability: 5, ego: -5 }, 'Mariners may call it the Moon. You said this quickly, and looked at the floor.'],
+    ['Say yes, you control the sea', { ego: 6, stability: -5 }, 'You confirmed that you control the tides. The tide came in during the answer, unprompted.'],
+    [-3, 'The fleet is still aground. Its captain is blaming you by name, which is at least the right name.']),
+  two('seq-light-on-your-head', 'decision', 'A Light On Your Head',
+    'You built the 90-foot gold statue.',
+    'Aviation regulators say the statue needs a red warning light on its highest point. Its highest point is your hair.',
+    ['Fit the light', { stability: 5, ego: -5 }, 'The statue blinks red all night. From the residence it looks like it is thinking.'],
+    ['Move the flight paths', { ego: 5, stability: -4 }, 'Flights now go around you, with a margin. Arrivals from the north take forty minutes longer.'],
+    [-3, 'A news helicopter clipped the statue on the ear. The ear is fine. The footage is everywhere.']),
+  two('seq-the-others-lean', 'decision', 'The Other Four Are Leaning',
+    'You had your face carved on the mountain.',
+    'Geologists report a crack. The four original faces have begun, very slowly, to lean away from the new one.',
+    ['Pay for the reinforcement', { stability: 6, ego: -4 }, 'Steel pins went in. All five faces are stable, and the nearest one still looks uneasy.'],
+    ['Say they are leaning in', { ego: 5, stability: -5 }, 'You said they are leaning in to listen. Two of them are now doing so at eleven degrees.'],
+    [-4, 'A nose has come off. It was not yours, and people feel that this was not luck.']),
+  two('seq-orbital-glare', 'call', 'A Call From Orbit',
+    'You built the arch that can be seen from space.',
+    'The space station is on the line. The crew says the Arch is so bright that they have lost a window, and they would like to know if it has a dimmer.',
+    ['Dim it for their orbit', { stability: 6, ego: -5 }, 'The Arch goes dark for four minutes, sixteen times a day. You are told each time.'],
+    ['Send them sunglasses', { ego: 5, stability: -5, gold: 1 }, 'Six pairs of gold sunglasses went up on the next rocket. The crew wore them on camera, unsmiling.'],
+    [-4, 'The crew has taped a towel over the window. The towel has been seen by four billion people.']),
+  two('seq-sold-separately', 'decision', 'Sold Separately',
+    'You built the Gift Shop.',
+    'The Gift Shop has sold a binder marked "decorative" for $39.99. It was not decorative. A tourist from Ohio has been reading it on the bus.',
+    ['Buy it back and check the shelves', { stability: 6, ego: -4 }, 'The binder is home. The tourist kept the bag, and has agreed to forget pages four through thirty.'],
+    ['Raise the price', { ego: 4, stability: -6, coin: 1 }, 'Binders are $89.99 now. They are selling faster. Nobody is checking what is in them.'],
+    [-5, 'The tourist has posted a review. It is five stars, and very detailed.']),
+  two('seq-warm-under-here', 'briefing', 'It Is Warm Under Here',
+    'You built the Golden Dome.',
+    'It is 114 degrees under the Dome. The lawn has gone. Staff are working in shifts, and the Marine band has asked to play sitting down.',
+    ['Cut vents in it', { stability: 6, ego: -5 }, 'The Dome has vents. From above it looks like a colander, which you have asked nobody to say.'],
+    ['Call it a spa', { ego: 5, stability: -5, gold: 1 }, 'Robes are now issued at the gate. A cabinet meeting was held in a steam room, briefly.'],
+    [-4, 'A visiting delegation fainted in order of seniority.']),
+
   // ----- Doing the job pays off, eventually -----
   one('seq-deputy-delivers', 'hybrid', 'OPPORTUNITY: The Deputy Delivers',
     'You appointed the qualified deputy.',
@@ -290,8 +401,9 @@ export const SEQUELS: DutyCard[] = [
 ];
 
 /**
- * What each choice leads to. Keys are "<card id>:<option index>", or
- * "<card id>:ignore" for leaving a card to rot. `after` is in months.
+ * What each choice leads to. Keys are "<card id>:<option index>",
+ * "<card id>:ignore" for leaving a card to rot, or "<vanity id>:done" for a
+ * vanity project. `after` is in months.
  */
 export const CONSEQUENCES: Record<string, { card: string; after: number }> = {
   'penguin-tariff:1': { card: 'seq-penguins-retaliate', after: 4 },
@@ -327,6 +439,25 @@ export const CONSEQUENCES: Record<string, { card: string; after: number }> = {
   'gov-call-interior:1': { card: 'seq-geyser-late', after: 4 },
   'law-department-of-war:1': { card: 'seq-two-departments', after: 4 },
   'gov-doge-cuts:1': { card: 'seq-elevators', after: 3 },
+  // What he gilded, named and built. Keys are "<vanity id>:done".
+  'gild-constitution:done': { card: 'seq-archivist-squints', after: 3 },
+  'gild-phone:done': { card: 'seq-hotline-rang', after: 3 },
+  'gild-carpet:done': { card: 'seq-ambassador-slides', after: 3 },
+  'gild-toilet:done': { card: 'seq-throne-missing', after: 4 },
+  'gild-plane:done': { card: 'seq-heavy-plane', after: 3 },
+  'build-helipad:done': { card: 'seq-rose-society', after: 4 },
+  'rename-airport:done': { card: 'seq-lost-luggage', after: 3 },
+  'rename-gulf:done': { card: 'seq-gulf-renames-back', after: 4 },
+  'rename-highways:done': { card: 'seq-all-roads', after: 3 },
+  'rename-month:done': { card: 'seq-fourth-of-what', after: 4 },
+  'rename-tuesday:done': { card: 'seq-missed-trumpsday', after: 3 },
+  'rename-dollar:done': { card: 'seq-exact-change', after: 3 },
+  'rename-moon:done': { card: 'seq-high-trump', after: 4 },
+  'build-statue:done': { card: 'seq-light-on-your-head', after: 4 },
+  'build-mountain:done': { card: 'seq-the-others-lean', after: 5 },
+  'build-space-arch:done': { card: 'seq-orbital-glare', after: 3 },
+  'build-giftshop:done': { card: 'seq-sold-separately', after: 4 },
+  'build-dome:done': { card: 'seq-warm-under-here', after: 3 },
   'intel-briefing:ignore': { card: 'seq-situation-developed', after: 2 },
   'budget-meeting:ignore': { card: 'seq-paid-in-coins', after: 2 },
   'appointment:0': { card: 'seq-deputy-delivers', after: 6 },
@@ -419,4 +550,58 @@ export const SET_PIECE_MONTHS: Record<number, string> = {
   37: 'set-sotu-3',
   40: 'set-portrait',
   48: 'set-farewell',
+};
+
+// ---------- Hearings: what a hostile Congress does with year three ----------
+
+const hearing = (card: DutyCard): DutyCard => setPiece(card, 'Hearing');
+
+export const HEARING_CARDS: DutyCard[] = [
+  hearing(
+    two('hear-subpoena', 'decision', 'The Subpoena', '',
+      'The new oversight chair has sent a subpoena for the guest book at the club, the Lawyer\'s billing records and "anything gold." The courier is waiting for a signature.',
+      ['Hand over the boxes', { stability: 6, ego: -4 }, 'Forty boxes went up the Hill. Staff have been told to say the boxes were your idea.'],
+      ['Declare the guest book privileged', { ego: 5, stability: -5 }, 'You declared the guest book privileged, and the buffet with it. The chair has scheduled a hearing about the buffet.'],
+      [-5, 'The subpoena went unanswered. The committee has voted to hold your desk in contempt.']),
+  ),
+  hearing(
+    two('hear-testimony', 'press', 'The Hearing', '',
+      'The committee is taking testimony on live television. Your former fixer is at the witness table with a binder. They have left a chair for you, and a small bottle of water.',
+      ['Send a written statement, an accurate one', { stability: 7, ego: -5 }, 'Four pages, all true. A clerk read them into the record in a monotone, to an emptying room.'],
+      ['Phone in to the hearing, live', { ego: 7, stability: -6 }, 'You called in from the residence and stayed on for ninety minutes. The chair thanked you for "the exhibits."'],
+      [-6, 'The hearing ran without you. The empty chair made every front page, with its little bottle of water.'], 2),
+  ),
+  hearing(
+    two('hear-vote', 'decision', 'The Impeachment Vote', '',
+      'The House votes on articles of impeachment at the end of this month. The count is close, and it turns on what has come out about the coin, the lawsuits and how the hearings went.',
+      ['Work the phones, politely', { stability: 5, ego: -5 }, 'You called forty members and asked after their districts. Several of them had to sit down.'],
+      ['Hold a witch-hunt rally on the Capitol steps', { ego: 7, stability: -5 }, 'A big crowd, a long speech and a new nickname for the chair. Members watched from the windows, counting.'],
+      [-5, 'You spent the week on the course. The whips counted without you.'], 2),
+  ),
+];
+
+/** Month of the term -> the hearing dealt that month, if Congress is hostile. */
+export const HEARING_MONTHS: Record<number, string> = {
+  27: 'hear-subpoena',
+  31: 'hear-testimony',
+  34: 'hear-vote',
+};
+
+/** The House votes as this month ends. */
+export const VOTE_MONTH = 34;
+
+/**
+ * Choices the game keeps a count of, for the vote and for the epilogue. Keys
+ * are as in CONSEQUENCES. `heat` is what the hearings add to the case against
+ * him; it can go down as well as up.
+ */
+export const CHOICE_STATS: Record<string, [stat: string, by: number]> = {
+  'hear-subpoena:1': ['heat', 2],
+  'hear-subpoena:ignore': ['heat', 2],
+  'hear-testimony:1': ['heat', 2],
+  'hear-testimony:ignore': ['heat', 2],
+  'hear-vote:0': ['heat', -2],
+  'hear-vote:1': ['heat', 1],
+  'hear-vote:ignore': ['heat', 1],
+  'set-farewell:1': ['wontLeave', 1],
 };

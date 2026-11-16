@@ -3,12 +3,12 @@ import type { PointerEvent } from 'react';
 import { calleeAt } from '../game/calls.ts';
 import { cardById, vanityById } from '../game/content.ts';
 import { COKE_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway } from './draw.ts';
-import { TUNING, cokeStatus, dutyCost, melaniaAttends, melaniaStatus, sueStatus, vanityEgo, vanityStability, vanityStatus } from '../game/engine.ts';
+import { TUNING, bragsAboutPhysical, cokeStatus, domeShields, dutyCost, melaniaAttends, melaniaStatus, sueStatus, vanityEgo, vanityStability, vanityStatus } from '../game/engine.ts';
 import type { Meal } from '../game/engine.ts';
 import { MELANIA_INSULTS } from '../game/melania.ts';
 import { guestById } from '../game/guests.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
-import { Blocks, Fx } from '../ui.tsx';
+import { Blocks, Fx, Why, needCoin, needTime } from '../ui.tsx';
 import { drawWorld, hitRectPx } from './draw.ts';
 import type { Actor, Aide, Npc, Sim } from './draw.ts';
 import { nextAffirmations } from './affirmations.ts';
@@ -92,7 +92,11 @@ const VANITY_EMOJI: Record<string, string> = {
   'show-call': '📞',
   'show-rally': '📣',
   'show-parade': '🎖️',
+  'show-state-dinner': '🍽️',
 };
+
+/** Actions that borrow another one's animation. */
+const ANIM: Record<string, string> = { 'show-state-dinner': 'resort-dinner' };
 
 function advance(a: Actor, speed: number, dt: number): void {
   let budget = speed * dt;
@@ -635,6 +639,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
               <Blocks n={post.cost} />
               <Fx effects={{ ego: vanityEgo(state, post), stability: post.stability }} />
             </span>
+            {postStatus === 'no-time' && <Why>{needTime(post.cost, state.blocks)}</Why>}
           </button>
           <button
             className={`vanity status-${affordable ? 'ok' : 'no-time'}`}
@@ -655,6 +660,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
             <span className="vanity-side">
               <span className="chip bad">−{TUNING.lunchCost} Coin</span>
             </span>
+            {!affordable && <Why>{needCoin(state)}</Why>}
           </button>
           <button
             className={`vanity status-${affordable ? 'ok' : 'no-time'}`}
@@ -675,6 +681,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
             <span className="vanity-side">
               <span className="chip bad">−{TUNING.lunchCost} Coin</span>
             </span>
+            {!affordable && <Why>{needCoin(state)}</Why>}
           </button>
           <button
             className={`vanity status-${coke === 'ok' ? 'ok' : 'no-time'}`}
@@ -686,15 +693,20 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
               <span className="vanity-text">
                 {coke === 'ok'
                   ? 'One press, one can, on a silver tray. Buys back a time block.'
-                  : coke === 'full'
-                    ? 'You have not done anything yet this month. Save it.'
-                    : `The button takes ${TUNING.cokeCost} coin. Guests at Mar-a-Lago can help with that.`}
+                  : coke === 'limit'
+                    ? 'You have had this month\'s can. Doctor\'s orders.'
+                    : coke === 'full'
+                      ? 'You have not done anything yet this month. Save it.'
+                      : `The button takes ${TUNING.cokeCost} coin. Guests at Mar-a-Lago can help with that.`}
               </span>
             </span>
             <span className="vanity-side">
               <span className="chip good">+{TUNING.cokeBlocks} Time</span>
               <span className="chip bad">−{TUNING.cokeCost} Coin</span>
             </span>
+            {coke === 'limit' && <Why>The doctor set a limit on your Coke. Natalie wants you to live forever and won't let you have more.</Why>}
+            {coke === 'full' && <Why>You have all your time left this month. The button only buys back time you have already spent.</Why>}
+            {coke === 'no-coin' && <Why>{needCoin(state)}</Why>}
           </button>
           <button
             className={`vanity status-${sue === 'ok' ? 'ok' : 'no-time'}`}
@@ -715,6 +727,8 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
               <Fx effects={TUNING.sueEffects} />
               <span className="chip bad">−{TUNING.sueCost} Coin</span>
             </span>
+            {sue === 'sued' && <Why>The Lawyer files one suit a month, and this month's is filed. He will be back next month, with an invoice.</Why>}
+            {sue === 'no-coin' && <Why>{needCoin(state)}</Why>}
           </button>
         </>
       );
@@ -742,6 +756,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
             >
               <span>Take the coin</span>
               <Fx effects={guest.effects} />
+              {!affordable && <Why>{needTime(TUNING.bribeCost, state.blocks)}</Why>}
             </button>
             <button
               className="option"
@@ -789,10 +804,12 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
               >
                 <span>{option.label}</span>
                 <Fx effects={option.effects} />
+                {!affordable && <Why>{needTime(cost, state.blocks)}</Why>}
               </button>
             ))}
           </div>
           {!affordable && <div className="ignore">Not enough time left this month.</div>}
+          {domeShields(state, card) && <div className="ignore">The Golden Dome takes {TUNING.domeBlocks} time block off this one.</div>}
           {card.ignore.stability < 0 && <div className="ignore">If ignored: {card.ignore.stability} Stability</div>}
         </article>
       );
@@ -863,6 +880,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
                   <Fx effects={{ ego: TUNING.melaniaEgo }} />
                   <span className="chip bad">−{TUNING.melaniaCost} Coin</span>
                 </span>
+                {status === 'no-coin' && <Why>{needCoin(state)}</Why>}
               </button>
             )}
           </>
@@ -870,17 +888,17 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       } else {
         body = (
           <>
-            <h3 className="menu-title">{object.kind === 'plot' ? 'Construction Site' : objectName(object, state)}</h3>
+            <h3 className="menu-title">{object.kind === 'plot' && !state.done[object.actions[0]] ? 'Construction Site' : objectName(object, state)}</h3>
             {object.actions.map((id) => {
               const action = vanityById(id);
               const status = vanityStatus(state, action);
               // The phone list has a different name on it every time.
               const title = action.id === 'show-call' ? `Call ${calleeAt(state.callee).who} and tell them off` : action.title;
               // Off the building lots, an option only appears once it is unlocked.
-              if (status === 'locked' && object.kind !== 'plot') return null;
+              if (status === 'locked' && (object.kind !== 'plot' || action.category !== 'build')) return null;
               const note =
                 status === 'done'
-                  ? 'Done.'
+                  ? `Done.${action.perk ? ` ${action.perk}` : ''}`
                   : status === 'locked'
                     ? 'Build the previous monument first.'
                     : status === 'no-time'
@@ -893,7 +911,18 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
                             : 'The plane is in Washington. You came by helicopter.'
                         : action.id === 'show-call'
                           ? calleeAt(state.callee).gripe
-                          : action.text;
+                          : `${action.text}${action.perk ? ` ${action.perk}` : ''}`;
+              const where = { dc: 'in Washington', newyork: 'in New York', maralago: 'at Mar-a-Lago' }[action.place ?? 'dc'];
+              const why =
+                status === 'locked'
+                  ? 'This lot is not ready. Build the previous monument first.'
+                  : status === 'no-time'
+                    ? needTime(action.cost, state.blocks)
+                    : status === 'away'
+                      ? `This can only be done ${where}. Fly there first.`
+                      : status === 'no-ride'
+                        ? `You fly home the way you came. ${note} Take the ${action.vehicle === 'heli' ? 'plane' : 'helicopter'}.`
+                        : null;
               // Booked and paid for: she turns up at the next event that qualifies.
               const withHer = Boolean(state.melania) && melaniaAttends(action) && (status === 'ok' || status === 'no-time');
               return (
@@ -911,7 +940,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
                         flew.current = Boolean(action.travelTo);
                         callbacks.current.onVanity(action.id);
                       },
-                      { anim: grouped ? action.category : action.id, objectId: object.id },
+                      { anim: grouped ? action.category : (ANIM[action.id] ?? action.id), objectId: object.id },
                     );
                     // The craft takes off, with him aboard, and the scene changes in the dark.
                     if (action.travelTo) sim.activity!.flight = 'out';
@@ -922,6 +951,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
                     <span className="vanity-text">
                       {note}
                       {withHer && ' Melania will be at your side.'}
+                      {bragsAboutPhysical(state, action) && status !== 'done' && ' You will open with the physical.'}
                     </span>
                   </span>
                   {status !== 'done' && (
@@ -930,6 +960,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
                       <Fx effects={{ ego: vanityEgo(state, action), stability: vanityStability(state, action), gold: action.gold, names: action.names }} />
                     </span>
                   )}
+                  {why && <Why>{why}</Why>}
                 </button>
               );
             })}

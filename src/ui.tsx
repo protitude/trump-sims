@@ -1,4 +1,5 @@
-import type { Effects } from './game/types.ts';
+import type { ReactNode } from 'react';
+import type { Effects, GameState } from './game/types.ts';
 
 /** Colored chips showing what an action does to the meters. */
 export function Fx({ effects }: { effects: Effects }) {
@@ -22,4 +23,25 @@ export function Fx({ effects }: { effects: Effects }) {
 
 export function Blocks({ n }: { n: number }) {
   return <span className="cost">{n === 0 ? 'No time' : n === 1 ? '1 block' : `${n} blocks`}</span>;
+}
+
+/** A note that covers a locked button while the pointer is on it, saying why it is locked. */
+export function Why({ children }: { children: ReactNode }) {
+  return (
+    <span className="pop" role="tooltip">
+      {children}
+    </span>
+  );
+}
+
+/** Why something paid for in coin is locked. */
+export function needCoin(state: GameState): string {
+  return state.place === 'maralago'
+    ? 'You need more coins. The guests here have bribes, er, I mean favors, on offer.'
+    : 'You need more coins. Fly to Mar-a-Lago to take more bribes, er, I mean favors.';
+}
+
+/** Why something that takes time is locked. */
+export function needTime(cost: number, blocks: number): string {
+  return `This takes ${cost} time blocks and you have ${blocks} left. Go to bed, or press the Diet Coke button to get one back.`;
 }

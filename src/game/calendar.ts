@@ -1,5 +1,5 @@
 import { VANITY, cardById } from './content.ts';
-import { SET_PIECE_MONTHS } from './story.ts';
+import { HEARING_MONTHS, SET_PIECE_MONTHS } from './story.ts';
 import type { Effects, GameState, VanityAction } from './types.ts';
 
 // The shape of the four-year term: seasons that bend the rules for a while,
@@ -60,7 +60,7 @@ export const SEASONS: Season[] = [
 const HOSTILE_CONGRESS: Season = {
   id: 'hostile',
   name: 'Hostile Congress',
-  note: 'You lost the midterms. Hearings and subpoenas cost 1 extra Stability a month.',
+  note: 'You lost the midterms. Hearings and subpoenas cost 1 extra Stability a month, and there is a vote coming.',
   months: range(25, 36),
   drift: 1,
 };
@@ -78,7 +78,7 @@ export function activeSeasons(s: GameState): Season[] {
 /** The next thing on the calendar, for the "coming up" line. */
 export function comingUp(s: GameState): { name: string; inMonths: number } | null {
   for (let month = s.month + 1; month <= Math.min(48, s.month + 6); month++) {
-    const piece = SET_PIECE_MONTHS[month];
+    const piece = (s.congress === 'hostile' ? HEARING_MONTHS[month] : undefined) ?? SET_PIECE_MONTHS[month];
     if (piece) return { name: cardById(piece).title, inMonths: month - s.month };
     const season = SEASONS.find((x) => x.months[0] === month || (x.months.includes(month) && !x.months.includes(month - 1)));
     if (season) return { name: season.name, inMonths: month - s.month };

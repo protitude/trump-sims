@@ -1,6 +1,6 @@
 import type { Effects, GameState, Mood, Tone, VanityAction, DutyCard } from './types.ts';
 import { CRISES, DUTIES, HYBRIDS, VANITY, cardById, vanityById } from './content.ts';
-import { CONSEQUENCES, SET_PIECE_MONTHS } from './story.ts';
+import { CHOICE_STATS, CONSEQUENCES, HEARING_MONTHS, SET_PIECE_MONTHS, VOTE_MONTH } from './story.ts';
 import { CHAOS, chaosById } from './chaos.ts';
 import type { ChaosOutcome } from './chaos.ts';
 import { GUESTS, guestById } from './guests.ts';
@@ -34,9 +34,11 @@ export const TUNING = {
   unleashedPenalty: 5,
   /** Most consequences that can land in one month. */
   sequelsPerMonth: 2,
-  /** Chance of a chaos event at the start of any month. */
+  /** Base chance of a chaos event at the start of a month. */
   chaosChance: 0.1,
-  chaosPerYear: 2,
+  /** Added to the chance for every month played: 22% at month 12, 34% at month 24. */
+  chaosRamp: 0.01,
+  chaosPerYear: 6,
   /** Odds of a good, mixed or bad outcome: favorable choice, then deflection. */
   chaosOdds: [
     [0.6, 0.25, 0.15],
@@ -76,6 +78,25 @@ export const TUNING = {
   melaniaEgo: -2,
   /** Stability her appearance adds to the event she turns up at. */
   melaniaStability: 2,
+  /** Every this-many take-out orders, the doctor insists on a physical. */
+  physicalEvery: 5,
+  /** Extra Ego at the next rally, where he brags about passing it. */
+  physicalRallyEgo: 2,
+  /** Coin the Gift Shop pays every month once it is built. */
+  giftShopCoin: 1,
+  /** Ego decay the Statue takes off while he is Sulking. */
+  statueComfort: 2,
+  /** Time blocks the Golden Dome takes off one crisis. */
+  domeBlocks: 1,
+  /** Heat at which a hostile House impeaches him. */
+  impeachAt: 4,
+  /** Heat from each bribe that has been exposed. */
+  heatPerLeak: 2,
+  /** Lawsuits it takes to add one heat. */
+  suitsPerHeat: 3,
+  /** What the vote does to him, impeached or not. */
+  impeachedEffects: { ego: -10, stability: -6 } as Effects,
+  survivedEffects: { ego: 6 } as Effects,
 };
 
 /** mulberry32, with the seed carried in the state so games are replayable. */
@@ -146,6 +167,9 @@ function drawInbox(s: GameState): void {
   // The calendar's set piece arrives on top of everything else.
   const piece = SET_PIECE_MONTHS[s.month];
   if (piece) s.inbox.push(piece);
+  // A hostile Congress has a calendar of its own.
+  const hearing = s.congress === 'hostile' ? HEARING_MONTHS[s.month] : undefined;
+  if (hearing) s.inbox.push(hearing);
 
   if (s.crisisPending) {
     s.crisisPending = false;
@@ -169,8 +193,10 @@ function drawInbox(s: GameState): void {
   if (rand(s) < TUNING.hybridChance) s.inbox.push(freshSpecial(s, HYBRIDS));
 }
 
-/** Remembers that a choice will come back later. */
+/** Remembers that a choice will come back later, and counts the ones the game keeps a tally of. */
 function plant(s: GameState, key: string): void {
+  const tally = CHOICE_STATS[key];
+  if (tally) count(s, tally[0], tally[1]);
   const consequence = CONSEQUENCES[key];
   if (!consequence) return;
   // Each consequence happens once per game, even if two choices lead to it.
@@ -244,9 +270,9 @@ function landBlowback(s: GameState): void {
   }
 }
 
-/** A chaos event may strike at the start of a month, at most twice a year. */
+/** A chaos event may strike at the start of a month, more likely as the months go by, up to a yearly cap. */
 function rollChaos(s: GameState): void {
-  const struck = rand(s) < TUNING.chaosChance;
+  const struck = rand(s) < TUNING.chaosChance + TUNING.chaosRamp * s.month;
   const thisYear = s.chaosMonths.filter((m) => yearOf(m) === yearOf(s.month)).length;
   if (!struck || thisYear >= TUNING.chaosPerYear) return;
   const unseen = CHAOS.filter((c) => !s.usedChaos.includes(c.id));
@@ -418,24 +444,44 @@ export function orderLunch(state: GameState, meal: Meal = 'burger'): GameState {
   } else {
     log(s, food.fineLog, 'ego');
   }
+  // Every fifth order the doctor puts his foot down. He passes, of course, and will say so.
+  if (s.stats.lunches % TUNING.physicalEvery === 0) {
+    s.physical = true;
+    count(s, 'physicals');
+    log(s, 'The doctor insisted on a physical. You passed it biggly, and the next rally is going to hear all about it.', 'ego');
+    s.reveals.push({
+      eyebrow: `Doctor's orders · take-out order number ${s.stats.lunches}`,
+      title: 'The Physical',
+      text:
+        'The doctor has counted the bags and insisted. You were weighed, measured and asked to draw a clock. You passed, biggly: ' +
+        `the best physical anybody has ever had, they could not believe the numbers. You will be bragging about it at your next rally (+${TUNING.physicalRallyEgo} Ego).`,
+      effects: {},
+    });
+  }
   settleWhim(s);
   checkEnd(s);
   return s;
 }
 
-/** Whether the Diet Coke button will do anything: `full` means no time has been spent yet. */
-export function cokeStatus(state: GameState): 'ok' | 'no-coin' | 'full' {
+/**
+ * Whether the Diet Coke button will do anything: `limit` means he has had this
+ * month's can, and `full` that no time has been spent yet.
+ */
+export function cokeStatus(state: GameState): 'ok' | 'no-coin' | 'full' | 'limit' {
+  if (state.coked === state.month) return 'limit';
   if (state.blocks >= BLOCKS_PER_MONTH) return 'full';
   return state.coin >= TUNING.cokeCost ? 'ok' : 'no-coin';
 }
 
 /**
  * He presses the button on the desk and Natalie arrives with a Diet Coke,
- * paid for in coin. It gives back a time block, up to a full month's worth.
+ * paid for in coin. It gives back a time block, up to a full month's worth,
+ * and the doctor allows one a month.
  */
 export function pressCokeButton(state: GameState): GameState {
   if (state.status !== 'playing' || state.chaos || state.blocks === 0 || cokeStatus(state) !== 'ok') return state;
   const s = structuredClone(state);
+  s.coked = s.month;
   s.coin -= TUNING.cokeCost;
   s.blocks = Math.min(BLOCKS_PER_MONTH, s.blocks + TUNING.cokeBlocks);
   count(s, 'cokes');
@@ -529,6 +575,30 @@ function landExposures(s: GameState): void {
   }
 }
 
+// ---------- Hearings ----------
+
+/** The case against him: exposed bribes, lawsuits, and how he has handled the hearings. */
+export function heat(s: GameState): number {
+  const leaks = (s.stats.exposed ?? 0) * TUNING.heatPerLeak;
+  const suits = Math.floor((s.stats.suits ?? 0) / TUNING.suitsPerHeat);
+  return Math.max(0, leaks + suits + (s.stats.heat ?? 0));
+}
+
+/** The House votes. Impeachment does not remove him, but it hurts, and it is in every biography. */
+function holdVote(s: GameState): void {
+  const exposed = s.stats.exposed ?? 0;
+  const suits = s.stats.suits ?? 0;
+  const record = `On the record: ${exposed} exposed ${exposed === 1 ? 'bribe' : 'bribes'}, ${suits} ${suits === 1 ? 'lawsuit' : 'lawsuits'}, and the hearings.`;
+  s.impeached = heat(s) >= TUNING.impeachAt;
+  const effects = s.impeached ? TUNING.impeachedEffects : TUNING.survivedEffects;
+  const text = s.impeached
+    ? `The House has impeached you, 221 to 212. The Senate will acquit, eventually, but the word is now in the first line of every biography. ${record}`
+    : `The articles failed by nine votes. You have called it a total exoneration, which it was not, and a landslide, which it also was not. ${record}`;
+  apply(s, effects);
+  log(s, text, s.impeached ? 'bad' : 'good');
+  s.reveals.push({ eyebrow: 'The vote · a hostile House', title: s.impeached ? 'Impeached' : 'Not Impeached', text, effects });
+}
+
 // ---------- Game flow ----------
 
 export function newGame(seed: number = Date.now()): GameState {
@@ -579,9 +649,15 @@ export function mood(s: GameState): Mood {
   return 'normal';
 }
 
-/** Sulking makes every duty take longer. Opportunities are exempt. */
+/** Whether the Golden Dome will take the edge off this card: one crisis, once. */
+export function domeShields(s: GameState, card: DutyCard): boolean {
+  return card.kind === 'crisis' && Boolean(s.done['build-dome']) && !s.domeSpent;
+}
+
+/** Sulking makes every duty take longer. Opportunities are exempt. The Dome shortens one crisis. */
 export function dutyCost(s: GameState, card: DutyCard): number {
-  return card.cost + (mood(s) === 'sulking' && card.kind !== 'hybrid' ? 1 : 0);
+  const sulk = mood(s) === 'sulking' && card.kind !== 'hybrid' ? 1 : 0;
+  return Math.max(1, card.cost + sulk - (domeShields(s, card) ? TUNING.domeBlocks : 0));
 }
 
 /** Ego a vanity action would give right now, after fading and seasonal boosts. */
@@ -596,7 +672,12 @@ export function vanityEgo(s: GameState, action: VanityAction): number {
   } else if (action.repeatable && !boost?.noFade) {
     ego *= Math.max(TUNING.showFloor, TUNING.showFade ** (s.done[action.id] ?? 0));
   }
-  return Math.round(ego * (boost?.times ?? 1));
+  return Math.round(ego * (boost?.times ?? 1)) + (bragsAboutPhysical(s, action) ? TUNING.physicalRallyEgo : 0);
+}
+
+/** Fresh from a physical, he opens the next rally with the results. */
+export function bragsAboutPhysical(s: GameState, action: VanityAction): boolean {
+  return Boolean(s.physical) && action.id === 'show-rally';
 }
 
 export type VanityAvailability = 'ok' | 'done' | 'locked' | 'no-time' | 'away' | 'no-ride';
@@ -614,7 +695,9 @@ export function vanityStatus(s: GameState, action: VanityAction): VanityAvailabi
 /** Monthly ego decay: the base rate, monument inflation, and the season. */
 export function egoDecay(s: GameState): number {
   const seasonal = activeSeasons(s).reduce((n, season) => n + (season.egoDecay ?? 0), 0);
-  return Math.round(TUNING.egoDecay + TUNING.egoInflation * s.monuments) + seasonal;
+  // Sulking, he goes and looks at the Statue. It helps.
+  const comfort = mood(s) === 'sulking' && s.done['build-statue'] ? TUNING.statueComfort : 0;
+  return Math.max(0, Math.round(TUNING.egoDecay + TUNING.egoInflation * s.monuments) + seasonal - comfort);
 }
 
 /** Monthly stability drift, including whatever the season adds. */
@@ -632,6 +715,10 @@ export function playDuty(state: GameState, cardId: string, optionIndex: number):
   const s = structuredClone(state);
   s.blocks -= cost;
   s.inbox = s.inbox.filter((id) => id !== cardId);
+  if (domeShields(state, card)) {
+    s.domeSpent = true;
+    log(s, 'The Golden Dome took the edge off that one. Nobody can explain how, and you have told them not to try.', 'good');
+  }
   apply(s, option.effects);
   const net = (option.effects.stability ?? 0) + (option.effects.ego ?? 0);
   log(s, option.result, card.kind === 'hybrid' ? 'good' : (option.effects.stability ?? 0) > 0 ? 'good' : net > 0 ? 'ego' : 'bad');
@@ -662,8 +749,10 @@ export function doVanity(state: GameState, actionId: string): GameState {
   const ego = vanityEgo(s, action);
   s.blocks -= action.cost;
   const withMelania = Boolean(s.melania) && melaniaAttends(action);
+  const bragging = bragsAboutPhysical(s, action);
   apply(s, { ego, stability: vanityStability(s, action), gold: action.gold, names: action.names });
   if (withMelania) s.melania = false;
+  if (bragging) s.physical = false;
   s.done[action.id] = (s.done[action.id] ?? 0) + 1;
   if (action.category === 'build' || action.category === 'rename') s.monuments += 1;
   if (action.travelTo) {
@@ -677,6 +766,9 @@ export function doVanity(state: GameState, actionId: string): GameState {
     log(s, action.result, 'ego');
   }
   if (withMelania) log(s, 'Melania stood beside you for the whole thing. She did not smile, and the world relaxed slightly.', 'good');
+  if (bragging) log(s, 'You opened with the physical. Passed it biggly, you said: the doctor wept. The crowd chanted your blood pressure.', 'ego');
+  // What he builds, names and gilds comes back, the same as what he decides.
+  plant(s, `${action.id}:done`);
 
   count(s, action.category);
   if (STAT_FOR_ACTION[action.id]) count(s, STAT_FOR_ACTION[action.id]);
@@ -724,6 +816,15 @@ export function endMonth(state: GameState): GameState {
 
   // The press runs whatever it has on the bribes before the month closes.
   landExposures(s);
+
+  // A hostile House votes on impeachment, on everything that has come out by now.
+  if (s.congress === 'hostile' && s.month === VOTE_MONTH) holdVote(s);
+
+  // The Gift Shop pays, every month, in the only currency it trusts.
+  if (s.done['build-giftshop']) {
+    apply(s, { coin: TUNING.giftShopCoin });
+    count(s, 'giftShopCoin', TUNING.giftShopCoin);
+  }
 
   apply(s, { ego: -egoDecay(s), stability: -stabilityDrift(s) });
   settleWhim(s);

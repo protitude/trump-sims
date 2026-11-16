@@ -57,6 +57,8 @@ export interface VanityAction {
   place?: Place;
   /** Done through Natalie, so it can be done wherever he is. */
   anywhere?: boolean;
+  /** What it unlocks or changes once it is done. Shown on its button. */
+  perk?: string;
   /** Trips move the president here when they finish. */
   travelTo?: Place;
   /** What a trip flies in. The plane unless stated. */
@@ -132,12 +134,20 @@ export interface GameState {
   guestDeck: string[];
   /** The month the Lawyer last filed a suit. One a month. */
   sued?: number;
+  /** The month he last had a Diet Coke from the button. One a month. */
+  coked?: number;
   /** Melania is paid for and will stand beside him at the next rally, parade or build. */
   melania?: boolean;
   /** The year of the term in which she was last booked. Once a year. */
   melaniaYear?: number;
   /** Index into MELANIA_INSULTS of the last thing she said to him. */
   insult?: number;
+  /** Fresh from a physical: he will brag about it at his next rally, for a little extra Ego. */
+  physical?: boolean;
+  /** The Golden Dome has already taken the edge off one crisis. It does that once. */
+  domeSpent?: boolean;
+  /** Set at the end of the impeachment vote, if a hostile Congress got that far. */
+  impeached?: boolean;
   /** Bribes that leaked, waiting for the month the story runs. */
   exposures: { id: string; due: number; effects: Effects }[];
   inbox: string[];

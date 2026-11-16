@@ -1,4 +1,4 @@
-import { SEQUELS, SET_PIECE_CARDS } from './story.ts';
+import { HEARING_CARDS, SEQUELS, SET_PIECE_CARDS } from './story.ts';
 import type { DutyCard, VanityAction } from './types.ts';
 import ally from './cards/ally.json' with { type: 'json' };
 import econ from './cards/econ.json' with { type: 'json' };
@@ -503,6 +503,7 @@ export const VANITY: VanityAction[] = [
     ego: 21,
     stability: -3,
     gold: 3,
+    perk: 'Unlocks state dinners here: a show that is good for Stability.',
     result: 'The Ballroom opens. It seats 900 and echoes your name back at you.',
   },
   {
@@ -515,6 +516,7 @@ export const VANITY: VanityAction[] = [
     stability: -4,
     gold: 5,
     requires: 'build-arch',
+    perk: 'While Sulking, Ego drains 2 slower. He goes and looks at it.',
     result: 'The Statue is unveiled. Planes now have to go around it.',
   },
   {
@@ -554,6 +556,7 @@ export const VANITY: VanityAction[] = [
     stability: -4,
     gold: 4,
     requires: 'build-ballroom',
+    perk: 'Pays 1 coin every month.',
     result: 'The Gift Shop is open. All tours now exit through it. So do all treaties.',
   },
   {
@@ -566,6 +569,7 @@ export const VANITY: VanityAction[] = [
     stability: -9,
     gold: 8,
     requires: 'build-giftshop',
+    perk: 'The next crisis takes 1 time block fewer. Once.',
     result: 'The Dome is finished. It is blinding at noon. Air traffic has been rerouted over Ohio.',
   },
 
@@ -1011,6 +1015,18 @@ export const VANITY: VanityAction[] = [
     result: 'A tremendous rally. You did the dance. They loved the dance.',
   },
   {
+    id: 'show-state-dinner',
+    category: 'show',
+    title: 'Host a state dinner',
+    text: 'Nine hundred guests, one long toast. A visiting leader gets the seat next to yours and a very small fork.',
+    cost: 2,
+    ego: 3,
+    stability: 3,
+    repeatable: true,
+    requires: 'build-ballroom',
+    result: 'A state dinner in the Ballroom. The visiting leader went home flattered, and with a gift bag.',
+  },
+  {
     id: 'show-parade',
     category: 'show',
     title: 'Military parade',
@@ -1023,7 +1039,7 @@ export const VANITY: VanityAction[] = [
   },
 ];
 
-const ALL_CARDS = new Map([...DUTIES, ...CRISES, ...HYBRIDS, ...SEQUELS, ...SET_PIECE_CARDS].map((c) => [c.id, c]));
+const ALL_CARDS = new Map([...DUTIES, ...CRISES, ...HYBRIDS, ...SEQUELS, ...SET_PIECE_CARDS, ...HEARING_CARDS].map((c) => [c.id, c]));
 const ALL_VANITY = new Map(VANITY.map((v) => [v.id, v]));
 
 export function cardById(id: string): DutyCard {

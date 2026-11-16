@@ -59,10 +59,21 @@ Vanity is visible. Gilded things turn gold and sparkle, monuments rise on their 
 
 | Category | How it works |
 |---|---|
-| **Build** | Seven big projects in two chains. Monuments: Triumphal Arch, 90-Foot Gold Statue, Your Face On The Mountain, Arch Visible From Space. Buildings: Grand Ballroom, Gift Shop, Golden Dome. Huge Ego, but each eats most of a month and hurts Stability. Each lot unlocks when the one before it in its chain is built. |
+| **Build** | Seven big projects in two chains. Monuments: Triumphal Arch, 90-Foot Gold Statue, Your Face On The Mountain, Arch Visible From Space. Buildings: Grand Ballroom, Gift Shop, Golden Dome. Huge Ego, but each eats most of a month and hurts Stability. Each lot unlocks when the one before it in its chain is built. Four of them come with a perk (see below). |
 | **Rename** | The airport, the gulf, the dollar, Tuesday, the Moon. One block each, but every rename gives a little less Ego than the one before. |
 | **Gild** | Gold-plate things around the house. Small, cheap and harmless. |
 | **Show** | Rallies, golf, parades, posting at 3am, telling people off on the phone. Repeatable, with fading returns. |
+
+### What the monuments do
+
+Four of the big projects keep working after the ribbon is cut. The perk is printed on the button before and after you build.
+
+| Project | Perk |
+|---|---|
+| **The Grand Ballroom** | Unlocks state dinners on its lot: two blocks, +3 Ego (fading) and +3 Stability. The only repeatable action that is good for the world. |
+| **90-Foot Gold Statue** | While Sulking, Ego drains 2 slower. |
+| **The Gift Shop** | Pays 1 coin at the end of every month. |
+| **The Golden Dome** | The next crisis takes 1 time block fewer. Once. |
 
 ### Trips to Mar-a-Lago
 
@@ -94,7 +105,8 @@ Click Natalie, wherever she is, to ask for something.
 - **Post at 3am.** One time block. You bleat it, she types it and posts it. Works in Washington and at Mar-a-Lago.
 - **Send her for a McBurger.** One coin, no time. She vanishes, comes back with the bag, and it is gone in seconds. Fast food is not without its risks.
 - **Send her to Taco Gong.** One coin, no time. Same errand, same risks, but with tacos. If it goes wrong, it was the lettuce.
-- **Press the Diet Coke button.** Two coin, no time. She arrives with a can on a silver tray and you get one time block back, up to the usual five. It does nothing in a month where you have not spent any time yet.
+- **The physical.** Every fifth take-out order, burgers and tacos counted together, the doctor insists on a physical. He passes it biggly, and brags about it at his next rally: +2 Ego on that rally.
+- **Press the Diet Coke button.** Two coin, no time. She arrives with a can on a silver tray and you get one time block back, up to the usual five. It does nothing in a month where you have not spent any time yet, and the doctor allows one can a month.
 - **Have her pull in the Lawyer.** Three coin, no time, once a month. He sues something, picked at random from `src/game/suits.ts`: +1 Ego, −2 Stability.
 
 The guests are parodies under made-up names. There are 26, in `src/game/cards/guests.json`; they come around again once all have visited.
@@ -107,7 +119,9 @@ Some choices come back. Tariff the penguins and, four months later, the penguins
 - A few follow the responsible option, and are rewards: the deputy you appointed delivers, the ally you reassured names a square after you.
 - Ignoring certain visitors has consequences too. The unread intelligence briefing is one.
 
-There are 39 consequence cards. A typical game sees four or five, depending on how you play.
+- Vanity comes back as well. Gild the Constitution display and the archivist turns up to say nobody can read it; rename the dollar and the vending machines stop taking it; build the arch that can be seen from space and the space station calls about the glare. Eighteen of the builds, renames and gildings have a follow-up.
+
+There are 57 consequence cards. How many you see depends on how you play: more gold and more names mean more visitors with complaints.
 
 ### The calendar
 
@@ -122,7 +136,7 @@ The four years are not all alike. A strip under the top bar shows what is in for
 | April, Year 2 | The Annual Physical | Set piece |
 | Sept to Dec, Year 2 | Midterm Campaign | Rallies give 50% more Ego and do not fade; Stability falls 1 faster |
 | December, Year 2 | Election Night | Set piece. At month end, Stability of 50 or more keeps Congress (+10 Ego). Below that you lose it (−6 Ego). |
-| Year 3, if you lost | Hostile Congress | Stability falls 1 faster all year |
+| Year 3, if you lost | Hostile Congress | Stability falls 1 faster all year, and the hearings begin (see below) |
 | June, Year 3 | Your Turn To Host | Set piece |
 | April, Year 4 | The Official Portrait | Set piece |
 | July to Dec, Year 4 | Legacy Season | Big projects and renames give 30% more Ego; Ego drains 2 faster |
@@ -130,13 +144,24 @@ The four years are not all alike. A strip under the top bar shows what is in for
 
 Set pieces are extra visitors, labeled **Set piece**, on top of the usual three.
 
+### Hearings and the impeachment vote
+
+Lose the midterms and the new House sends three extra visitors in Year 3, labeled **Hearing**: a subpoena in March, televised testimony in July and the impeachment vote in October. The House votes as October ends, on the **heat** against you:
+
+- +2 for every bribe that has been exposed
+- +1 for every three lawsuits the Lawyer has filed
+- +2 for defying or ignoring the subpoena, and +2 for the same at the hearing
+- −2 for working the phones before the vote, +1 for holding a rally or ignoring it
+
+At 4 heat or more you are impeached: −10 Ego, −6 Stability. Below that the articles fail and you get +6 Ego. Impeachment does not end the game. The heat is shown in the calendar strip while a hostile Congress is sitting.
+
 ### Whims
 
 Every six months he takes up a whim. You are offered three and must pick one: rename three things, hold three rallies, deal with twelve visitors, end three months with a clean desk, and so on. Satisfy it before the six months run out and you collect its reward. Let it lapse and he sulks (−4 Ego). The current whim and its progress are shown in the calendar strip.
 
 ### Chaos
 
-At the start of any month there is a 10% chance that something simply happens: an aide is in tears, a hurricane is heading for Florida, a relative has accepted a gift. There are never more than two of these a year, and a typical term sees four or five.
+At the start of any month there is a chance that something simply happens: an aide is in tears, a hurricane is heading for Florida, a relative has accepted a gift. The chance starts at 10% and climbs one point every month, so it is 22% at the end of the first year, 34% at the end of the second and 58% by the end of the term. There are never more than six of these a year, and a full term sees about fifteen.
 
 A chaos event stops everything until you answer it. There are always three answers:
 
@@ -148,7 +173,7 @@ Nothing on the menu tells you what any of them will do. The result is rolled whe
 
 Ignoring an event does nothing at the time. It comes back once or twice in later months of the same year, and that blowback is nearly always bad and sometimes severe. An event ignored in December comes back in January.
 
-Unlike the rest of the game, chaos events name real public figures. There are 17, in `src/game/cards/chaos.json`, and none repeats within a game.
+Unlike the rest of the game, chaos events name real public figures. There are 17, in `src/game/cards/chaos.json`, and none repeats until all 17 have been seen.
 
 ### Things that complicate it
 
@@ -165,6 +190,8 @@ Most scenarios are loosely based on real news from 2025 and 2026, exaggerated in
 ### Scoring
 
 Your legacy score rewards gold, things named after you, and whatever is left in both meters, with a large bonus for finishing the term.
+
+The ending screen is written from what you did. Its opening paragraph changes with how the term ended (announce in the Farewell Address that you might not leave, and it says so), history gives you a title such as The Gilder, Florida Man, The Asterisk or The Accidental Statesman, and up to six lines record the projects, the midterms, the bribes, the take-out and the rest. The titles and lines are in `src/game/epilogue.ts`.
 
 ### Music
 
@@ -193,7 +220,8 @@ src/
   game/
     types.ts      Data shapes: game state, duty cards, vanity actions
     content.ts    The original cards and every vanity project, as plain data
-    story.ts      Consequence cards, what triggers them, and the set pieces
+    story.ts      Consequence cards, what triggers them, the set pieces and the hearings
+    epilogue.ts   The ending screen: the title history gives him and what it remembers
     calendar.ts   Seasons, the midterms, and the whims
     chaos.ts      The shape of a chaos event (the events are in cards/chaos.json)
     guests.ts     The shape of a Mar-a-Lago guest (the guests are in cards/guests.json)
@@ -230,7 +258,7 @@ All the numbers that govern difficulty are in the `TUNING` object at the top of 
 | vanity-only | Never does the job | World War III by month 3, every time |
 | duty-only | Never does anything fun | Depression by month 5, every time |
 | random | Clicks anything | World War III within about 4 months |
-| balanced | Feeds whichever meter is lower | Wins about 34% of games, usually lasting into Year 4 |
+| balanced | Feeds whichever meter is lower | Wins about 34% of games, usually lasting into Year 4 (40% before the monument perks, vanity consequences and hearings were added) |
 | grifter | Balanced, but flies to Mar-a-Lago every third month, takes both bribes and flies home | Wins about 15% of games; about 21 bribes and 2 leaks a game |
 
 The balanced bot is a fairly naive player, and it picks a whim at random and then ignores it. A person who chases whims collects several rewards a game that the bot mostly misses, so 34% for the bot should mean a hard but fair game for a person. That is an estimate from the simulator, not something tested widely with real players. The bots answer chaos events in a fixed way: the balanced bot always takes the favorable answer, which leaves its win rate unchanged at about 34%. Made to always deflect, it wins about 30%; made to always ignore, about 11% (17% if blowback only ever came once). Only the grifter flies to Mar-a-Lago, and only for the bribes, so the simulator says nothing about whether the rest of the club is too strong or too weak.
@@ -241,11 +269,11 @@ The balance is very sensitive to the number of big projects and to `egoInflation
 
 ## Ideas not built yet
 
-- **More consequences.** Only about 40 of the 295 scenarios have a follow-up, so several months can pass without one.
-- **A staff you hire and fire, recurring rivals, risky actions with uncertain results, and monuments that grant perks.** The remaining ideas from the engagement list.
+- **More consequences.** About 40 of the 295 scenarios and 18 of the vanity projects have a follow-up. Phone calls, lawsuits, guests and chaos events still have none.
+- **A staff you hire and fire, recurring rivals, and risky actions with uncertain results.** The remaining ideas from the engagement list.
 - **A running clock and an action queue**, so you can line up several things and watch them play out, with speed controls.
 - **Aides** who live in the building. You can delegate duties to them. The competent ones get credit, which drains your Ego until you fire them. The loyal ones are useless.
-- **Approval and impeachment** as a third way to lose.
+- **Approval** as a third meter, and impeachment that can actually remove you. The vote in Year 3 only costs Ego and Stability.
 - **Multi-month construction**, with scaffolding going up over several turns.
 - **Real art and sound.** Sprites in place of shapes, probably moving the drawing to Phaser at that point.
 - **A comedy and fact pass on the scenarios.** The news-based cards were drafted in bulk. Some punchlines are soft, and many `inspiredBy` notes were written from memory and have not been checked against sources.

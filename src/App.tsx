@@ -8,6 +8,8 @@ import {
   dismissReveal,
   doVanity,
   egoDecay,
+  heat,
+  TUNING,
   endMonth,
   mood,
   newGame,
@@ -23,11 +25,13 @@ import {
   takeBribe,
 } from './game/engine.ts';
 import { WHIM_FAIL_EGO, WHIM_MONTHS, activeSeasons, comingUp, whimById, whimProgress } from './game/calendar.ts';
-import { Blocks, Fx } from './ui.tsx';
+import { Blocks, Fx, Why } from './ui.tsx';
 import { chaosById } from './game/chaos.ts';
 import { guestById } from './game/guests.ts';
 import type { GameState } from './game/types.ts';
 import { cardById } from './game/content.ts';
+import { endingText, epilogue, legacyTitle } from './game/epilogue.ts';
+import { VOTE_MONTH } from './game/story.ts';
 import { MusicControl, useMusic } from './music.tsx';
 import type { Music } from './music.tsx';
 import { World } from './world/World.tsx';
@@ -123,30 +127,24 @@ function Title({ onStart, onContinue }: { onStart: () => void; onContinue?: () =
   );
 }
 
-const ENDINGS = {
-  ww3: {
-    title: 'World War III',
-    text: 'It began with a renamed gulf, an unread briefing and a phone left on hold. The Arch survived. Not much else did.',
-  },
-  depression: {
-    title: 'Full Depression',
-    text: 'The world has never been better: peace, prosperity, agencies that function. Nobody has said your name in weeks. You are under the gold comforter and you are not coming out.',
-  },
-  won: {
-    title: 'Term Complete',
-    text: 'Four years, and both the planet and your self-esteem are intact. Historians are baffled. You are already asking about a third term.',
-  },
-  playing: { title: '', text: '' },
-};
+const ENDINGS = { ww3: 'World War III', depression: 'Full Depression', won: 'Term Complete', playing: '' };
 
 function GameOver({ state, onRestart }: { state: GameState; onRestart: () => void }) {
-  const ending = ENDINGS[state.status];
+  const legacy = legacyTitle(state);
   return (
     <main className="screen">
       <div className={`plaque ending-${state.status}`}>
         <p className="eyebrow">{state.status === 'won' ? 'You won' : `Game over · ${dateLabel(state.month)}`}</p>
-        <h1>{ending.title}</h1>
-        <p>{ending.text}</p>
+        <h1>{ENDINGS[state.status]}</h1>
+        <p>{endingText(state)}</p>
+        <p className="legacy">
+          History will call you <b>{legacy.title}</b>. {legacy.why}
+        </p>
+        <ul className="rules">
+          {epilogue(state).map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
         <dl className="stats">
           <div>
             <dt>Months served</dt>
@@ -180,6 +178,12 @@ function GameOver({ state, onRestart }: { state: GameState; onRestart: () => voi
             <dt>Congress after the midterms</dt>
             <dd>{state.congress === 'friendly' ? 'Kept' : state.congress === 'hostile' ? 'Lost' : 'Not reached'}</dd>
           </div>
+          {state.impeached !== undefined && (
+            <div>
+              <dt>Impeachment vote</dt>
+              <dd>{state.impeached ? 'Impeached' : 'Survived'}</dd>
+            </div>
+          )}
           <div>
             <dt>Legacy score</dt>
             <dd>{score(state)}</dd>
@@ -295,6 +299,7 @@ function Game({ music }: { music: Music }) {
               <button key={id} className={`visitor kind-${card.kind}`} disabled={state.place !== 'dc'} onClick={() => go({ type: 'npc', cardId: id })}>
                 <span aria-hidden="true">{VISITOR_ICON[card.kind]}</span>
                 {card.title.replace(/^(CRISIS|OPPORTUNITY): /, '')}
+                {state.place !== 'dc' && <Why>They are waiting in Washington. Fly back to see them.</Why>}
               </button>
             );
           })}
@@ -308,9 +313,17 @@ function Game({ music }: { music: Music }) {
                 <button key={id} className="visitor kind-hybrid" disabled={state.place !== 'maralago'} onClick={() => go({ type: 'guest', cardId: id })}>
                   <span aria-hidden="true">{GUEST_ICON[guest.kind]}</span>
                   {guest.title}
+                  {state.place !== 'maralago' && <Why>This guest is at Mar-a-Lago. Fly there to hear the offer.</Why>}
                 </button>
               );
             })}
+          </div>
+        )}
+        {state.physical && (
+          <div className="waiting">
+            <span className="waiting-label">
+              Fresh from the physical: you will brag about it at your next rally (+{TUNING.physicalRallyEgo} Ego).
+            </span>
           </div>
         )}
         {state.melania && (
@@ -326,6 +339,11 @@ function Game({ music }: { music: Music }) {
             <b>{season.name}</b> {season.note}
           </span>
         ))}
+        {state.congress === 'hostile' && state.month <= VOTE_MONTH && (
+          <span className="season" title="Exposed bribes, lawsuits and defying the hearings all add to it.">
+            <b>Impeachment heat</b> {heat(state)} of {TUNING.impeachAt}. The House votes in {dateLabel(VOTE_MONTH)}.
+          </span>
+        )}
         {next && (
           <span className="upcoming">
             Coming up: <b>{next.name}</b> in {next.inMonths === 1 ? '1 month' : `${next.inMonths} months`}
@@ -404,6 +422,11 @@ function Game({ music }: { music: Music }) {
                   {choice.cost > 0 ? <Blocks n={choice.cost} /> : <span className="cost">No time</span>}
                   <span className="chip unknown">???</span>
                 </span>
+                {choice.cost > state.blocks && (
+                  <Why>
+                    This answer takes {choice.cost} time blocks and you have {state.blocks} left. Pick another, or ignore it.
+                  </Why>
+                )}
               </button>
             ))}
             <button className="vanity" onClick={() => setState((s) => s && resolveChaos(s, 'ignore'))}>
