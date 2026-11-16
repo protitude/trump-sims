@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent } from 'react';
 import { calleeAt } from '../game/calls.ts';
 import { cardById, vanityById } from '../game/content.ts';
-import { COKE_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway } from './draw.ts';
+import { COKE_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway, golfing } from './draw.ts';
 import { TUNING, bragsAboutPhysical, leakChanceAt, cokeStatus, domeShields, dutyCost, melaniaAttends, melaniaStatus, sueStatus, vanityEgo, vanityStability, vanityStatus } from '../game/engine.ts';
 import type { Meal } from '../game/engine.ts';
 import { MELANIA_INSULTS } from '../game/melania.ts';
@@ -12,7 +12,7 @@ import { Blocks, Fx, Why, needCoin, needTime } from '../ui.tsx';
 import { drawWorld, hitRectPx } from './draw.ts';
 import type { Actor, Aide, Npc, Sim } from './draw.ts';
 import { nextAffirmations } from './affirmations.ts';
-import { AIDE_GRAB, AIDE_PACE, AIDE_SPOT, BEDS, CLUB_GATE, IDLE_SEATS, arrival, cartLoop, inCabinetRoom, exists, guestSpot, idleKindAt, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
+import { AIDE_GRAB, AIDE_PACE, AIDE_SPOT, BEDS, CLUB_GATE, IDLE_SEATS, arrival, cartLoop, inCabinetRoom, exists, golfShot, guestSpot, idleKindAt, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
 import { T } from './map.ts';
 import type { Point, Tile } from './map.ts';
 
@@ -220,9 +220,13 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
     const p = sim.pres;
     const place = stateRef.current.place;
     const idle = sim.idle && !sim.idle.walking ? sim.idle.kind : null;
+    // On the green she waits by the hole, where his ball is about to not go in.
+    const shot = golfing(sim.activity) ? golfShot(sim.activity?.objectId) : null;
     const mode: Aide['mode'] = sim.activity?.sleep
       ? 'bedside'
-      : idle === 'dictate'
+      : shot
+        ? 'kick'
+        : idle === 'dictate'
         ? 'dictate'
         : idle === 'cart'
           ? 'chase'
@@ -236,6 +240,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       a.think = 0;
       a.pacing = false;
       a.path = mode === 'bedside' ? findPath(a, BEDS[place].spot) : mode === 'dictate' ? findPath(a, AIDE_SPOT) : [];
+      if (mode === 'kick' && shot) a.path = [...findPath(a, tileAt(shot.stand)), shot.stand];
     }
     const gap = Math.hypot(p.x - a.x, p.y - a.y);
     let speed = AIDE_SPEED;
@@ -278,6 +283,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
         speed = AIDE_BEDTIME_SPEED;
         break;
       case 'dictate':
+      case 'kick':
         break;
     }
     advance(a, speed, dt);
@@ -286,6 +292,8 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       if (mode === 'bedside') a.facing = -1;
       // Scrambling for bills, her eyes are on the pool, which is to his right.
       else if (mode === 'grab') a.facing = p.x + 5 * T >= a.x ? 1 : -1;
+      // By the hole, she faces the ball she is about to kick.
+      else if (mode === 'kick' && shot) a.facing = shot.miss.x >= a.x ? 1 : -1;
       else if (mode !== 'barred') a.facing = p.x >= a.x ? 1 : -1;
     }
   }

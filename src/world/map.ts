@@ -291,6 +291,21 @@ export function cartLoop(place: Place): { cx: number; cy: number; rx: number; ry
   return { cx: (r.x + r.w / 2) * T, cy: (r.y + r.h / 2) * T + 8, rx: Math.min((r.w * T) / 2 - 40, ry * 1.8), ry };
 }
 
+/**
+ * A round of golf on the object given: the hole, where his ball actually ends
+ * up (wide of it, every time), and where Natalie stands to kick it in.
+ */
+export function golfShot(objectId: string | undefined): { hole: Point; miss: Point; stand: Point } | null {
+  const o = OBJECTS.find((x) => x.id === objectId);
+  if (!o || (o.kind !== 'golf' && o.kind !== 'malgolf')) return null;
+  const r = o.rect;
+  const cy = (r.y + r.h / 2) * T;
+  const hole = o.kind === 'golf' ? { x: (r.x + r.w / 2) * T + 50, y: cy - 8 } : { x: (r.x + r.w) * T - 70, y: cy };
+  const dir = hole.x >= tileCenter(o.spot).x ? 1 : -1;
+  const miss = { x: hole.x + dir * 8, y: hole.y + 22 };
+  return { hole, miss, stand: { x: miss.x + dir * 13, y: miss.y + 3 } };
+}
+
 // ---------- Collision grid ----------
 
 const wall = new Uint8Array(COLS * ROWS);

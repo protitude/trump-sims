@@ -3,7 +3,7 @@ import type { Meal } from '../game/engine.ts';
 import { vanityById } from '../game/content.ts';
 import type { GuestKind } from '../game/guests.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
-import { OBJECTS, REGIONS, ROOF, ROOMS, T, exists, isWall, objectName } from './map.ts';
+import { OBJECTS, REGIONS, ROOF, ROOMS, T, exists, golfShot, isWall, objectName } from './map.ts';
 import type { IdleKind, Point, Rect, Tile, WorldObject } from './map.ts';
 
 // Everything on screen is drawn with canvas shapes; there are no image files.
@@ -32,9 +32,9 @@ export interface Aide extends Actor {
   /**
    * What she is doing: trailing him, shut out of the Cabinet Room, taking
    * dictation at the desk, running after the golf cart, grabbing bills by
-   * the pool, or at the bedside.
+   * the pool, kicking his ball into the hole, or at the bedside.
    */
-  mode: 'follow' | 'barred' | 'dictate' | 'chase' | 'grab' | 'bedside';
+  mode: 'follow' | 'barred' | 'dictate' | 'chase' | 'grab' | 'kick' | 'bedside';
   /** Seconds until she next works out where he has gotten to. */
   think: number;
   /** Which end of the corridor she is pacing toward, and whether she has started. */
@@ -84,6 +84,27 @@ const COKE_DRINK = 2;
 /** A lawsuit: Natalie dials, the Lawyer answers, the papers fly. */
 export const SUE_SECONDS = 4;
 const SUE_FILED = 1.6;
+
+/** Golf: he swings, the ball lands wide, Natalie kicks it in, and he takes the credit. */
+const GOLF_CYCLE = 2.6;
+const GOLF_BACKSWING = 0.39;
+const GOLF_STRIKE = 0.55;
+const GOLF_LANDED = 1.13;
+const GOLF_KICK = 1.5;
+const GOLF_SUNK = 1.8;
+
+/** True while a round of golf is being played. */
+export function golfing(act: Activity | null): boolean {
+  return act?.anim === 'show-golf' || act?.anim === 'resort-golf';
+}
+
+/** How far through her kick Natalie's leg is: 0 at rest, 1 at the ball. */
+function golfKick(act: Activity | null): number {
+  if (!act || !golfing(act)) return 0;
+  const tc = act.t % GOLF_CYCLE;
+  if (tc < GOLF_KICK - 0.12 || tc > GOLF_KICK + 0.25) return 0;
+  return tc < GOLF_KICK ? (tc - (GOLF_KICK - 0.12)) / 0.12 : 1 - (tc - GOLF_KICK) / 0.25;
+}
 
 /** True while Natalie is out fetching lunch, and so nowhere to be seen. */
 export function aideAway(act: Activity | null): boolean {
@@ -268,7 +289,7 @@ interface WomanLook {
 }
 
 /** A woman: long hair worn over the shoulders, a fitted dress with a flared skirt, and heels. */
-function woman(c: Ctx, a: Actor, look: WomanLook, bob: number): void {
+function woman(c: Ctx, a: Actor, look: WomanLook, bob: number, kick = 0): void {
   const swing = a.path.length > 0 ? Math.sin(a.walk * 14) : 0;
   c.save();
   c.translate(a.x, a.y);
@@ -289,10 +310,21 @@ function woman(c: Ctx, a: Actor, look: WomanLook, bob: number): void {
   const liftR = Math.max(0, -swing) * 4;
   c.fillStyle = look.skin;
   c.fillRect(-5, -14, 3.5, 12 - liftL);
-  c.fillRect(1.5, -14, 3.5, 12 - liftR);
+  if (kick <= 0) c.fillRect(1.5, -14, 3.5, 12 - liftR);
   c.fillStyle = '#1b1f2e';
   c.fillRect(-5.5, -2.5 - liftL, 6, 2.5);
-  c.fillRect(1, -2.5 - liftR, 6, 2.5);
+  if (kick <= 0) c.fillRect(1, -2.5 - liftR, 6, 2.5);
+  else {
+    // The front leg swings forward from the hip, heel and all.
+    c.save();
+    c.translate(3.25, -14);
+    c.rotate(-kick * 0.9);
+    c.fillStyle = look.skin;
+    c.fillRect(-1.75, 0, 3.5, 12);
+    c.fillStyle = '#1b1f2e';
+    c.fillRect(-2.25, 9.5, 6, 2.5);
+    c.restore();
+  }
 
   // The dress: narrow shoulders, a waist, and a skirt that flares to the knee.
   c.fillStyle = look.dress;
@@ -1324,12 +1356,19 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
   switch (act.anim) {
     case 'show-golf':
     case 'resort-golf': {
-      const hole = act.anim === 'show-golf' ? { x: cx + 50, y: cy - 8 } : { x: r.x + r.w - 70, y: cy };
+      const shot = golfShot(act.objectId);
+      if (!shot) break;
+      const { hole, miss } = shot;
       const dir = hole.x >= p.x ? 1 : -1;
       p.facing = dir;
-      const cycle = (t % 1.3) / 1.3;
+      const tc = t % GOLF_CYCLE;
       // Backswing, strike, follow-through. Angle is measured from straight down.
-      const angle = cycle < 0.3 ? 0.9 - (cycle / 0.3) * 3.1 : cycle < 0.42 ? -2.2 + ((cycle - 0.3) / 0.12) * 3.6 : 1.4;
+      const angle =
+        tc < GOLF_BACKSWING
+          ? 0.9 - (tc / GOLF_BACKSWING) * 3.1
+          : tc < GOLF_STRIKE
+            ? -2.2 + ((tc - GOLF_BACKSWING) / (GOLF_STRIKE - GOLF_BACKSWING)) * 3.6
+            : 1.4;
       const hx = p.x + dir * 5;
       const hy = p.y - 28;
       const ex = hx + Math.sin(angle) * 30 * dir;
@@ -1346,10 +1385,13 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
       c.arc(ex, ey, 4, 0, Math.PI * 2);
       c.fill();
       const tee = { x: p.x + dir * 14, y: p.y - 2 };
-      const u = Math.max(0, Math.min(1, (cycle - 0.42) / 0.45));
-      if (u < 1) {
-        const bx = tee.x + (hole.x - tee.x) * u;
-        const by = tee.y + (hole.y - tee.y) * u;
+      // The ball flies wide and sits there until Natalie arrives to kick it in.
+      const kicked = tc >= GOLF_KICK && sim.aide.mode === 'kick' && sim.aide.path.length === 0;
+      if (tc < GOLF_SUNK || !kicked) {
+        const u = Math.max(0, Math.min(1, (tc - GOLF_STRIKE) / (GOLF_LANDED - GOLF_STRIKE)));
+        const v = kicked ? Math.min(1, (tc - GOLF_KICK) / (GOLF_SUNK - GOLF_KICK)) : 0;
+        const bx = v > 0 ? miss.x + (hole.x - miss.x) * v : tee.x + (miss.x - tee.x) * u;
+        const by = v > 0 ? miss.y + (hole.y - miss.y) * v : tee.y + (miss.y - tee.y) * u;
         c.fillStyle = 'rgba(0,0,0,0.25)';
         c.beginPath();
         c.ellipse(bx, by + 2, 4, 2, 0, 0, Math.PI * 2);
@@ -1359,7 +1401,7 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
         c.arc(bx, by - Math.sin(Math.PI * u) * 46, 3.5, 0, Math.PI * 2);
         c.fill();
       } else {
-        risingText(c, 'HOLE IN ONE', hole.x, hole.y - 50, (cycle - 0.87) * 1.3, 0.4, 11, GOLD_LIGHT);
+        risingText(c, 'HOLE IN ONE', hole.x, hole.y - 50, tc - GOLF_SUNK, 0.7, 11, GOLD_LIGHT);
       }
       break;
     }
@@ -2310,7 +2352,8 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
       y: aide.y,
       draw: () => {
         const sobbing = aide.mode === 'barred';
-        woman(c, aide, NATALIE, sobbing ? Math.abs(Math.sin(sim.time * 9)) * 2 : 0);
+        const kick = aide.mode === 'kick' && aide.path.length === 0 ? golfKick(sim.activity) : 0;
+        woman(c, aide, NATALIE, sobbing ? Math.abs(Math.sin(sim.time * 9)) * 2 : 0, kick);
         if (sobbing) {
           // Shut out of the Cabinet Room: tears, and a great deal of noise.
           c.fillStyle = '#7fc4ff';
