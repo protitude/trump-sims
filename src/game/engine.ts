@@ -54,8 +54,10 @@ export const TUNING = {
   bribeCost: 1,
   /** Ego lost by sending a guest away. */
   declineEgo: -2,
-  /** Chance that a bribe leaks. Rolled once, when it is taken. */
+  /** Chance that a bribe leaks in the first year. Rolled once, when it is taken. */
   leakChance: 0.1,
+  /** Added to the leak chance for every full year served: 10%, 15%, 20%, 25%. Lips get looser. */
+  leakPerYear: 0.05,
   /** A leak takes back this many times what the bribe gave. */
   leakTimes: 3,
   /** A leak becomes news this many months later, at the earliest and the latest. */
@@ -340,6 +342,11 @@ function drawGuests(s: GameState): void {
   }
 }
 
+/** Chance that a bribe taken in the given month leaks. It steps up at the start of each year. */
+export function leakChanceAt(month: number): number {
+  return Math.min(1, TUNING.leakChance + TUNING.leakPerYear * (yearOf(month) - 1));
+}
+
 /** What a leaked bribe costs: everything it gave, times three. The coin stays. */
 export function leakEffects(fx: Effects): Effects {
   return { ego: -TUNING.leakTimes * (fx.ego ?? 0), stability: -TUNING.leakTimes * (fx.stability ?? 0) };
@@ -359,7 +366,7 @@ export function takeBribe(state: GameState, guestId: string): GameState {
   s.guests = s.guests.filter((id) => id !== guestId);
   apply(s, guest.effects);
   log(s, guest.result, 'ego');
-  if (rand(s) < TUNING.leakChance) {
+  if (rand(s) < leakChanceAt(s.month)) {
     const [soonest, latest] = TUNING.leakDelay;
     const delay = soonest + Math.floor(rand(s) * (latest - soonest + 1));
     // Near the end of the term the story runs in the final month at the latest.

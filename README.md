@@ -96,7 +96,7 @@ Two guests are waiting at Mar-a-Lago every month: tech bosses and media people, 
 
 - **Take the coin.** One time block. You grant the ask, and get Ego, Stability and coin, all shown on the button. Coin is spent on Natalie's errands; whatever is left counts toward the final score.
 - **Send them away.** No time, −2 Ego.
-- **The catch.** Each bribe has a 10% chance of leaking, rolled in secret when you take it. A leak becomes news one to six months later (in the final month at the latest) and takes back three times the Ego and Stability the bribe gave: a deal worth +8 Ego and +10 Stability comes back as −24 and −30. You keep the coin.
+- **The catch.** Each bribe has a chance of leaking, rolled in secret when you take it. The chance is 10% in the first year and steps up five points every year after, as lips get looser: 15% in Year 2, 20% in Year 3 and 25% in Year 4. A leak becomes news one to six months later (in the final month at the latest) and takes back three times the Ego and Stability the bribe gave: a deal worth +8 Ego and +10 Stability comes back as −24 and −30. You keep the coin.
 
 ### Natalie's errands
 
@@ -258,12 +258,12 @@ All the numbers that govern difficulty are in the `TUNING` object at the top of 
 | vanity-only | Never does the job | World War III by month 3, every time |
 | duty-only | Never does anything fun | Depression by month 5, every time |
 | random | Clicks anything | World War III within about 4 months |
-| balanced | Feeds whichever meter is lower | Wins about 34% of games, usually lasting into Year 4 (40% before the monument perks, vanity consequences and hearings were added) |
-| grifter | Balanced, but flies to Mar-a-Lago every third month, takes both bribes and flies home | Wins about 15% of games; about 21 bribes and 2 leaks a game |
+| balanced | Feeds whichever meter is lower | Wins about 23% of games, usually lasting into Year 4 (it was 40% before the monument perks, vanity consequences and hearings were added, and 34% before chaos events and leaks were retuned) |
+| grifter | Balanced, but flies to Mar-a-Lago every third month, takes both bribes and flies home | Wins about 21% of games; about 18 bribes and 2.6 leaks a game |
 
-The balanced bot is a fairly naive player, and it picks a whim at random and then ignores it. A person who chases whims collects several rewards a game that the bot mostly misses, so 34% for the bot should mean a hard but fair game for a person. That is an estimate from the simulator, not something tested widely with real players. The bots answer chaos events in a fixed way: the balanced bot always takes the favorable answer, which leaves its win rate unchanged at about 34%. Made to always deflect, it wins about 30%; made to always ignore, about 11% (17% if blowback only ever came once). Only the grifter flies to Mar-a-Lago, and only for the bribes, so the simulator says nothing about whether the rest of the club is too strong or too weak.
+The balanced bot is a fairly naive player, and it picks a whim at random and then ignores it. A person who chases whims collects several rewards a game that the bot mostly misses, so 23% for the bot should mean a hard but fair game for a person. That is an estimate from the simulator, not something tested widely with real players. The bots answer chaos events in a fixed way: the balanced bot always takes the favorable answer and wins about 23%. Made to always deflect (`CHAOS=deflect npm run sim`), it wins about 26%; made to always ignore (`CHAOS=ignore`), it almost never wins (under 1% even if blowback only ever came once). Only the grifter flies to Mar-a-Lago, and only for the bribes, so the simulator says nothing about whether the rest of the club is too strong or too weak.
 
-The bribes are a gamble, not free money. With leaks switched off (`LEAK=0 npm run sim`) the grifter wins about 75% of games; at the real 10% it wins about 15%, because two leaks a game at three times the damage usually means World War III. `TRIP_EVERY=4 npm run sim` changes how often it flies.
+The bribes are a gamble, not free money. With leaks switched off (`LEAK=0 npm run sim`) the grifter wins about 84% of games. At a flat 10% all term (`LEAK=0.1 npm run sim`) it wins about 45%. At the real odds, which start at 10% and step up five points a year to 25% in Year 4 (`leakChance` and `leakPerYear`), it wins about 21%, because two or three leaks a game at three times the damage usually means World War III. Setting `LEAK` gives a flat chance and turns the yearly step off. `TRIP_EVERY=4 npm run sim` changes how often it flies.
 
 The balance is very sensitive to the number of big projects and to `egoInflation`, so re-run the simulator after touching either. For reference: six projects at 0.25 gave the bot 29% wins; twelve projects at 0.25 gave 97%; seven projects at 0.26 gave 37%. Adding the calendar and whims made the game easier again (78% at 0.26), so the value is now 0.36.
 

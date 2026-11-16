@@ -3,7 +3,7 @@ import type { PointerEvent } from 'react';
 import { calleeAt } from '../game/calls.ts';
 import { cardById, vanityById } from '../game/content.ts';
 import { COKE_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway } from './draw.ts';
-import { TUNING, bragsAboutPhysical, cokeStatus, domeShields, dutyCost, melaniaAttends, melaniaStatus, sueStatus, vanityEgo, vanityStability, vanityStatus } from '../game/engine.ts';
+import { TUNING, bragsAboutPhysical, leakChanceAt, cokeStatus, domeShields, dutyCost, melaniaAttends, melaniaStatus, sueStatus, vanityEgo, vanityStability, vanityStatus } from '../game/engine.ts';
 import type { Meal } from '../game/engine.ts';
 import { MELANIA_INSULTS } from '../game/melania.ts';
 import { guestById } from '../game/guests.ts';
@@ -771,7 +771,7 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
           </div>
           {!affordable && <div className="ignore">Not enough time left this month.</div>}
           <div className="ignore">
-            One time in {Math.round(1 / TUNING.leakChance)} somebody talks. If the story runs, you lose {TUNING.leakTimes} times what
+            There is a {Math.round(leakChanceAt(state.month) * 100)}% chance somebody talks, and lips get looser every year. If the story runs, you lose {TUNING.leakTimes} times what
             the deal gave you.
           </div>
         </article>

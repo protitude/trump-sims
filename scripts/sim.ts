@@ -89,8 +89,11 @@ const chaosAnswer: Record<string, () => 0 | 1 | 'ignore'> = {
 };
 
 const games = Number(process.argv[2] ?? 1000);
-// LEAK=0.2 overrides the chance that a bribe leaks, to see what the leaks alone cost.
-if (process.env.LEAK) TUNING.leakChance = Number(process.env.LEAK);
+// LEAK=0.2 sets a flat chance that a bribe leaks (no yearly step), to see what the leaks alone cost.
+if (process.env.LEAK) {
+  TUNING.leakChance = Number(process.env.LEAK);
+  TUNING.leakPerYear = 0;
+}
 
 for (const [name, strategy] of Object.entries(strategies)) {
   const endings: Record<string, number> = { won: 0, ww3: 0, depression: 0 };
