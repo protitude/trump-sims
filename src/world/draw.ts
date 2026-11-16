@@ -1,4 +1,5 @@
 import { BLOCKS_PER_MONTH, melaniaStatus, mood } from '../game/engine.ts';
+import type { Meal } from '../game/engine.ts';
 import { vanityById } from '../game/content.ts';
 import type { GuestKind } from '../game/guests.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
@@ -109,8 +110,8 @@ export interface Sim {
   time: number;
   /** 0..1 blackout used when sleeping, and to hide the change of scene on a flight. */
   fade: number;
-  /** Lunch disagreed with him: he blames Kennedy all the way to bed. */
-  sick?: boolean;
+  /** Lunch disagreed with him: he blames Kennedy, or the lettuce, all the way to bed. */
+  sick?: Meal;
   cam: { x: number; y: number; scale: number };
 }
 
@@ -1230,9 +1231,13 @@ function speech(c: Ctx, text: string, x: number, y: number, alpha: number): void
 const KENNEDY = ['KENNEDY DID THIS!', 'BOBBY SAID IT WAS FINE!', 'FIRE KENNEDY!', 'SEED OILS, BOBBY!', 'WHERE WAS KENNEDY?', 'I BLAME BOBBY', 'SOME HEALTH SECRETARY!', 'MAKE ME HEALTHY AGAIN!'];
 const KENNEDY_EVERY = 1.5;
 
-/** One complaint about Kennedy after another, shouted from (x, y). */
-function kennedyRant(c: Ctx, time: number, x: number, y: number): void {
-  const line = KENNEDY[Math.floor(time / KENNEDY_EVERY) % KENNEDY.length];
+/** Whose fault the Taco Gong was. */
+const LETTUCE = ['THE LETTUCE DID THIS!', 'I SAID NO LETTUCE!', 'BAD LETTUCE, VERY BAD!', 'TARIFF THE LETTUCE!', 'WHO WASHED THIS LETTUCE?', 'I BLAME THE LETTUCE', 'RIGGED LETTUCE!', 'NEVER LIKED LETTUCE!'];
+
+/** One complaint after another about whoever spoiled lunch, shouted from (x, y). */
+function sickRant(c: Ctx, meal: Meal, time: number, x: number, y: number): void {
+  const lines = meal === 'taco' ? LETTUCE : KENNEDY;
+  const line = lines[Math.floor(time / KENNEDY_EVERY) % lines.length];
   driftingText(c, line, x + Math.sin(time * 30) * 1.5, y, time % KENNEDY_EVERY, KENNEDY_EVERY, 13, '#ffd27a');
 }
 
@@ -1586,14 +1591,15 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
         driftingText(c, t < 1.2 ? 'RIGHT AWAY, SIR!' : 'WHERE IS SHE?', t < 1.2 ? a.x : p.x + 30, (t < 1.2 ? a.y : p.y) - 80, t < 1.2 ? t : t - 1.2, 1.2, 11, '#ffffff');
       } else if (t < LUNCH_EAT) {
         // Back, with the bag held out.
-        emojiAt(c, '🍔', a.x + a.facing * 16, a.y - 36, 18);
+        emojiAt(c, act.emoji, a.x + a.facing * 16, a.y - 36, 18);
         emojiAt(c, '🥤', a.x + a.facing * 4, a.y - 34, 13);
       } else {
         // Both hands, no pauses.
         const e = t - LUNCH_EAT;
         const left = clamp01(1 - e / (LUNCH_SECONDS - LUNCH_EAT - 0.3));
-        if (left > 0) emojiAt(c, '🍔', p.x + p.facing * 6 + Math.sin(e * 40) * 2, p.y - 44 + Math.abs(Math.sin(e * 22)) * 3, 8 + 12 * left);
-        c.fillStyle = '#c98a3c';
+        if (left > 0) emojiAt(c, act.emoji, p.x + p.facing * 6 + Math.sin(e * 40) * 2, p.y - 44 + Math.abs(Math.sin(e * 22)) * 3, 8 + 12 * left);
+        // Crumbs from the bun, or shreds of lettuce he wants nothing to do with.
+        c.fillStyle = act.emoji === '🌮' ? '#8fce5a' : '#c98a3c';
         for (let j = 0; j < 6; j++) {
           const age = (e * 2.4 + j / 6) % 1;
           const side = j % 2 ? 1 : -1;
@@ -1654,10 +1660,10 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
       }
       const lines = act.lines ?? [];
       const n = Math.floor((t - AFFIRM_START) / AFFIRM_EVERY);
-      // Still on about Kennedy, until he drops off.
+      // Still on about Kennedy, or the lettuce, until he drops off.
       if (sim.sick && n < lines.length) {
         emojiAt(c, '🤢', hx - 20, hy - 12, 14);
-        kennedyRant(c, sim.time, hx - 30, hy - 30);
+        sickRant(c, sim.sick, sim.time, hx - 30, hy - 30);
       }
       const age = t - AFFIRM_START - n * AFFIRM_EVERY;
       if (t >= AFFIRM_START && n < lines.length) {
@@ -2249,7 +2255,7 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   } else if (sim.sick) {
     // Green, clutching nothing in particular, and sure whose fault it is.
     bubble(c, p.x, p.y - 74 + Math.sin(sim.time * 12) * 2, '🤢', '#dff5c8');
-    kennedyRant(c, sim.time, p.x, p.y - 112);
+    sickRant(c, sim.sick, sim.time, p.x, p.y - 112);
   } else {
     const m = mood(s);
     if (m !== 'normal') bubble(c, p.x, p.y - 74 + Math.sin(sim.time * 3) * 2, m === 'sulking' ? '🌧️' : '🔥');

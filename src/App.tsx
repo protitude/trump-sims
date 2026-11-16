@@ -426,7 +426,7 @@ function Game({ music }: { music: Music }) {
         onVanity={(actionId) => setState((s) => s && doVanity(s, actionId))}
         onBribe={(guestId) => setState((s) => s && takeBribe(s, guestId))}
         onDecline={(guestId) => setState((s) => s && declineGuest(s, guestId))}
-        onLunch={() => setState((s) => s && orderLunch(s))}
+        onLunch={(meal) => setState((s) => s && orderLunch(s, meal))}
         onCoke={() => setState((s) => s && pressCokeButton(s))}
         onSue={() => setState((s) => s && sueSomething(s))}
         onMelania={() => setState((s) => s && askMelania(s))}

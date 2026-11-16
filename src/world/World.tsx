@@ -4,6 +4,7 @@ import { calleeAt } from '../game/calls.ts';
 import { cardById, vanityById } from '../game/content.ts';
 import { COKE_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway } from './draw.ts';
 import { TUNING, cokeStatus, dutyCost, melaniaAttends, melaniaStatus, sueStatus, vanityEgo, vanityStability, vanityStatus } from '../game/engine.ts';
+import type { Meal } from '../game/engine.ts';
 import { MELANIA_INSULTS } from '../game/melania.ts';
 import { guestById } from '../game/guests.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
@@ -23,7 +24,7 @@ interface Props {
   onVanity: (actionId: string) => void;
   onBribe: (guestId: string) => void;
   onDecline: (guestId: string) => void;
-  onLunch: () => void;
+  onLunch: (meal: Meal) => void;
   onCoke: () => void;
   onSue: () => void;
   onMelania: () => void;
@@ -480,16 +481,18 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
   // Lunch came back up: say so over his head before he heads for bed.
   const sick = state.stats.sick ?? 0;
   const lastSick = useRef(sick);
+  /** What she was last sent for, so that the right thing gets the blame. */
+  const lastMeal = useRef<Meal>('burger');
   useEffect(() => {
     if (sick > lastSick.current) {
       sim.floats.push({ x: sim.pres.x, y: sim.pres.y - 114, text: '💩 Uh oh', color: '#d9a066', t: 0 });
-      sim.sick = true;
+      sim.sick = lastMeal.current;
     }
     lastSick.current = sick;
   }, [sick, sim]);
-  // A night's sleep and it is forgotten. Kennedy is not.
+  // A night's sleep and it is forgotten. Kennedy is not, and neither is the lettuce.
   useEffect(() => {
-    sim.sick = false;
+    sim.sick = undefined;
   }, [state.month, sim]);
 
   // Stepping off the plane or helicopter: appear at the arrival spot of the new place.
@@ -636,13 +639,36 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
           <button
             className={`vanity status-${affordable ? 'ok' : 'no-time'}`}
             disabled={!affordable}
-            onClick={() => perform('Lunch', '🍔', LUNCH_SECONDS, () => callbacks.current.onLunch(), { anim: 'lunch' })}
+            onClick={() => {
+              lastMeal.current = 'burger';
+              perform('Lunch', '🍔', LUNCH_SECONDS, () => callbacks.current.onLunch('burger'), { anim: 'lunch' });
+            }}
           >
             <span className="vanity-main">
               <span className="vanity-title">Send her for a McBurger</span>
               <span className="vanity-text">
                 {affordable
                   ? 'Lunch, eaten at speed. Two all-beef patties, no questions.'
+                  : 'You have no coin. Guests at Mar-a-Lago can help with that.'}
+              </span>
+            </span>
+            <span className="vanity-side">
+              <span className="chip bad">−{TUNING.lunchCost} Coin</span>
+            </span>
+          </button>
+          <button
+            className={`vanity status-${affordable ? 'ok' : 'no-time'}`}
+            disabled={!affordable}
+            onClick={() => {
+              lastMeal.current = 'taco';
+              perform('Lunch', '🌮', LUNCH_SECONDS, () => callbacks.current.onLunch('taco'), { anim: 'lunch' });
+            }}
+          >
+            <span className="vanity-main">
+              <span className="vanity-title">Send her to Taco Gong</span>
+              <span className="vanity-text">
+                {affordable
+                  ? 'A sack of crunchy tacos, eaten at speed. Hold the lettuce, if they remember.'
                   : 'You have no coin. Guests at Mar-a-Lago can help with that.'}
               </span>
             </span>

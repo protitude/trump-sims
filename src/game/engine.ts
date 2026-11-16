@@ -365,27 +365,50 @@ function nextCallee(s: GameState): void {
 
 // ---------- Natalie's errands ----------
 
+export type Meal = 'burger' | 'taco';
+
+/** What each lunch is called, and what is said when it does or does not stay down. */
+const MEALS: Record<Meal, { stat: string; sickLog: string; sickTitle: string; sickText: string; fineLog: string }> = {
+  burger: {
+    stat: 'burgers',
+    sickLog: 'The McBurger did not agree with you. You have gone straight to bed. Everything else can wait, and will.',
+    sickTitle: 'The McBurger Strikes Back',
+    sickText: 'Four bites in, something shifted. You have diarrhea, the worst anybody has ever seen, and you are going to bed right now. ',
+    fineLog: 'Natalie fetched a McBurger. It was gone in four bites. Best burger, everybody says so.',
+  },
+  taco: {
+    stat: 'tacos',
+    sickLog: 'The Taco Gong did not agree with you. It was the lettuce. You have gone straight to bed. Everything else can wait, and will.',
+    sickTitle: 'The Gong Has Been Rung',
+    sickText:
+      'Three tacos in, something shifted. It was the lettuce, it is always the lettuce. You have diarrhea, the worst anybody has ever seen, and you are going to bed right now. ',
+    fineLog: 'Natalie fetched a sack from Taco Gong. It was gone in six bites. You picked out the lettuce. Nobody loves tacos more than you.',
+  },
+};
+
 /**
- * Natalie fetches a McBurger, paid for in coin. It costs no time, unless it
- * disagrees with him: then the rest of the month is gone and he is off to
- * bed, leaving whoever was waiting to be ignored. The player is not warned;
- * a notice says so when it happens.
+ * Natalie fetches lunch, a McBurger or a sack from Taco Gong, paid for in
+ * coin. It costs no time, unless it disagrees with him: then the rest of the
+ * month is gone and he is off to bed, leaving whoever was waiting to be
+ * ignored. The player is not warned; a notice says so when it happens.
  */
-export function orderLunch(state: GameState): GameState {
+export function orderLunch(state: GameState, meal: Meal = 'burger'): GameState {
   if (state.status !== 'playing' || state.chaos || state.blocks === 0 || state.coin < TUNING.lunchCost) return state;
   const s = structuredClone(state);
+  const food = MEALS[meal];
   s.coin -= TUNING.lunchCost;
   count(s, 'lunches');
+  count(s, food.stat);
   if (rand(s) < TUNING.lunchSickChance) {
     s.blocks = 0;
     count(s, 'sick');
-    log(s, 'The McBurger did not agree with you. You have gone straight to bed. Everything else can wait, and will.', 'bad');
+    log(s, food.sickLog, 'bad');
     const waiting = s.inbox.filter((id) => cardById(id).kind !== 'hybrid').length;
     s.reveals.push({
       eyebrow: 'Lunch · it did not stay down',
-      title: 'The McBurger Strikes Back',
+      title: food.sickTitle,
       text:
-        'Four bites in, something shifted. You have diarrhea, the worst anybody has ever seen, and you are going to bed right now. ' +
+        food.sickText +
         (waiting > 0
           ? `The ${waiting === 1 ? 'person' : `${waiting} people`} still waiting for you will be ignored.`
           : 'Luckily nobody was waiting for you.') +
@@ -393,7 +416,7 @@ export function orderLunch(state: GameState): GameState {
       effects: {},
     });
   } else {
-    log(s, 'Natalie fetched a McBurger. It was gone in four bites. Best burger, everybody says so.', 'ego');
+    log(s, food.fineLog, 'ego');
   }
   settleWhim(s);
   checkEnd(s);

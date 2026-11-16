@@ -93,6 +93,7 @@ Click Natalie, wherever she is, to ask for something.
 
 - **Post at 3am.** One time block. You bleat it, she types it and posts it. Works in Washington and at Mar-a-Lago.
 - **Send her for a McBurger.** One coin, no time. She vanishes, comes back with the bag, and it is gone in seconds. Fast food is not without its risks.
+- **Send her to Taco Gong.** One coin, no time. Same errand, same risks, but with tacos. If it goes wrong, it was the lettuce.
 - **Press the Diet Coke button.** Two coin, no time. She arrives with a can on a silver tray and you get one time block back, up to the usual five. It does nothing in a month where you have not spent any time yet.
 - **Have her pull in the Lawyer.** Three coin, no time, once a month. He sues something, picked at random from `src/game/suits.ts`: +1 Ego, −2 Stability.
 
