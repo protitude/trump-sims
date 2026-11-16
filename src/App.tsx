@@ -20,7 +20,6 @@ import {
   hearMelania,
   playDuty,
   resolveChaos,
-  score,
   stabilityDrift,
   takeBribe,
 } from './game/engine.ts';
@@ -30,9 +29,11 @@ import { chaosById } from './game/chaos.ts';
 import { guestById } from './game/guests.ts';
 import type { GameState } from './game/types.ts';
 import { cardById } from './game/content.ts';
+import { ENDINGS, finalStats } from './game/brag.ts';
 import { endingText, epilogue, legacyTitle } from './game/epilogue.ts';
 import { VOTE_MONTH } from './game/story.ts';
 import { MusicControl, useMusic } from './music.tsx';
+import { Brag } from './share.tsx';
 import type { Music } from './music.tsx';
 import { World } from './world/World.tsx';
 import type { Target } from './world/World.tsx';
@@ -127,8 +128,6 @@ function Title({ onStart, onContinue }: { onStart: () => void; onContinue?: () =
   );
 }
 
-const ENDINGS = { ww3: 'World War III', depression: 'Full Depression', won: 'Term Complete', playing: '' };
-
 function GameOver({ state, onRestart }: { state: GameState; onRestart: () => void }) {
   const legacy = legacyTitle(state);
   return (
@@ -146,49 +145,14 @@ function GameOver({ state, onRestart }: { state: GameState; onRestart: () => voi
           ))}
         </ul>
         <dl className="stats">
-          <div>
-            <dt>Months served</dt>
-            <dd>
-              {state.status === 'won' ? TOTAL_MONTHS : state.month - 1} / {TOTAL_MONTHS}
-            </dd>
-          </div>
-          <div>
-            <dt>Things named after you</dt>
-            <dd>{state.names}</dd>
-          </div>
-          <div>
-            <dt>Gold</dt>
-            <dd>{state.gold}</dd>
-          </div>
-          <div>
-            <dt>Coin</dt>
-            <dd>{state.coin}</dd>
-          </div>
-          <div>
-            <dt>Bribes taken / exposed</dt>
-            <dd>
-              {state.stats.bribes ?? 0} / {state.stats.exposed ?? 0}
-            </dd>
-          </div>
-          <div>
-            <dt>Whims satisfied</dt>
-            <dd>{state.stats.whimsDone ?? 0}</dd>
-          </div>
-          <div>
-            <dt>Congress after the midterms</dt>
-            <dd>{state.congress === 'friendly' ? 'Kept' : state.congress === 'hostile' ? 'Lost' : 'Not reached'}</dd>
-          </div>
-          {state.impeached !== undefined && (
-            <div>
-              <dt>Impeachment vote</dt>
-              <dd>{state.impeached ? 'Impeached' : 'Survived'}</dd>
+          {finalStats(state).map((stat) => (
+            <div key={stat.label}>
+              <dt>{stat.label}</dt>
+              <dd>{stat.value}</dd>
             </div>
-          )}
-          <div>
-            <dt>Legacy score</dt>
-            <dd>{score(state)}</dd>
-          </div>
+          ))}
         </dl>
+        <Brag state={state} />
         <button className="btn primary" onClick={onRestart}>
           Run again
         </button>
