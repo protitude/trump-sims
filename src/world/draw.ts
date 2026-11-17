@@ -1326,8 +1326,11 @@ const DANA: Look = { suit: '#17181d', skin: '#e9b99a', hair: '#e9b99a' };
 const AFFIRM_START = 0.2;
 const AFFIRM_EVERY = 3.5;
 
-/** A speech balloon with wrapped text, its tail pointing down at (x, y). */
-export function speech(c: Ctx, text: string, x: number, y: number, alpha: number): void {
+/**
+ * A speech balloon with wrapped text, its tail pointing down at (x, y). Given
+ * `within`, the balloon slides sideways and down as far as it must to stay inside it.
+ */
+export function speech(c: Ctx, text: string, x: number, y: number, alpha: number, within?: Rect): void {
   if (alpha <= 0) return;
   c.font = `700 11px ${FONT}`;
   const lines: string[] = [];
@@ -1342,19 +1345,29 @@ export function speech(c: Ctx, text: string, x: number, y: number, alpha: number
   lines.push(line);
   const w = Math.max(...lines.map((l) => c.measureText(l).width)) + 18;
   const h = lines.length * 14 + 10;
+  let bx = x - w / 2;
+  let by = y - h;
+  if (within) {
+    const pad = 6;
+    bx = Math.max(within.x + pad, Math.min(within.x + within.w - pad - w, bx));
+    by = Math.max(within.y + pad, by);
+  }
+  // The tail stays on the speaker, as near as the balloon's corners allow.
+  const tx = Math.max(bx + 14, Math.min(bx + w - 14, x));
+  const bottom = by + h;
   c.globalAlpha = alpha;
   c.fillStyle = '#fff6fb';
-  rr(c, x - w / 2, y - h, w, h, 8);
+  rr(c, bx, by, w, h, 8);
   c.fill();
   c.beginPath();
-  c.moveTo(x - 6, y - 1);
-  c.lineTo(x - 2, y + 8);
-  c.lineTo(x + 5, y - 1);
+  c.moveTo(tx - 6, bottom - 1);
+  c.lineTo(tx - 2, bottom + 8);
+  c.lineTo(tx + 5, bottom - 1);
   c.fill();
   c.fillStyle = '#3a2233';
   c.textAlign = 'center';
   c.textBaseline = 'middle';
-  lines.forEach((l, i) => c.fillText(l, x, y - h + 12 + i * 14));
+  lines.forEach((l, i) => c.fillText(l, bx + w / 2, by + 12 + i * 14));
   c.globalAlpha = 1;
 }
 
@@ -2064,14 +2077,26 @@ function tablet(c: Ctx, act: Activity, viewW: number, viewH: number): void {
   c.restore();
 }
 
-function affirmation(c: Ctx, sim: Sim): void {
+/**
+ * Drawn in screen space at the size it has at Mar-a-Lago, whatever the place
+ * is zoomed to, and kept inside the view however long it runs.
+ */
+function affirmation(c: Ctx, sim: Sim, viewW: number, viewH: number): void {
   const act = sim.activity;
   if (!act?.sleep || sim.aide.path.length > 0) return;
   const lines = act.lines ?? [];
   const n = Math.floor((act.t - AFFIRM_START) / AFFIRM_EVERY);
   if (act.t < AFFIRM_START || n >= lines.length) return;
   const age = act.t - AFFIRM_START - n * AFFIRM_EVERY;
-  speech(c, lines[n], sim.aide.x + 6, sim.aide.y - 92, clamp01(Math.min(age / 0.2, (AFFIRM_EVERY - age) / 0.25)));
+  const k = Math.max(Math.min(viewW / REGIONS.maralago.w, viewH / REGIONS.maralago.h), 0.5);
+  const sx = (sim.aide.x + 6 - sim.cam.x) * sim.cam.scale;
+  const sy = (sim.aide.y - 92 - sim.cam.y) * sim.cam.scale;
+  c.save();
+  c.translate(sx, sy);
+  c.scale(k, k);
+  const within = { x: -sx / k, y: -sy / k, w: viewW / k, h: viewH / k };
+  speech(c, lines[n], 0, 0, clamp01(Math.min(age / 0.2, (AFFIRM_EVERY - age) / 0.25)), within);
+  c.restore();
 }
 
 // ---------- Idle scenes ----------
@@ -3262,9 +3287,5 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   if (sim.activity) electionNight(c, sim.activity, s, viewW, viewH);
 
   // The affirmations go on top of all that, at full brightness.
-  c.save();
-  c.scale(scale, scale);
-  c.translate(-sim.cam.x, -sim.cam.y);
-  affirmation(c, sim);
-  c.restore();
+  affirmation(c, sim, viewW, viewH);
 }
