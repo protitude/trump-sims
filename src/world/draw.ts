@@ -11,6 +11,9 @@ import { addressBackdrop, addressProps, decorFlat, decorOver, decorStanding, ele
 
 // Everything on screen is drawn with canvas shapes; there are no image files.
 
+/** Seconds he dances when Executive Disco comes on. */
+export const DANCE_SECONDS = 10;
+
 export interface Actor {
   x: number;
   y: number;
@@ -152,6 +155,10 @@ export interface Sim {
   time: number;
   /** 0..1 blackout used when sleeping, and to hide the change of scene on a flight. */
   fade: number;
+  /** sim.time when his disco dance ends; he dances while time is short of it. */
+  danceUntil?: number;
+  /** sim.time when he actually got going, which may be later if he was busy. */
+  dancingFrom?: number;
   /** Lunch disagreed with him: he blames Kennedy, or the lettuce, all the way to bed. */
   sick?: Meal;
   cam: { x: number; y: number; scale: number };
@@ -245,7 +252,26 @@ export interface Look {
   swoosh?: boolean;
 }
 
-export function person(c: Ctx, a: Actor, look: Look, bob: number): void {
+/** One arm hung from the shoulder at (x, y), turned `angle` radians from straight down. */
+function arm(c: Ctx, x: number, y: number, angle: number, length: number, suit: string, skin: string): void {
+  c.save();
+  c.translate(x, y);
+  c.rotate(angle);
+  c.fillStyle = suit;
+  c.fillRect(-2.5, 0, 5, length);
+  c.fillStyle = skin;
+  c.beginPath();
+  c.arc(0, length + 1, 3, 0, Math.PI * 2);
+  c.fill();
+  c.restore();
+}
+
+/**
+ * `dance` is beats into his disco routine, or undefined: one finger to the
+ * ceiling, the other hand on the hip, switching sides every two beats.
+ */
+export function person(c: Ctx, a: Actor, look: Look, bob: number, dance?: number): void {
+  const dancing = dance !== undefined;
   const swing = a.path.length > 0 ? Math.sin(a.walk * 14) : 0;
   c.save();
   c.translate(a.x, a.y);
@@ -259,12 +285,32 @@ export function person(c: Ctx, a: Actor, look: Look, bob: number): void {
 
   const leg = a.seated ? 8 : 14;
   c.fillStyle = '#1b1f2e';
-  c.fillRect(-7, -14, 6, leg - Math.max(0, swing) * 5);
-  c.fillRect(1, -14, 6, leg - Math.max(0, -swing) * 5);
+  if (dancing) {
+    // Feet planted, knees taking turns to dip on the beat.
+    const step = Math.sin(dance * Math.PI);
+    c.fillRect(-8, -14, 6, leg - Math.max(0, step) * 4);
+    c.fillRect(2, -14, 6, leg - Math.max(0, -step) * 4);
+    // The hips lead and the rest follows.
+    c.translate(0, -14);
+    c.rotate(step * 0.12);
+    c.translate(0, 14);
+  } else {
+    c.fillRect(-7, -14, 6, leg - Math.max(0, swing) * 5);
+    c.fillRect(1, -14, 6, leg - Math.max(0, -swing) * 5);
+  }
 
   c.fillStyle = look.suit;
-  c.fillRect(-14, -38, 5, 17 + swing * 2);
-  c.fillRect(9, -38, 5, 17 - swing * 2);
+  if (dancing) {
+    const right = Math.floor(dance / 2) % 2 === 0;
+    // The pointing arm jabs up a little on every beat.
+    const jab = (1 - (dance % 1)) * 0.25;
+    arm(c, 11, -37, right ? -2.45 - jab : -0.55, right ? 19 : 12, look.suit, look.skin);
+    arm(c, -11, -37, right ? 0.55 : 2.45 + jab, right ? 12 : 19, look.suit, look.skin);
+    c.fillStyle = look.suit;
+  } else {
+    c.fillRect(-14, -38, 5, 17 + swing * 2);
+    c.fillRect(9, -38, 5, 17 - swing * 2);
+  }
   rr(c, -11, -40, 22, 28, 6);
   c.fill();
 
@@ -3173,6 +3219,9 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   }
   const act = sim.activity;
   const idle = sim.idle && !sim.idle.walking ? sim.idle.kind : null;
+  // Executive Disco is on, and he is on his feet with nothing better to do.
+  const dancing =
+    sim.danceUntil !== undefined && sim.time < sim.danceUntil && !act && !sim.pres.seated && sim.pres.path.length === 0 && idle !== 'cart' && idle !== 'motorcade';
   // Paid for and present: Melania at his side for the event, one step to his right.
   if (withMelania(act, s)) standing.push({ y: sim.pres.y - 1, draw: () => melaniaFigure(c, sim.pres.x + 32, sim.pres.y, sim.pres.facing) });
   // He is aboard while a flight is in the air.
@@ -3199,6 +3248,12 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
         c.fillStyle = '#6b3f24';
         rr(c, sim.pres.x - 12, sim.pres.y - 47, 24, 40, 5);
         c.fill();
+      }
+      if (dancing) {
+        // On the beat: 124 to the minute, counted from when the track came on.
+        const beats = (sim.time - (sim.danceUntil! - DANCE_SECONDS)) * (124 / 60);
+        person(c, sim.pres, PRESIDENT, Math.abs(Math.sin(beats * Math.PI)) * 4, beats);
+        return;
       }
       person(c, sim.pres, PRESIDENT, bob);
     },
@@ -3234,6 +3289,15 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
     else if (act.anim === 'show-call') {
       if (act.t > act.dur - 0.5) risingText(c, '*CLICK*', p.x, p.y - 84, act.t - (act.dur - 0.5), 0.5, 13, GOLD_LIGHT);
       else shout(TELLING_OFF, 0.6, p.y - 84);
+    }
+  } else if (dancing) {
+    // The first move of this song: he announces it.
+    if (sim.dancingFrom === undefined || sim.dancingFrom < sim.danceUntil! - DANCE_SECONDS) sim.dancingFrom = sim.time;
+    bubble(c, p.x, p.y - 84 + Math.sin(sim.time * 13) * 2, '🕺');
+    driftingText(c, "It's my Jam!", p.x, p.y - 112, sim.time - sim.dancingFrom, 2.2, 15, GOLD_LIGHT);
+    for (let j = 0; j < 4; j++) {
+      const age = (sim.time + j * 0.45) % 1.8;
+      risingText(c, j % 2 ? '♪' : '♫', p.x + (j % 2 ? 26 : -26) + Math.sin(age * 5 + j) * 6, p.y - 60, age, 1.8, 15, GOLD_LIGHT);
     }
   } else if (sim.sick) {
     // Green, clutching nothing in particular, and sure whose fault it is.

@@ -11,8 +11,10 @@ interface Track {
   plays: number;
 }
 
+const DISCO_FILE = 'music/executive-disco.mp3';
+
 const PLAYLIST: Track[] = [
-  { title: 'Executive Disco', file: 'music/executive-disco.mp3', plays: 1 },
+  { title: 'Executive Disco', file: DISCO_FILE, plays: 1 },
   { title: 'Lofi Hip Hop Loop', file: 'music/lofi-hip-hop-loop.mp3', plays: 1 },
   { title: 'Funky Lofi Jam', file: 'music/funky-lofi-jam.mp3', plays: 1 },
   { title: 'Lofi Again', file: 'music/lofi-again.mp3', plays: 2 },
@@ -53,12 +55,15 @@ export interface Music {
   start: () => void;
   toggle: () => void;
   next: () => void;
+  /** performance.now() when Executive Disco last started from the top, or 0. */
+  discoAt: number;
 }
 
 export function useMusic(): Music {
   const [on, setOn] = useState(savedPreference);
   const [index, setIndex] = useState(0);
   const [volume, setVolumeState] = useState(savedVolume);
+  const [discoAt, setDiscoAt] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const playsLeft = useRef(PLAYLIST[0].plays);
   const onRef = useRef(on);
@@ -90,9 +95,15 @@ export function useMusic(): Music {
       current = (PLAYLIST.findIndex((t) => audio.src.endsWith(t.file)) + 1) % PLAYLIST.length;
       load(current);
     };
+    // The disco track starting from the top is his cue to dance.
+    const onPlaying = () => {
+      if (audio.src.endsWith(DISCO_FILE) && audio.currentTime < 1) setDiscoAt(performance.now());
+    };
     audio.addEventListener('ended', onEnded);
+    audio.addEventListener('playing', onPlaying);
     return () => {
       audio.removeEventListener('ended', onEnded);
+      audio.removeEventListener('playing', onPlaying);
       audio.pause();
       audioRef.current = null;
     };
@@ -127,7 +138,7 @@ export function useMusic(): Music {
     }
   }, []);
 
-  return { on, title: PLAYLIST[index].title, volume, setVolume, start, toggle, next };
+  return { on, title: PLAYLIST[index].title, volume, setVolume, start, toggle, next, discoAt };
 }
 
 export function MusicControl({ music }: { music: Music }) {

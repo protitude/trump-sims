@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent } from 'react';
 import { calleeAt } from '../game/calls.ts';
 import { cardById, vanityById } from '../game/content.ts';
-import { COKE_SECONDS, FIGHT_SECONDS, INTERVIEW_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway, golfing } from './draw.ts';
+import { COKE_SECONDS, DANCE_SECONDS, FIGHT_SECONDS, INTERVIEW_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway, golfing } from './draw.ts';
 import { TUNING, bragsAboutPhysical, dutyEffects, leakChanceAt, cokeStatus, domeShields, dutyCost, melaniaAttends, melaniaStatus, sueStatus, vanityEgo, vanityStability, vanityStatus } from '../game/engine.ts';
 import type { Meal } from '../game/engine.ts';
 import { MELANIA_INSULTS } from '../game/melania.ts';
@@ -22,6 +22,8 @@ interface Props {
   state: GameState;
   /** A "walk over there" request from the HUD. `n` changes on every request. */
   command: { n: number; target: Target } | null;
+  /** performance.now() when the disco track last started, or 0: his cue to dance. */
+  discoAt: number;
   onDuty: (cardId: string, option: number) => void;
   onVanity: (actionId: string) => void;
   onBribe: (guestId: string) => void;
@@ -157,7 +159,7 @@ function besideVisitor(spot: Tile): Tile {
   return [spot[0] - 2, spot[1]];
 }
 
-export function World({ state, command, onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onMelania, onAbuse, onBroadcast, onEndMonth }: Props) {
+export function World({ state, command, discoAt, onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onMelania, onAbuse, onBroadcast, onEndMonth }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const simRef = useRef<Sim | null>(null);
@@ -350,6 +352,18 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       },
     };
   }
+
+  // Executive Disco comes on: ten seconds of moves, wherever he happens to be.
+  useEffect(() => {
+    if (!discoAt) {
+      // Music switched off: the party is over.
+      sim.danceUntil = undefined;
+      return;
+    }
+    const left = DANCE_SECONDS - (performance.now() - discoAt) / 1000;
+    if (left > 0) sim.danceUntil = sim.time + left;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [discoAt]);
 
   // Animation loop. Runs for the lifetime of the component.
   useEffect(() => {
