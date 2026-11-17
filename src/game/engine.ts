@@ -1,4 +1,4 @@
-import type { Effects, GameState, Mood, Tone, VanityAction, DutyCard } from './types.ts';
+import type { Effects, GameState, Mood, Take, Tone, VanityAction, DutyCard } from './types.ts';
 import { CRISES, DUTIES, HYBRIDS, VANITY, cardById, vanityById } from './content.ts';
 import { CHOICE_STATS, CONSEQUENCES, HEARING_MONTHS, SET_PIECE_MONTHS, VOTE_MONTH } from './story.ts';
 import { CHAOS, chaosById } from './chaos.ts';
@@ -7,6 +7,7 @@ import { FIGHT_GUEST, GUESTS, guestById } from './guests.ts';
 import { CALLEES, calleeAt } from './calls.ts';
 import { SUITS } from './suits.ts';
 import { MELANIA_INSULTS } from './melania.ts';
+import { applauseEgo, seasonalPost } from './events.ts';
 import { MIDTERM_BAR, MIDTERM_MONTH, WHIMS, WHIM_FAIL_EGO, WHIM_MONTHS, activeSeasons, whimById } from './calendar.ts';
 
 // Pure game rules. Every action takes a state and returns a new one, so the
@@ -713,6 +714,26 @@ export function stabilityDrift(s: GameState): number {
   return TUNING.stabilityDrift + activeSeasons(s).reduce((n, season) => n + (season.drift ?? 0), 0);
 }
 
+/** What an option does once the applause is counted: boasting in a speech pays more the more there is to boast about. */
+export function dutyEffects(s: GameState, card: DutyCard, optionIndex: number): Effects {
+  const effects = card.options[optionIndex].effects;
+  const applause = applauseEgo(s, card, optionIndex);
+  return applause > 0 ? { ...effects, ego: (effects.ego ?? 0) + applause } : effects;
+}
+
+/** Keeps a note of how a calendar day went. The house remembers. */
+function remember(s: GameState, card: DutyCard, take: Take): void {
+  if (card.setPiece) s.setPieces = { ...s.setPieces, [card.id]: take };
+}
+
+/** The broadcast has been watched: everything else can carry on. */
+export function endBroadcast(state: GameState): GameState {
+  if (!state.broadcast) return state;
+  const s = structuredClone(state);
+  delete s.broadcast;
+  return s;
+}
+
 export function playDuty(state: GameState, cardId: string, optionIndex: number): GameState {
   if (state.status !== 'playing' || state.chaos || state.place !== 'dc' || !state.inbox.includes(cardId)) return state;
   const card = cardById(cardId);
@@ -727,9 +748,12 @@ export function playDuty(state: GameState, cardId: string, optionIndex: number):
     s.domeSpent = true;
     log(s, 'The Golden Dome took the edge off that one. Nobody can explain how, and you have told them not to try.', 'good');
   }
-  apply(s, option.effects);
-  const net = (option.effects.stability ?? 0) + (option.effects.ego ?? 0);
-  log(s, option.result, card.kind === 'hybrid' ? 'good' : (option.effects.stability ?? 0) > 0 ? 'good' : net > 0 ? 'ego' : 'bad');
+  const effects = dutyEffects(state, card, optionIndex);
+  apply(s, effects);
+  const net = (effects.stability ?? 0) + (effects.ego ?? 0);
+  log(s, option.result, card.kind === 'hybrid' ? 'good' : (effects.stability ?? 0) > 0 ? 'good' : net > 0 ? 'ego' : 'bad');
+  if (effects !== option.effects) log(s, 'There was a lot to point at, and you pointed at all of it. The applause ran long.', 'ego');
+  if (card.options.length === 2) remember(s, card, optionIndex === 0 ? 'modest' : 'boast');
 
   count(s, 'duties');
   if (card.options.length === 2) count(s, optionIndex === 0 ? 'responsible' : 'vain');
@@ -771,7 +795,8 @@ export function doVanity(state: GameState, actionId: string): GameState {
     log(s, calleeAt(s.callee).result, 'ego');
     nextCallee(s);
   } else {
-    log(s, action.result, 'ego');
+    // At 3am he posts about whatever is going on, which this month is something.
+    log(s, (action.id === 'show-post' && seasonalPost(state)?.log) || action.result, 'ego');
   }
   if (action.travelTo === 'dc' && s.fight) {
     // Paid for at the club, and built while he was away.
@@ -800,6 +825,7 @@ export function endMonth(state: GameState): GameState {
     apply(s, { stability: card.ignore.stability });
     log(s, card.ignore.text, card.kind === 'hybrid' ? 'neutral' : 'bad');
     plant(s, `${id}:ignore`);
+    remember(s, card, 'skipped');
     if (card.kind !== 'hybrid') {
       neglected += 1;
       s.ignored += 1;
@@ -816,6 +842,8 @@ export function endMonth(state: GameState): GameState {
 
   // Election night: the state of the world decides who runs Congress.
   if (s.month === MIDTERM_MONTH) {
+    // The networks carry the result before anything else happens.
+    s.broadcast = 'election';
     if (s.stability >= MIDTERM_BAR) {
       s.congress = 'friendly';
       apply(s, { ego: 10 });

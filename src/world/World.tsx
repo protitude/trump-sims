@@ -3,10 +3,12 @@ import type { PointerEvent } from 'react';
 import { calleeAt } from '../game/calls.ts';
 import { cardById, vanityById } from '../game/content.ts';
 import { COKE_SECONDS, FIGHT_SECONDS, INTERVIEW_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway, golfing } from './draw.ts';
-import { TUNING, bragsAboutPhysical, leakChanceAt, cokeStatus, domeShields, dutyCost, melaniaAttends, melaniaStatus, sueStatus, vanityEgo, vanityStability, vanityStatus } from '../game/engine.ts';
+import { TUNING, bragsAboutPhysical, dutyEffects, leakChanceAt, cokeStatus, domeShields, dutyCost, melaniaAttends, melaniaStatus, sueStatus, vanityEgo, vanityStability, vanityStatus } from '../game/engine.ts';
 import type { Meal } from '../game/engine.ts';
 import { MELANIA_INSULTS } from '../game/melania.ts';
 import { guestById, showOf } from '../game/guests.ts';
+import { BRAGS_PER_EGO, BRAG_EGO_MAX, addressFor, applauseEgo, bragMaterial, isSpeech } from '../game/events.ts';
+import { ELECTION_SECONDS } from './scenes.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
 import { Blocks, Fx, Why, needCoin, needTime } from '../ui.tsx';
 import { drawWorld, hitRectPx } from './draw.ts';
@@ -29,6 +31,8 @@ interface Props {
   onSue: () => void;
   onMelania: () => void;
   onAbuse: () => void;
+  /** The election broadcast has finished playing. */
+  onBroadcast: () => void;
   onEndMonth: () => void;
 }
 
@@ -153,7 +157,7 @@ function besideVisitor(spot: Tile): Tile {
   return [spot[0] - 2, spot[1]];
 }
 
-export function World({ state, command, onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onMelania, onAbuse, onEndMonth }: Props) {
+export function World({ state, command, onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onMelania, onAbuse, onBroadcast, onEndMonth }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const simRef = useRef<Sim | null>(null);
@@ -162,8 +166,8 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
 
   const stateRef = useRef(state);
   stateRef.current = state;
-  const callbacks = useRef({ onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onMelania, onAbuse, onEndMonth });
-  callbacks.current = { onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onMelania, onAbuse, onEndMonth };
+  const callbacks = useRef({ onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onMelania, onAbuse, onBroadcast, onEndMonth });
+  callbacks.current = { onDuty, onVanity, onBribe, onDecline, onLunch, onCoke, onSue, onMelania, onAbuse, onBroadcast, onEndMonth };
 
   const targetRef = useRef<Target | null>(null);
   const [menu, setMenu] = useState<Menu | null>(null);
@@ -371,6 +375,8 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
         // Flights black out as they leave and clear as they come in, hiding the change of scene.
         else if (sim.activity.flight === 'out') sim.fade = Math.max(0, Math.min(1, (part - 0.7) / 0.3));
         else if (sim.activity.flight === 'in') sim.fade = Math.max(0, 1 - part / 0.35);
+        // Anything else starts in daylight, even straight out of bed.
+        else sim.fade = Math.max(0, sim.fade - dt * 1.2);
         if (sim.activity.t >= sim.activity.dur) {
           const finished = sim.activity;
           sim.activity = null;
@@ -559,6 +565,13 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
       sim.activity!.flight = 'in';
     }
   }, [state.place, sim]);
+
+  // The morning after the midterms: the result plays out on television before anything else can happen.
+  useEffect(() => {
+    if (state.broadcast !== 'election' || state.status !== 'playing') return;
+    perform('Election night', '🗳️', ELECTION_SECONDS, () => callbacks.current.onBroadcast(), { anim: 'election' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.broadcast, state.status]);
 
   // When the month's time runs out he walks to the nearest bed and sleeps.
   useEffect(() => {
@@ -838,20 +851,29 @@ export function World({ state, command, onDuty, onVanity, onBribe, onDecline, on
                 key={i}
                 className="option"
                 disabled={!affordable}
-                onClick={() =>
-                  perform(option.label, DUTY_EMOJI[card.kind], watchTime(cost), () => callbacks.current.onDuty(card.id, i), {
+                onClick={() => {
+                  // The calendar's big days go out live: the tablet shows how he is handling it.
+                  const address = addressFor(state, card, i);
+                  perform(option.label, DUTY_EMOJI[card.kind], address ? INTERVIEW_SECONDS : watchTime(cost), () => callbacks.current.onDuty(card.id, i), {
                     anim: `duty-${card.kind}`,
                     cardId: card.id,
-                  })
-                }
+                    ...(address && { screen: { kind: 'address', ...address } }),
+                  });
+                }}
               >
                 <span>{option.label}</span>
-                <Fx effects={option.effects} />
+                <Fx effects={dutyEffects(state, card, i)} />
                 {!affordable && <Why>{needTime(cost, state.blocks)}</Why>}
               </button>
             ))}
           </div>
           {!affordable && <div className="ignore">Not enough time left this month.</div>}
+          {isSpeech(card) && (
+            <div className="ignore">
+              Applause: you have built, named or gilded {bragMaterial(state)} {bragMaterial(state) === 1 ? 'thing' : 'things'} to boast about. Going off script earns +
+              {applauseEgo(state, card, 1)} Ego for it (1 for every {BRAGS_PER_EGO}, up to {BRAG_EGO_MAX}).
+            </div>
+          )}
           {domeShields(state, card) && <div className="ignore">The Golden Dome takes {TUNING.domeBlocks} time block off this one.</div>}
           {card.ignore.stability < 0 && <div className="ignore">If ignored: {card.ignore.stability} Stability</div>}
         </article>

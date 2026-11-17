@@ -82,6 +82,9 @@ export interface Reveal {
   effects: Effects;
 }
 
+/** How he handled one of the calendar's big days: the sensible answer, the fun one, or not at all. */
+export type Take = 'modest' | 'boast' | 'skipped';
+
 export type Status = 'playing' | 'won' | 'ww3' | 'depression';
 export type Mood = 'sulking' | 'normal' | 'unleashed';
 
@@ -150,6 +153,10 @@ export interface GameState {
   domeSpent?: boolean;
   /** Set at the end of the impeachment vote, if a hostile Congress got that far. */
   impeached?: boolean;
+  /** The set pieces behind him, and what he did with each. They leave marks around the house. */
+  setPieces?: Record<string, Take>;
+  /** Something the networks are about to show, which plays before anything else happens: the midterm result. */
+  broadcast?: 'election';
   /** Bribes that leaked, waiting for the month the story runs. */
   exposures: { id: string; due: number; effects: Effects }[];
   inbox: string[];

@@ -1,10 +1,13 @@
 import { BLOCKS_PER_MONTH, melaniaStatus, mood } from '../game/engine.ts';
 import type { Meal } from '../game/engine.ts';
 import { vanityById } from '../game/content.ts';
+import { seasonalPost } from '../game/events.ts';
+import type { Address } from '../game/events.ts';
 import type { GuestKind, Show } from '../game/guests.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
 import { CAGE, OBJECTS, REGIONS, RINGSIDE, ROOF, ROOMS, T, exists, golfShot, isWall, objectName, tileCenter } from './map.ts';
 import type { IdleKind, Point, Rect, Tile, WorldObject } from './map.ts';
+import { addressBackdrop, addressProps, decorFlat, decorOver, decorStanding, electionNight } from './scenes.ts';
 
 // Everything on screen is drawn with canvas shapes; there are no image files.
 
@@ -69,10 +72,13 @@ export interface Activity {
   /** The object being used, or the card being dealt with. */
   objectId?: string;
   cardId?: string;
-  /** A paid interview, played on a tablet over the scene while the activity runs. */
-  screen?: { kind: Show; host: string };
+  /** A paid interview or an address to the nation, played on a tablet over the scene while the activity runs. */
+  screen?: Screen;
   done: () => void;
 }
+
+/** What the tablet is showing: a guest's show, or one of the calendar's big days. */
+export type Screen = { kind: Show; host: string } | ({ kind: 'address' } & Address);
 
 /** An interview: the tablet slides in, he talks about himself, and it flies off again. */
 export const INTERVIEW_SECONDS = 7;
@@ -151,11 +157,11 @@ export interface Sim {
   cam: { x: number; y: number; scale: number };
 }
 
-type Ctx = CanvasRenderingContext2D;
+export type Ctx = CanvasRenderingContext2D;
 
-const GOLD_LIGHT = '#f8dc82';
-const GOLD = '#e3b341';
-const GOLD_DARK = '#a87c16';
+export const GOLD_LIGHT = '#f8dc82';
+export const GOLD = '#e3b341';
+export const GOLD_DARK = '#a87c16';
 const FONT = 'system-ui, -apple-system, "Segoe UI", sans-serif';
 const EMOJI_FONT = '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif';
 
@@ -174,12 +180,12 @@ function px(r: Rect): Rect {
   return { x: r.x * T, y: r.y * T, w: r.w * T, h: r.h * T };
 }
 
-function rr(c: Ctx, x: number, y: number, w: number, h: number, r: number): void {
+export function rr(c: Ctx, x: number, y: number, w: number, h: number, r: number): void {
   c.beginPath();
   c.roundRect(x, y, w, h, r);
 }
 
-function goldFill(c: Ctx, x: number, y: number, w: number, h: number): CanvasGradient {
+export function goldFill(c: Ctx, x: number, y: number, w: number, h: number): CanvasGradient {
   const g = c.createLinearGradient(x, y, x + w, y + h);
   g.addColorStop(0, GOLD_LIGHT);
   g.addColorStop(0.5, GOLD);
@@ -221,7 +227,7 @@ function sparkles(c: Ctx, r: Rect, time: number, seed: number): void {
   }
 }
 
-function label(c: Ctx, text: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center'): void {
+export function label(c: Ctx, text: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center'): void {
   c.font = `700 ${size}px ${FONT}`;
   c.textAlign = align;
   c.textBaseline = 'middle';
@@ -231,7 +237,7 @@ function label(c: Ctx, text: string, x: number, y: number, size: number, color: 
 
 // ---------- People ----------
 
-interface Look {
+export interface Look {
   suit: string;
   skin: string;
   hair: string;
@@ -239,7 +245,7 @@ interface Look {
   swoosh?: boolean;
 }
 
-function person(c: Ctx, a: Actor, look: Look, bob: number): void {
+export function person(c: Ctx, a: Actor, look: Look, bob: number): void {
   const swing = a.path.length > 0 ? Math.sin(a.walk * 14) : 0;
   c.save();
   c.translate(a.x, a.y);
@@ -294,7 +300,7 @@ function person(c: Ctx, a: Actor, look: Look, bob: number): void {
   c.restore();
 }
 
-const PRESIDENT: Look = { suit: '#1d2a52', skin: '#f2a35e', hair: '#f2c230', tie: '#d9282f', swoosh: true };
+export const PRESIDENT: Look = { suit: '#1d2a52', skin: '#f2a35e', hair: '#f2c230', tie: '#d9282f', swoosh: true };
 
 interface WomanLook {
   skin: string;
@@ -305,7 +311,7 @@ interface WomanLook {
 }
 
 /** A woman: long hair worn over the shoulders, a fitted dress with a flared skirt, and heels. */
-function woman(c: Ctx, a: Actor, look: WomanLook, bob: number, kick = 0): void {
+export function woman(c: Ctx, a: Actor, look: WomanLook, bob: number, kick = 0): void {
   const swing = a.path.length > 0 ? Math.sin(a.walk * 14) : 0;
   c.save();
   c.translate(a.x, a.y);
@@ -563,7 +569,7 @@ function landingPad(c: Ctx, cx: number, cy: number, radius: number): void {
   label(c, 'H', cx, cy + 2, 40, 'rgba(255,255,255,0.9)');
 }
 
-const clamp01 = (n: number): number => Math.max(0, Math.min(1, n));
+export const clamp01 = (n: number): number => Math.max(0, Math.min(1, n));
 
 /** How far through leaving the ground the craft at this object is: 0 parked, 1 gone. */
 function airborne(o: WorldObject): { k: number; side: number } | null {
@@ -1159,7 +1165,7 @@ function drawObject(c: Ctx, o: WorldObject, s: GameState, time: number, hovered:
 // ---------- Activity animations ----------
 
 /** A small spectator: used for rally crowds and club members. */
-function fan(c: Ctx, x: number, y: number, bob: number, shirt: string, cap: string | null): void {
+export function fan(c: Ctx, x: number, y: number, bob: number, shirt: string, cap: string | null): void {
   c.fillStyle = 'rgba(0,0,0,0.2)';
   c.beginPath();
   c.ellipse(x, y, 8, 3, 0, 0, Math.PI * 2);
@@ -1269,7 +1275,7 @@ function tank(c: Ctx, x: number, y: number): void {
   c.fillRect(x - 20, y - 44, 12, 8);
 }
 
-function risingText(c: Ctx, text: string, x: number, y: number, age: number, life: number, size: number, color: string): void {
+export function risingText(c: Ctx, text: string, x: number, y: number, age: number, life: number, size: number, color: string): void {
   if (age < 0 || age > life) return;
   c.globalAlpha = 1 - age / life;
   c.font = `800 ${size}px ${FONT}`;
@@ -1298,7 +1304,7 @@ function driftingText(c: Ctx, text: string, x: number, y: number, age: number, l
   c.globalAlpha = 1;
 }
 
-function emojiAt(c: Ctx, emoji: string, x: number, y: number, size: number, alpha = 1): void {
+export function emojiAt(c: Ctx, emoji: string, x: number, y: number, size: number, alpha = 1): void {
   c.globalAlpha = Math.max(0, alpha);
   c.font = `${size}px ${EMOJI_FONT}`;
   c.textAlign = 'center';
@@ -1321,7 +1327,7 @@ const AFFIRM_START = 0.2;
 const AFFIRM_EVERY = 3.5;
 
 /** A speech balloon with wrapped text, its tail pointing down at (x, y). */
-function speech(c: Ctx, text: string, x: number, y: number, alpha: number): void {
+export function speech(c: Ctx, text: string, x: number, y: number, alpha: number): void {
   if (alpha <= 0) return;
   c.font = `700 11px ${FONT}`;
   const lines: string[] = [];
@@ -1634,10 +1640,11 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
     case 'show-post': {
       // He bleats it at Natalie; she types it up and sends it, word for word.
       const a = sim.aide;
+      const posts = seasonalPost(s)?.shouts ?? POSTS;
       const every = 0.8;
       const n = Math.floor(t / every);
       const age = t - n * every;
-      driftingText(c, POSTS[n % POSTS.length], p.x + Math.sin(sim.time * 30) * 1.5, p.y - 80, age, every, 13, '#ffffff');
+      driftingText(c, posts[n % posts.length], p.x + Math.sin(sim.time * 30) * 1.5, p.y - 80, age, every, 13, '#ffffff');
       emojiAt(c, '💻', a.x + a.facing * 15, a.y - 28 + Math.abs(Math.sin(sim.time * 16)) * 2, 15);
       risingText(c, 'POSTED ✓', a.x, a.y - 84, age - every * 0.55, every * 0.45, 10, GOLD_LIGHT);
       break;
@@ -1954,8 +1961,10 @@ function tablet(c: Ctx, act: Activity, viewW: number, viewH: number): void {
   rr(c, 11, 11, W - 22, H - 22, 7);
   c.clip();
 
+  const address = screen.kind === 'address' ? screen : null;
   const podcast = screen.kind === 'podcast';
-  if (podcast) {
+  if (address && address.set !== 'news') addressBackdrop(c, address, t);
+  else if (podcast) {
     // A dim studio: brick, and a sign that is on.
     c.fillStyle = '#2a1a15';
     c.fillRect(0, 0, W, H);
@@ -1997,37 +2006,46 @@ function tablet(c: Ctx, act: Activity, viewW: number, viewH: number): void {
 
   // The guest, from the chest up, and never not talking.
   const talking = shown >= 1;
-  c.save();
-  c.translate(84, 238 + (talking ? Math.sin(t * 7) * 1.5 : 0));
-  c.rotate(talking ? Math.sin(t * 2.3) * 0.03 : 0);
-  c.scale(3.3, 3.3);
-  person(c, { x: 0, y: 0, path: [], facing: 1, walk: 0 }, PRESIDENT, 0);
-  c.fillStyle = '#7a2a1c';
-  const open = talking ? 0.7 + Math.abs(Math.sin(t * 15)) * 2.4 : 0.7;
-  rr(c, 2.5, -45.5, 5, open, Math.min(1, open / 2));
-  c.fill();
-  c.restore();
+  // Reading it off the glass, he hardly moves. Otherwise he is all over the frame.
+  const lively = talking && !address?.flat;
+  const present = !address?.empty;
+  if (present) {
+    c.save();
+    c.translate(84, 238 + (lively ? Math.sin(t * 7) * 1.5 : 0));
+    c.rotate(lively ? Math.sin(t * 2.3) * 0.03 : 0);
+    c.scale(3.3, 3.3);
+    person(c, { x: 0, y: 0, path: [], facing: 1, walk: 0 }, PRESIDENT, 0);
+    c.fillStyle = '#7a2a1c';
+    const open = lively ? 0.7 + Math.abs(Math.sin(t * 15)) * 2.4 : talking ? 0.7 + Math.abs(Math.sin(t * 5)) * 1.1 : 0.7;
+    rr(c, 2.5, -45.5, 5, open, Math.min(1, open / 2));
+    c.fill();
+    c.restore();
+  }
+  if (address) addressProps(c, address, t);
 
   // The microphone he is leaning into.
-  c.strokeStyle = '#8b909c';
-  c.lineWidth = 3;
-  c.beginPath();
-  c.moveTo(podcast ? 190 : 150, 180);
-  c.lineTo(146, 150);
-  c.stroke();
-  c.fillStyle = '#23262e';
-  rr(c, 134, 132, podcast ? 22 : 14, podcast ? 30 : 22, 7);
-  c.fill();
-  c.fillStyle = 'rgba(255,255,255,0.18)';
-  for (let i = 0; i < 3; i++) c.fillRect(137, 138 + i * 6, podcast ? 16 : 8, 1.5);
+  if (present && address?.set !== 'summit') {
+    c.strokeStyle = '#8b909c';
+    c.lineWidth = 3;
+    c.beginPath();
+    c.moveTo(podcast ? 190 : 150, 180);
+    c.lineTo(146, 150);
+    c.stroke();
+    c.fillStyle = '#23262e';
+    rr(c, 134, 132, podcast ? 22 : 14, podcast ? 30 : 22, 7);
+    c.fill();
+    c.fillStyle = 'rgba(255,255,255,0.18)';
+    for (let i = 0; i < 3; i++) c.fillRect(137, 138 + i * 6, podcast ? 16 : 8, 1.5);
+    }
 
   // The lower third.
-  const ticker = podcast ? PODCAST_TICKER : TV_TICKER;
+  const ticker = address ? address.ticker : podcast ? PODCAST_TICKER : TV_TICKER;
+  const host = address ? address.chyron : screen.kind === 'address' ? '' : screen.host;
   c.fillStyle = podcast ? '#f2c230' : '#ffffff';
   c.fillRect(11, 168, W - 22, 20);
   c.fillStyle = podcast ? '#14161c' : '#d9282f';
   c.fillRect(11, 168, 6, 20);
-  label(c, `${podcast ? '🎙 ' : ''}${screen.host.toUpperCase()}${podcast ? '' : ' · EXCLUSIVE'}`, 24, 178.5, 11, '#14161c', 'left');
+  label(c, `${podcast ? '🎙 ' : ''}${host.toUpperCase()}${podcast || address ? '' : ' · EXCLUSIVE'}`, 24, 178.5, 11, '#14161c', 'left');
   c.fillStyle = '#0a0f1f';
   c.fillRect(11, 188, W - 22, 17);
   label(c, ticker[Math.floor(t / 2.4) % ticker.length], 24, 197, 8.5, '#ffe9a8', 'left');
@@ -2037,8 +2055,10 @@ function tablet(c: Ctx, act: Activity, viewW: number, viewH: number): void {
     const said = t - TABLET_SLIDE;
     const age = said % BRAG_EVERY;
     let start = 0;
-    for (const ch of screen.host) start += ch.charCodeAt(0);
-    const line = INTERVIEW_BRAGS[(start + Math.floor(said / BRAG_EVERY)) % INTERVIEW_BRAGS.length];
+    for (const ch of host) start += ch.charCodeAt(0);
+    const n = Math.floor(said / BRAG_EVERY);
+    // An address is scripted, more or less. An interview is whatever comes to mind.
+    const line = address ? address.lines[Math.min(n, address.lines.length - 1)] : INTERVIEW_BRAGS[(start + n) % INTERVIEW_BRAGS.length];
     speech(c, line, 206, 118, Math.min(1, age / 0.2, (BRAG_EVERY - age) / 0.25));
   }
 
@@ -2927,6 +2947,7 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   currentAct = sim.activity;
   const flat = here.filter((o) => !o.blocking);
   for (const o of flat) drawObject(c, o, s, sim.time, sim.hover === o.id);
+  decorFlat(c, sim, s);
 
   // Everything standing up is drawn back to front.
   const standing: { y: number; draw: () => void }[] = [];
@@ -3024,8 +3045,10 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
       person(c, sim.pres, PRESIDENT, bob);
     },
   });
+  decorStanding(c, sim, s, standing);
   standing.sort((a, b) => a.y - b.y);
   for (const item of standing) item.draw();
+  decorOver(c, sim, s);
 
   drawActivity(c, sim, s);
   drawIdle(c, sim);
@@ -3091,6 +3114,8 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
 
   // A paid interview plays on a tablet, over everything.
   if (sim.activity) tablet(c, sim.activity, viewW, viewH);
+  // Election night gets a television of its own.
+  if (sim.activity) electionNight(c, sim.activity, s, viewW, viewH);
 
   // The affirmations go on top of all that, at full brightness.
   c.save();

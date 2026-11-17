@@ -75,6 +75,33 @@ Four of the big projects keep working after the ribbon is cut. The perk is print
 | **The Gift Shop** | Pays 1 coin at the end of every month. |
 | **The Golden Dome** | The next crisis takes 1 time block fewer. Once. |
 
+### The calendar's big days
+
+The term has fixed dates on it, and each one shows up in the world as well as in the inbox.
+
+| When | What you see |
+|---|---|
+| **The First Hundred Days** (month 4) | A banner on the White House. Boast, and the banner stays up for the rest of the term, reworded. |
+| **State of the Union** (months 13, 25, 37) | A lectern and teleprompters on the lawn. Go off script and the teleprompters end up on the grass. |
+| **The Annual Physical** (month 16) | The doctor and a scale on the lawn. |
+| **Midterm Campaign** (months 21 to 24) | Yard signs along the avenue, a campaign bus, and a polls line in the calendar strip. The signs follow World Stability: half of them are yours at 50, which is what it takes to hold Congress. |
+| **Election night** (start of month 25) | The result plays on a television before anything else happens: the map fills in, the networks call it, and then there are balloons or there is ketchup. |
+| **Hostile Congress** (months 25 to 36, if you lost) | Couriers line up at the east gate and boxes pile up outside. The pile grows with impeachment heat. |
+| **Your Turn To Host** (month 30) | A row of flags and a red carpet. |
+| **The Official Portrait** (month 40) | An easel on the lawn, under a sheet until you deal with it. |
+| **The Farewell Address** (month 48) | A moving truck. Say you might not leave and it goes on hold, and you are chained to the desk. |
+| **Your Birthday, August Recess, Legacy Season** | A cake and a flyover; staff in beach chairs and a tumbleweed; two historians who follow you around taking notes. |
+
+**Addresses.** Dealing with a set piece or a hearing plays it on the tablet, the same one the paid interviews use. Take the sensible option and he reads the teleprompter. Take the other one and he does not.
+
+**Applause.** For the hundred days, the State of the Union and the farewell, going off script earns 1 extra Ego for every 4 things you have built, named or gilded, up to 4. The card says how much before you choose.
+
+**Souvenirs.** What you did on each day leaves a mark for the rest of the term: a report card, the doctor's note, the summit photo and the portrait hang on the corridor wall, and election night leaves balloons or a ketchup stain in the Oval Office.
+
+**Posts.** Posting at 3am picks up whatever is going on that month.
+
+The ending screen lists the big days as he would tell them. The lines, scripts and post pools are in `src/game/events.ts`; the drawing is in `src/world/scenes.ts`.
+
 ### Trips to Mar-a-Lago
 
 Click the plane on the South Lawn to fly to Mar-a-Lago. Flights are free in both directions: they cost no time and change no meters. Once the Rose Garden is gilded it can be turned into a helipad; the helicopter parked there can be gilded too, and flies to Mar-a-Lago in place of the plane. Whatever you flew out in is the way back.

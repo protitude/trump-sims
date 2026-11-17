@@ -10,6 +10,7 @@ import {
   egoDecay,
   heat,
   TUNING,
+  endBroadcast,
   endMonth,
   mood,
   newGame,
@@ -30,6 +31,7 @@ import { guestById } from './game/guests.ts';
 import type { GameState } from './game/types.ts';
 import { cardById } from './game/content.ts';
 import { ENDINGS, finalStats } from './game/brag.ts';
+import { highlights, polls } from './game/events.ts';
 import { endingText, epilogue, legacyTitle } from './game/epilogue.ts';
 import { VOTE_MONTH } from './game/story.ts';
 import { MusicControl, useMusic } from './music.tsx';
@@ -130,6 +132,7 @@ function Title({ onStart, onContinue }: { onStart: () => void; onContinue?: () =
 
 function GameOver({ state, onRestart }: { state: GameState; onRestart: () => void }) {
   const legacy = legacyTitle(state);
+  const reel = highlights(state);
   return (
     <main className="screen">
       <div className={`plaque ending-${state.status}`}>
@@ -144,6 +147,16 @@ function GameOver({ state, onRestart }: { state: GameState; onRestart: () => voi
             <li key={line}>{line}</li>
           ))}
         </ul>
+        {reel.length > 0 && (
+          <>
+            <p className="eyebrow">The term, as you tell it</p>
+            <ul className="rules reel">
+              {reel.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+          </>
+        )}
         <dl className="stats">
           {finalStats(state).map((stat) => (
             <div key={stat.label}>
@@ -198,8 +211,12 @@ function Game({ music }: { music: Music }) {
   const next = comingUp(state);
   const progress = whimProgress(state);
   // One pop-up at a time: the whim, then anything chaos has done, then new chaos.
-  const reveal = state.whimOffer.length === 0 ? state.reveals[0] : undefined;
-  const chaos = state.whimOffer.length === 0 && !reveal && state.chaos ? chaosById(state.chaos) : null;
+  // Nothing pops up while the election result is still playing on the television.
+  const live = Boolean(state.broadcast);
+  const whims = live ? [] : state.whimOffer;
+  const reveal = !live && state.whimOffer.length === 0 ? state.reveals[0] : undefined;
+  const chaos = !live && state.whimOffer.length === 0 && !reveal && state.chaos ? chaosById(state.chaos) : null;
+  const campaign = seasons.some((season) => season.id === 'campaign') ? polls(state) : null;
 
   return (
     <main className="game">
@@ -303,6 +320,11 @@ function Game({ music }: { music: Music }) {
             <b>{season.name}</b> {season.note}
           </span>
         ))}
+        {campaign && (
+          <span className="season" title="Stability on election night decides who runs Congress. The yard signs on the lawn follow it.">
+            <b>The polls</b> Your number: {campaign.claimed}%. The pollsters' number: {campaign.real}%. It takes {campaign.bar} to hold Congress.
+          </span>
+        )}
         {state.congress === 'hostile' && state.month <= VOTE_MONTH && (
           <span className="season" title="Exposed bribes, lawsuits and defying the hearings all add to it.">
             <b>Impeachment heat</b> {heat(state)} of {TUNING.impeachAt}. The House votes in {dateLabel(VOTE_MONTH)}.
@@ -321,7 +343,7 @@ function Game({ music }: { music: Music }) {
         )}
       </div>
 
-      {state.whimOffer.length > 0 && (
+      {whims.length > 0 && (
         <div className="overlay">
           <div className="plaque whims" role="dialog" aria-label="Choose a whim">
             <p className="eyebrow">{dateLabel(state.month)} · a new whim</p>
@@ -329,7 +351,7 @@ function Game({ music }: { music: Music }) {
             <p className="menu-note">
               Pick one. Satisfy it within {WHIM_MONTHS} months for the reward. Give up on it and you sulk ({WHIM_FAIL_EGO} Ego).
             </p>
-            {state.whimOffer.map((id) => {
+            {whims.map((id) => {
               const whim = whimById(id);
               return (
                 <button key={id} className="vanity" onClick={() => setState((s) => s && chooseWhim(s, id))}>
@@ -418,6 +440,7 @@ function Game({ music }: { music: Music }) {
         onSue={() => setState((s) => s && sueSomething(s))}
         onMelania={() => setState((s) => s && askMelania(s))}
         onAbuse={() => setState((s) => s && hearMelania(s))}
+        onBroadcast={() => setState((s) => s && endBroadcast(s))}
         onEndMonth={() => setState((s) => s && endMonth(s))}
       />
 
