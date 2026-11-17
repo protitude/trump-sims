@@ -123,7 +123,7 @@ function Title({ onStart, onContinue }: { onStart: () => void; onContinue?: () =
         </div>
         <p className="fine">
           Parody. Not affiliated with anyone, least of all the government. Music: public-domain tracks by omfgdude, Snabisch
-          and Tarush Singhal, from OpenGameArt.org.
+          and Tarush Singhal, from OpenGameArt.org. Executive Disco vibed by David.
         </p>
       </div>
     </main>
