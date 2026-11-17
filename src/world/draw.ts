@@ -1617,34 +1617,24 @@ function drawActivity(c: Ctx, sim: Sim, s: GameState): void {
       break;
     }
     case 'melania-ask': {
-      // He asks, several ways. She lets him finish.
-      const every = 0.6;
-      const n = Math.floor(t / every);
-      driftingText(c, PLEADING[n % PLEADING.length], p.x + Math.sin(sim.time * 30) * 1.5, p.y - 84, t - n * every, every, 13, '#ffffff');
+      // He asks, several ways (drawn later, over his bubble). She lets him finish.
       risingText(c, '*sigh*', cx, r.y - 14, (t % 1.2) - 0.5, 0.7, 9, '#c9d1dc');
       break;
     }
     case 'show-call': {
       // Receiver to his ear, both barrels. Whoever it is gets a word in at the end, into a dead line.
-      const every = 0.6;
-      const n = Math.floor(t / every);
+      // His side of it is drawn later, over his bubble.
       const hung = t > act.dur - 0.5;
       emojiAt(c, '📞', p.x + p.facing * 13 + (hung ? 0 : Math.sin(sim.time * 40) * 1.5), p.y - 44, 15);
-      if (hung) risingText(c, '*CLICK*', p.x, p.y - 84, t - (act.dur - 0.5), 0.5, 13, GOLD_LIGHT);
-      else {
-        driftingText(c, TELLING_OFF[n % TELLING_OFF.length], p.x + Math.sin(sim.time * 30) * 1.5, p.y - 84, t - n * every, every, 13, '#ffffff');
-        risingText(c, 'but sir—', cx, r.y - 6, (t % 1.2) - 0.5, 0.7, 9, '#c9d1dc');
-      }
+      if (!hung) risingText(c, 'but sir—', cx, r.y - 6, (t % 1.2) - 0.5, 0.7, 9, '#c9d1dc');
       break;
     }
     case 'show-post': {
       // He bleats it at Natalie; she types it up and sends it, word for word.
+      // His shouting is drawn later, over his bubble.
       const a = sim.aide;
-      const posts = seasonalPost(s)?.shouts ?? POSTS;
       const every = 0.8;
-      const n = Math.floor(t / every);
-      const age = t - n * every;
-      driftingText(c, posts[n % posts.length], p.x + Math.sin(sim.time * 30) * 1.5, p.y - 80, age, every, 13, '#ffffff');
+      const age = t % every;
       emojiAt(c, '💻', a.x + a.facing * 15, a.y - 28 + Math.abs(Math.sin(sim.time * 16)) * 2, 15);
       risingText(c, 'POSTED ✓', a.x, a.y - 84, age - every * 0.55, every * 0.45, 10, GOLD_LIGHT);
       break;
@@ -2829,6 +2819,148 @@ function maralago(c: Ctx, time: number): void {
   }
 }
 
+/** The billboard on the back parapet of the tower: a very big head, and a very fair price. */
+function billboard(c: Ctx, roof: Rect, time: number): void {
+  const bx = roof.x + 58;
+  const by = roof.y - 32;
+  const bw = 178;
+  const bh = 84;
+
+  // Two posts planted on the roof, and the shadow the board throws on it.
+  c.fillStyle = 'rgba(0,0,0,0.22)';
+  c.beginPath();
+  c.ellipse(bx + bw / 2, roof.y + 58, bw / 2 - 8, 5, 0, 0, Math.PI * 2);
+  c.fill();
+  c.fillStyle = '#3d414b';
+  c.fillRect(bx + 30, by + bh, 6, roof.y + 58 - by - bh);
+  c.fillRect(bx + bw - 36, by + bh, 6, roof.y + 58 - by - bh);
+
+  // The frame, gold of course.
+  c.fillStyle = '#2a2420';
+  rr(c, bx - 6, by - 6, bw + 12, bh + 12, 5);
+  c.fill();
+  c.fillStyle = goldFill(c, bx - 4, by - 4, bw + 8, bh + 8);
+  rr(c, bx - 4, by - 4, bw + 8, bh + 8, 4);
+  c.fill();
+
+  c.save();
+  c.beginPath();
+  c.rect(bx, by, bw, bh);
+  c.clip();
+  const sky = c.createLinearGradient(bx, by, bx, by + bh);
+  sky.addColorStop(0, '#3560c0');
+  sky.addColorStop(1, '#1b2f6e');
+  c.fillStyle = sky;
+  c.fillRect(bx, by, bw, bh);
+
+  // Rays of glory, turning slowly behind the head.
+  const hx = bx + 42;
+  const hy = by + 48;
+  c.fillStyle = 'rgba(248,220,130,0.2)';
+  for (let i = 0; i < 12; i++) {
+    const a = time * 0.25 + (i * Math.PI) / 6;
+    c.beginPath();
+    c.moveTo(hx, hy);
+    c.lineTo(hx + Math.cos(a - 0.11) * 240, hy + Math.sin(a - 0.11) * 240);
+    c.lineTo(hx + Math.cos(a + 0.11) * 240, hy + Math.sin(a + 0.11) * 240);
+    c.fill();
+  }
+
+  // The head. Shoulders, shirt and tie first, then the neck.
+  c.fillStyle = PRESIDENT.suit;
+  rr(c, hx - 36, hy + 22, 72, 30, 12);
+  c.fill();
+  c.fillStyle = '#ffffff';
+  c.beginPath();
+  c.moveTo(hx - 10, hy + 21);
+  c.lineTo(hx + 10, hy + 21);
+  c.lineTo(hx, hy + 36);
+  c.fill();
+  c.fillStyle = PRESIDENT.tie ?? '#d9282f';
+  c.fillRect(hx - 3, hy + 25, 6, 14);
+  c.fillStyle = '#d98a48';
+  c.fillRect(hx - 8, hy + 14, 16, 10);
+
+  c.fillStyle = PRESIDENT.skin;
+  c.beginPath();
+  c.arc(hx - 22, hy - 2, 4.5, 0, Math.PI * 2);
+  c.arc(hx + 22, hy - 2, 4.5, 0, Math.PI * 2);
+  c.fill();
+  c.beginPath();
+  c.ellipse(hx, hy - 4, 22, 25, 0, 0, Math.PI * 2);
+  c.fill();
+  // The paler rings the goggles leave.
+  c.fillStyle = '#fbd3a6';
+  c.beginPath();
+  c.ellipse(hx - 9, hy - 7, 7, 5, 0, 0, Math.PI * 2);
+  c.ellipse(hx + 9, hy - 7, 7, 5, 0, 0, Math.PI * 2);
+  c.fill();
+  c.fillStyle = '#1b1f2e';
+  c.fillRect(hx - 12, hy - 8, 6, 2.5);
+  c.fillRect(hx + 6, hy - 8, 6, 2.5);
+  c.fillStyle = PRESIDENT.hair;
+  c.fillRect(hx - 14, hy - 14, 10, 2.5);
+  c.fillRect(hx + 4, hy - 14, 10, 2.5);
+  // The mouth, mid-sentence.
+  c.fillStyle = '#b5533c';
+  c.beginPath();
+  c.ellipse(hx, hy + 10, 4.5, 3 + Math.max(0, Math.sin(time * 5)) * 1.5, 0, 0, Math.PI * 2);
+  c.fill();
+  // The hair, most of it going one way.
+  c.fillStyle = PRESIDENT.hair;
+  c.beginPath();
+  c.arc(hx, hy - 12, 23.5, Math.PI, 0);
+  c.fill();
+  c.beginPath();
+  c.ellipse(hx + 7, hy - 30, 25, 10, -0.2, 0, Math.PI * 2);
+  c.fill();
+
+  // The offer.
+  const tx = bx + 130;
+  const text = (words: string, y: number, font: string, color: string) => {
+    c.font = `${font} ${FONT}`;
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    c.fillStyle = color;
+    c.fillText(words, tx, y, 90);
+  };
+  text('TRUMP', by + 15, '800 18px', GOLD_LIGHT);
+  text('FRIENDSHIPS', by + 32, '800 12px', '#ffffff');
+  text('for a measly', by + 46, 'italic 600 9px', 'rgba(255,255,255,0.85)');
+  const pulse = 1 + Math.sin(time * 4) * 0.06;
+  c.save();
+  c.translate(tx, by + 65);
+  c.scale(pulse, pulse);
+  c.rotate(-0.05);
+  c.fillStyle = '#d9282f';
+  rr(c, -38, -12, 76, 24, 5);
+  c.fill();
+  c.strokeStyle = GOLD_LIGHT;
+  c.lineWidth = 1.5;
+  c.stroke();
+  c.font = `800 18px ${FONT}`;
+  c.textAlign = 'center';
+  c.textBaseline = 'middle';
+  c.fillStyle = '#ffffff';
+  c.fillText('$100K', 0, 1);
+  c.restore();
+  c.restore();
+
+  // Bulbs chasing each other around the frame.
+  const step = Math.floor(time * 5);
+  const bulb = (x: number, y: number, i: number) => {
+    c.fillStyle = (i + step) % 3 === 0 ? '#fffbe6' : GOLD_DARK;
+    c.beginPath();
+    c.arc(x, y, 1.6, 0, Math.PI * 2);
+    c.fill();
+  };
+  let n = 0;
+  for (let x = bx; x <= bx + bw; x += 11.125) bulb(x, by - 2, n++);
+  for (let y = by + 10; y <= by + bh - 4; y += 10.5) bulb(bx + bw + 2, y, n++);
+  for (let x = bx + bw; x >= bx; x -= 11.125) bulb(x, by + bh + 2, n++);
+  for (let y = by + bh - 10; y >= by + 4; y -= 10.5) bulb(bx - 2, y, n++);
+}
+
 /** New York from above: lower roofs and streets all around, and the roof of the tower. */
 function newyork(c: Ctx, time: number): void {
   const region = REGIONS.newyork;
@@ -2908,6 +3040,7 @@ function newyork(c: Ctx, time: number): void {
     c.lineTo(x + 14 - Math.cos(time * 6 + i) * 9, roof.y + 34 - Math.sin(time * 6 + i) * 9);
     c.stroke();
   }
+  billboard(c, roof, time);
   label(c, 'THE TOWER', roof.x + roof.w / 2, roof.y + roof.h - 42, 18, GOLD_LIGHT);
   label(c, 'NEW YORK', roof.x + roof.w / 2, roof.y + roof.h - 22, 11, 'rgba(0,0,0,0.3)');
 }
@@ -3066,6 +3199,17 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
     c.fillStyle = GOLD_LIGHT;
     rr(c, p.x - w / 2, p.y - 76, w * Math.min(1, act.t / act.dur), 6, 3);
     c.fill();
+    // What he shouts goes over the bubble, not behind it.
+    const shout = (lines: readonly string[], every: number, y: number) => {
+      const n = Math.floor(act.t / every);
+      driftingText(c, lines[n % lines.length], p.x + Math.sin(sim.time * 30) * 1.5, y, act.t - n * every, every, 13, '#ffffff');
+    };
+    if (act.anim === 'melania-ask') shout(PLEADING, 0.6, p.y - 84);
+    else if (act.anim === 'show-post') shout(seasonalPost(s)?.shouts ?? POSTS, 0.8, p.y - 80);
+    else if (act.anim === 'show-call') {
+      if (act.t > act.dur - 0.5) risingText(c, '*CLICK*', p.x, p.y - 84, act.t - (act.dur - 0.5), 0.5, 13, GOLD_LIGHT);
+      else shout(TELLING_OFF, 0.6, p.y - 84);
+    }
   } else if (sim.sick) {
     // Green, clutching nothing in particular, and sure whose fault it is.
     bubble(c, p.x, p.y - 74 + Math.sin(sim.time * 12) * 2, '🤢', '#dff5c8');
