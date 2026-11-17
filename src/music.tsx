@@ -2,7 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { DanceStyle } from './world/draw.ts';
 
 // Background music: an original disco track rendered by
-// scripts/disco-track.mjs, Schubert's Ave Maria rendered by
+// scripts/disco-track.mjs, the original "Manosphere Music" rendered by
+// scripts/manosphere-track.mjs, Schubert's Ave Maria rendered by
 // scripts/ave-maria-track.mjs, plus six public-domain (CC0) tracks from
 // OpenGameArt.org, played in rotation. Credits are in public/music/CREDITS.md.
 
@@ -19,9 +20,10 @@ const PLAYLIST: Track[] = [
   { title: 'Executive Disco', file: 'music/executive-disco.mp3', plays: 1, dance: 'disco' },
   { title: 'Lofi Hip Hop Loop', file: 'music/lofi-hip-hop-loop.mp3', plays: 1 },
   { title: 'Funky Lofi Jam', file: 'music/funky-lofi-jam.mp3', plays: 1 },
-  { title: 'Ave Maria', file: 'music/ave-maria.mp3', plays: 1, dance: 'sway' },
+  { title: 'Manosphere Music', file: 'music/manosphere-music.mp3', plays: 1, dance: 'macho' },
   { title: 'Lofi Again', file: 'music/lofi-again.mp3', plays: 2 },
   { title: 'Chill Lofi Inspired', file: 'music/chill-lofi.mp3', plays: 1 },
+  { title: 'Ave Maria', file: 'music/ave-maria.mp3', plays: 1, dance: 'sway' },
   { title: 'Happy Lofi Day', file: 'music/happy-lofi-day.mp3', plays: 1 },
   { title: 'Lofi Hip Hop', file: 'music/lofi-hip-hop.mp3', plays: 1 },
 ];

@@ -354,7 +354,7 @@ export function World({ state, command, dance, onDuty, onVanity, onBribe, onDecl
     };
   }
 
-  // Executive Disco or Ave Maria comes on: a few seconds of moves, wherever he happens to be.
+  // A dance track comes on: a few seconds of moves, wherever he happens to be.
   useEffect(() => {
     if (!dance) {
       // Music switched off: the party is over.

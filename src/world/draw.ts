@@ -11,12 +11,18 @@ import { addressBackdrop, addressProps, decorFlat, decorOver, decorStanding, ele
 
 // Everything on screen is drawn with canvas shapes; there are no image files.
 
-/** How he moves to the music: disco moves, or the slow Ave Maria sway. */
-export type DanceStyle = 'disco' | 'sway';
-/** How long he keeps it up when the track comes on, and the beat he moves to. */
-export const DANCES: Record<DanceStyle, { seconds: number; bpm: number }> = {
-  disco: { seconds: 10, bpm: 124 },
-  sway: { seconds: 20, bpm: 54 },
+/** Which song cue he is answering. */
+export type DanceStyle = 'disco' | 'sway' | 'macho';
+/** The two routines he has: disco moves, or the slow Ave Maria sway. */
+export type Moves = 'disco' | 'sway';
+/**
+ * Per song: how long he keeps it up when the track comes on, the beat he
+ * moves to, the routine, and what he has to say about it.
+ */
+export const DANCES: Record<DanceStyle, { seconds: number; bpm: number; moves: Moves; emoji: string; shout: string }> = {
+  disco: { seconds: 10, bpm: 124, moves: 'disco', emoji: '🕺', shout: "It's my Jam!" },
+  sway: { seconds: 20, bpm: 54, moves: 'sway', emoji: '🙏', shout: 'Ave Maria. Beautiful!' },
+  macho: { seconds: 10, bpm: 128, moves: 'disco', emoji: '💪', shout: 'Big Strong Man Music' },
 };
 
 export interface Actor {
@@ -279,9 +285,9 @@ function arm(c: Ctx, x: number, y: number, angle: number, length: number, suit: 
  * feet planted, the whole man rocking slowly side to side, fists gently
  * pumping, for as long as the music lasts.
  */
-export function person(c: Ctx, a: Actor, look: Look, bob: number, dance?: { beats: number; style: DanceStyle }): void {
-  const swaying = dance?.style === 'sway';
-  const dancing = dance?.style === 'disco';
+export function person(c: Ctx, a: Actor, look: Look, bob: number, dance?: { beats: number; moves: Moves }): void {
+  const swaying = dance?.moves === 'sway';
+  const dancing = dance?.moves === 'disco';
   const swing = a.path.length > 0 ? Math.sin(a.walk * 14) : 0;
   c.save();
   c.translate(a.x, a.y);
@@ -3237,7 +3243,7 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   }
   const act = sim.activity;
   const idle = sim.idle && !sim.idle.walking ? sim.idle.kind : null;
-  // Executive Disco or Ave Maria is on, and he is on his feet with nothing better to do.
+  // A dance track is on, and he is on his feet with nothing better to do.
   const style = sim.danceStyle ?? 'disco';
   const danceStart = (sim.danceUntil ?? 0) - DANCES[style].seconds;
   const dancing =
@@ -3272,7 +3278,8 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
       if (dancing) {
         // On the beat, counted from when the track came on.
         const beats = (sim.time - danceStart) * (DANCES[style].bpm / 60);
-        person(c, sim.pres, PRESIDENT, style === 'disco' ? Math.abs(Math.sin(beats * Math.PI)) * 4 : 0, { beats, style });
+        const { moves } = DANCES[style];
+        person(c, sim.pres, PRESIDENT, moves === 'disco' ? Math.abs(Math.sin(beats * Math.PI)) * 4 : 0, { beats, moves });
         return;
       }
       person(c, sim.pres, PRESIDENT, bob);
@@ -3313,9 +3320,10 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
   } else if (dancing) {
     // The first move of this song: he announces it.
     if (sim.dancingFrom === undefined || sim.dancingFrom < danceStart) sim.dancingFrom = sim.time;
-    const disco = style === 'disco';
-    bubble(c, p.x, p.y - 84 + Math.sin(sim.time * (disco ? 13 : 2)) * 2, disco ? '🕺' : '🙏');
-    driftingText(c, disco ? "It's my Jam!" : 'Ave Maria. Beautiful!', p.x, p.y - 112, sim.time - sim.dancingFrom, disco ? 2.2 : 3.5, 15, GOLD_LIGHT);
+    const { moves, emoji, shout } = DANCES[style];
+    const disco = moves === 'disco';
+    bubble(c, p.x, p.y - 84 + Math.sin(sim.time * (disco ? 13 : 2)) * 2, emoji);
+    driftingText(c, shout, p.x, p.y - 112, sim.time - sim.dancingFrom, disco ? 2.2 : 3.5, 15, GOLD_LIGHT);
     // Notes drift up: brisk for disco, slow and floaty for Schubert.
     const life = disco ? 1.8 : 3.6;
     for (let j = 0; j < 4; j++) {
