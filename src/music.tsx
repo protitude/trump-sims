@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-// Background music: a playlist of six public-domain (CC0) tracks from
+// Background music: an original disco track rendered by
+// scripts/disco-track.mjs, plus six public-domain (CC0) tracks from
 // OpenGameArt.org, played in rotation. Credits are in public/music/CREDITS.md.
 
 interface Track {
@@ -11,6 +12,7 @@ interface Track {
 }
 
 const PLAYLIST: Track[] = [
+  { title: 'Executive Disco', file: 'music/executive-disco.mp3', plays: 1 },
   { title: 'Lofi Hip Hop Loop', file: 'music/lofi-hip-hop-loop.mp3', plays: 1 },
   { title: 'Funky Lofi Jam', file: 'music/funky-lofi-jam.mp3', plays: 1 },
   { title: 'Lofi Again', file: 'music/lofi-again.mp3', plays: 2 },
