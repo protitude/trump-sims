@@ -431,7 +431,7 @@ function Game({ music }: { music: Music }) {
       <World
         state={state}
         command={command}
-        discoAt={music.on ? music.discoAt : 0}
+        dance={music.on ? music.dance : null}
         onDuty={(cardId, option) => setState((s) => s && playDuty(s, cardId, option))}
         onVanity={(actionId) => setState((s) => s && doVanity(s, actionId))}
         onBribe={(guestId) => setState((s) => s && takeBribe(s, guestId))}

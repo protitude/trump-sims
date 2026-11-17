@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { DanceStyle } from './world/draw.ts';
 
 // Background music: an original disco track rendered by
-// scripts/disco-track.mjs, plus six public-domain (CC0) tracks from
+// scripts/disco-track.mjs, Schubert's Ave Maria rendered by
+// scripts/ave-maria-track.mjs, plus six public-domain (CC0) tracks from
 // OpenGameArt.org, played in rotation. Credits are in public/music/CREDITS.md.
 
 interface Track {
@@ -9,14 +11,15 @@ interface Track {
   file: string;
   /** How many times to play it before moving on (short loops repeat). */
   plays: number;
+  /** He moves to this one when it starts from the top. */
+  dance?: DanceStyle;
 }
 
-const DISCO_FILE = 'music/executive-disco.mp3';
-
 const PLAYLIST: Track[] = [
-  { title: 'Executive Disco', file: DISCO_FILE, plays: 1 },
+  { title: 'Executive Disco', file: 'music/executive-disco.mp3', plays: 1, dance: 'disco' },
   { title: 'Lofi Hip Hop Loop', file: 'music/lofi-hip-hop-loop.mp3', plays: 1 },
   { title: 'Funky Lofi Jam', file: 'music/funky-lofi-jam.mp3', plays: 1 },
+  { title: 'Ave Maria', file: 'music/ave-maria.mp3', plays: 1, dance: 'sway' },
   { title: 'Lofi Again', file: 'music/lofi-again.mp3', plays: 2 },
   { title: 'Chill Lofi Inspired', file: 'music/chill-lofi.mp3', plays: 1 },
   { title: 'Happy Lofi Day', file: 'music/happy-lofi-day.mp3', plays: 1 },
@@ -55,15 +58,20 @@ export interface Music {
   start: () => void;
   toggle: () => void;
   next: () => void;
-  /** performance.now() when Executive Disco last started from the top, or 0. */
-  discoAt: number;
+  /** The last dance cue: which moves, and performance.now() when its track started from the top. */
+  dance: DanceCue | null;
+}
+
+export interface DanceCue {
+  style: DanceStyle;
+  at: number;
 }
 
 export function useMusic(): Music {
   const [on, setOn] = useState(savedPreference);
   const [index, setIndex] = useState(0);
   const [volume, setVolumeState] = useState(savedVolume);
-  const [discoAt, setDiscoAt] = useState(0);
+  const [dance, setDance] = useState<DanceCue | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const playsLeft = useRef(PLAYLIST[0].plays);
   const onRef = useRef(on);
@@ -95,9 +103,10 @@ export function useMusic(): Music {
       current = (PLAYLIST.findIndex((t) => audio.src.endsWith(t.file)) + 1) % PLAYLIST.length;
       load(current);
     };
-    // The disco track starting from the top is his cue to dance.
+    // A dance track starting from the top is his cue.
     const onPlaying = () => {
-      if (audio.src.endsWith(DISCO_FILE) && audio.currentTime < 1) setDiscoAt(performance.now());
+      const style = PLAYLIST.find((t) => audio.src.endsWith(t.file))?.dance;
+      if (style && audio.currentTime < 1) setDance({ style, at: performance.now() });
     };
     audio.addEventListener('ended', onEnded);
     audio.addEventListener('playing', onPlaying);
@@ -138,7 +147,7 @@ export function useMusic(): Music {
     }
   }, []);
 
-  return { on, title: PLAYLIST[index].title, volume, setVolume, start, toggle, next, discoAt };
+  return { on, title: PLAYLIST[index].title, volume, setVolume, start, toggle, next, dance };
 }
 
 export function MusicControl({ music }: { music: Music }) {
