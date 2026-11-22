@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent } from 'react';
+import { nextBark, nextBidenLine } from '../game/biden.ts';
 import { calleeAt } from '../game/calls.ts';
 import { cardById, vanityById } from '../game/content.ts';
 import { COKE_SECONDS, DANCES, FIGHT_SECONDS, INTERVIEW_SECONDS, LUNCH_SECONDS, SUE_SECONDS, aideAway, golfing } from './draw.ts';
@@ -14,7 +15,7 @@ import { Blocks, Fx, Why, needCoin, needTime } from '../ui.tsx';
 import { drawWorld, hitRectPx } from './draw.ts';
 import type { Activity, Actor, Aide, Npc, Sim } from './draw.ts';
 import { nextAffirmations } from './affirmations.ts';
-import { AIDE_GRAB, AIDE_PACE, AIDE_SPOT, BEDS, CLUB_GATE, IDLE_SEATS, RINGSIDE, RINGSIDE_VIA, arrival, cartLoop, cheerTile, curbTile, inCabinetRoom, exists, golfShot, guestSpot, idleKindAt, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
+import { AIDE_GRAB, AIDE_PACE, AIDE_SPOT, BEDS, BIDEN_START, CLUB_GATE, DOG_START, IDLE_SEATS, RINGSIDE, RINGSIDE_VIA, arrival, cartLoop, cheerTile, curbTile, inCabinetRoom, isOutsideDC, exists, golfShot, guestSpot, hallTile, idleKindAt, lawnTile, objectName, ENTRANCE, OBJECTS, findPath, nearestFree, tileAt, tileCenter, waitingSpot } from './map.ts';
 import { T } from './map.ts';
 import type { Point, Tile } from './map.ts';
 import type { DanceCue } from '../music.tsx';
@@ -46,6 +47,9 @@ type Menu = (Target | { type: 'aide' }) & { sx: number; sy: number };
 
 const PRESIDENT_SPEED = 340;
 const VISITOR_SPEED = 210;
+const BIDEN_SPEED = 75;
+const DOG_WALK_SPEED = 95;
+const DOG_RUN_SPEED = 230;
 /** Natalie keeps up, just. Pacing the corridor she drags her feet; on the grass the cart outruns her. */
 const AIDE_SPEED = 300;
 const AIDE_PACE_SPEED = 100;
@@ -140,6 +144,8 @@ function createSim(place: Place): Sim {
     activity: null,
     idle: null,
     aide: aideAt(BEDS[place].spot),
+    biden: { ...tileCenter(BIDEN_START), path: [], facing: 1, walk: 0, pause: 0.6, talk: 0 },
+    dog: { ...tileCenter(DOG_START), path: [], facing: -1, walk: 0, pause: 1.2, think: 0, bark: 0, barkCd: 0, barkText: 'WOOF!' },
     floats: [],
     hover: null,
     time: 0,
@@ -310,6 +316,58 @@ export function World({ state, command, dance, onDuty, onVanity, onBribe, onDecl
     }
   }
 
+  /** Month 1: Joe Biden shuffles aimlessly up and down the White House hall. */
+  function updateBiden(dt: number) {
+    const b = sim.biden;
+    if (b.talk > 0) {
+      b.talk = Math.max(0, b.talk - dt);
+      b.facing = sim.pres.x >= b.x ? 1 : -1;
+      return;
+    }
+    if (b.path.length === 0) {
+      b.pause -= dt;
+      if (b.pause <= 0) {
+        b.path = findPath(b, hallTile(b));
+        b.pause = 1.6 + Math.random() * 2.8;
+      }
+    }
+    advance(b, BIDEN_SPEED, dt);
+  }
+
+  /** Month 1: Commander patrols outside the White House and barks at you if you go outside. */
+  function updateDog(dt: number) {
+    const d = sim.dog;
+    const p = sim.pres;
+    if (d.bark > 0) d.bark = Math.max(0, d.bark - dt);
+    if (d.barkCd > 0) d.barkCd = Math.max(0, d.barkCd - dt);
+    const outside = isOutsideDC(p) && !sim.activity?.flight && !sim.activity?.sleep;
+    if (outside) {
+      const gap = Math.hypot(p.x - d.x, p.y - d.y);
+      d.think -= dt;
+      if (d.think <= 0 && gap > 68) {
+        d.path = findPath(d, tileAt(p));
+        d.think = 0.25;
+      }
+      if (d.path.length <= 1 && gap < 58) d.path = [];
+      advance(d, DOG_RUN_SPEED, dt);
+      if (d.path.length === 0) d.facing = p.x >= d.x ? 1 : -1;
+      if (gap < 260 && d.barkCd <= 0) {
+        d.barkText = nextBark(d.barkText);
+        d.bark = 1.05;
+        d.barkCd = 1.45 + Math.random() * 0.75;
+      }
+    } else {
+      if (d.path.length === 0) {
+        d.pause -= dt;
+        if (d.pause <= 0) {
+          d.path = findPath(d, lawnTile(d));
+          d.pause = 1.5 + Math.random() * 2.5;
+        }
+      }
+      advance(d, DOG_WALK_SPEED, dt);
+    }
+  }
+
   const walkTo = (tile: Tile, target: Target | null) => {
     setMenu(null);
     endIdle();
@@ -382,6 +440,10 @@ export function World({ state, command, dance, onDuty, onVanity, onBribe, onDecl
       for (const n of sim.npcs) advance(n, VISITOR_SPEED, dt);
       sim.npcs = sim.npcs.filter((n) => !(n.leaving && n.path.length === 0));
       updateAide(dt);
+      if (stateRef.current.month === 1 && stateRef.current.place === 'dc') {
+        updateBiden(dt);
+        updateDog(dt);
+      }
 
       if (sim.activity) {
         // Bedtime does not start until Natalie has reached the bedside, nor the fight until he has reached his seat.
@@ -652,13 +714,29 @@ export function World({ state, command, dance, onDuty, onVanity, onBribe, onDecl
     return !sim.activity?.flight && !aideAway(sim.activity) && Math.abs(p.x - a.x) < 20 && p.y > a.y - 70 && p.y < a.y + 8;
   };
 
+  const monthOneDC = () => stateRef.current.month === 1 && stateRef.current.place === 'dc';
+
+  const onBiden = (p: Point): boolean => {
+    if (!monthOneDC()) return false;
+    const b = sim.biden;
+    return Math.abs(p.x - b.x) < 20 && p.y > b.y - 70 && p.y < b.y + 8;
+  };
+
+  const onDog = (p: Point): boolean => {
+    if (!monthOneDC()) return false;
+    const d = sim.dog;
+    return Math.abs(p.x - d.x) < 22 && p.y > d.y - 34 && p.y < d.y + 8;
+  };
+
   const onPointerMove = (e: PointerEvent) => {
     const p = worldPoint(e);
     const found = hit(p);
     // Pointing at Natalie says who she is; clicking her opens her errands.
     const aide = !found && onAide(p);
-    sim.hover = found?.key ?? (aide ? 'aide' : null);
-    canvasRef.current!.style.cursor = found || aide ? 'pointer' : 'default';
+    const biden = !found && !aide && onBiden(p);
+    const dog = !found && !aide && !biden && onDog(p);
+    sim.hover = found?.key ?? (aide ? 'aide' : biden ? 'biden' : dog ? 'dog' : null);
+    canvasRef.current!.style.cursor = found || aide || biden || dog ? 'pointer' : 'default';
   };
 
   const onPointerDown = (e: PointerEvent) => {
@@ -673,6 +751,22 @@ export function World({ state, command, dance, onDuty, onVanity, onBribe, onDecl
       sim.pres.path = [];
       targetRef.current = null;
       setMenu({ type: 'aide', ...toScreen({ x: sim.aide.x, y: sim.aide.y - 30 }) });
+    } else if (onBiden(p)) {
+      // Clicking Biden makes him stop and ramble at you as "Jack".
+      setMenu(null);
+      const b = sim.biden;
+      b.path = [];
+      b.facing = sim.pres.x >= b.x ? 1 : -1;
+      b.line = nextBidenLine(b.line);
+      b.talk = 6;
+      b.pause = 1.5;
+    } else if (onDog(p)) {
+      setMenu(null);
+      const d = sim.dog;
+      d.facing = sim.pres.x >= d.x ? 1 : -1;
+      d.barkText = nextBark(d.barkText);
+      d.bark = 1.1;
+      d.barkCd = 1.4;
     } else walkTo(nearestFree(tileAt(p)), null);
   };
 

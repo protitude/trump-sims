@@ -1,3 +1,4 @@
+import { BIDEN_LINES } from '../game/biden.ts';
 import { BLOCKS_PER_MONTH, melaniaStatus, mood } from '../game/engine.ts';
 import type { Meal } from '../game/engine.ts';
 import { vanityById } from '../game/content.ts';
@@ -145,6 +146,28 @@ export function aideAway(act: Activity | null): boolean {
   return act?.anim === 'lunch' && act.t >= LUNCH_GONE && act.t < LUNCH_BACK;
 }
 
+export interface Biden extends Actor {
+  /** Seconds until he picks a new spot in the hall. */
+  pause: number;
+  /** Index into BIDEN_LINES of what he is currently rambling about. */
+  line?: number;
+  /** Seconds remaining to display his speech bubble. */
+  talk: number;
+}
+
+export interface Dog extends Actor {
+  /** Seconds until he picks a new patrol spot on the lawn. */
+  pause: number;
+  /** Seconds until he recalculates his path toward the president outside. */
+  think: number;
+  /** Seconds remaining in the current bark bubble. */
+  bark: number;
+  /** Seconds until his next bark while the president is outside. */
+  barkCd: number;
+  /** Current bark text. */
+  barkText: string;
+}
+
 export interface Float {
   x: number;
   y: number;
@@ -160,8 +183,11 @@ export interface Sim {
   idle: Idle | null;
   /** Natalie Harp, who is never more than a step behind him. */
   aide: Aide;
+  /** Month 1 holdovers: Joe Biden in the hall, Commander on the lawn. */
+  biden: Biden;
+  dog: Dog;
   floats: Float[];
-  /** Object id or npc key under the pointer, or 'aide' for Natalie. */
+  /** Object id or npc key under the pointer, or 'aide'/'biden'/'dog'. */
   hover: string | null;
   time: number;
   /** 0..1 blackout used when sleeping, and to hide the change of scene on a flight. */
@@ -371,6 +397,132 @@ export function person(c: Ctx, a: Actor, look: Look, bob: number, dance?: { beat
 }
 
 export const PRESIDENT: Look = { suit: '#1d2a52', skin: '#f2a35e', hair: '#f2c230', tie: '#d9282f', swoosh: true };
+const BIDEN_LOOK: Look = { suit: '#1f2d4d', skin: '#ecc8a8', hair: '#e8eaef', tie: '#2f62b5' };
+
+function drawHoverTag(c: Ctx, text: string, x: number, y: number): void {
+  c.font = `700 9px ${FONT}`;
+  const w = c.measureText(text).width + 10;
+  c.fillStyle = 'rgba(10,15,31,0.8)';
+  rr(c, x - w / 2, y - 7, w, 14, 4);
+  c.fill();
+  label(c, text, x, y, 9, '#ffffff');
+}
+
+function drawBiden(c: Ctx, b: Biden, hovered: boolean): void {
+  person(c, b, BIDEN_LOOK, 0);
+  // Aviator sunglasses.
+  c.save();
+  c.translate(b.x, b.y);
+  c.scale(b.facing, 1);
+  c.fillStyle = '#18222e';
+  c.fillRect(-0.5, -51, 4, 3.2);
+  c.fillRect(4.5, -51, 4, 3.2);
+  c.strokeStyle = '#c8c0a8';
+  c.lineWidth = 0.9;
+  c.beginPath();
+  c.moveTo(-1, -50.8);
+  c.lineTo(9, -50.8);
+  c.stroke();
+  c.restore();
+  if (hovered) {
+    c.strokeStyle = '#ffffff';
+    c.lineWidth = 2;
+    c.beginPath();
+    c.ellipse(b.x, b.y, 16, 6, 0, 0, Math.PI * 2);
+    c.stroke();
+    drawHoverTag(c, 'Joe Biden', b.x, b.y - 73);
+  }
+}
+
+/** Commander, the German Shepherd patrolling outside the White House. */
+function drawDog(c: Ctx, d: Dog, hovered: boolean, time: number): void {
+  const moving = d.path.length > 0;
+  const swing = moving ? Math.sin(d.walk * 18) : 0;
+  const hop = d.bark > 0 ? Math.abs(Math.sin(time * 22)) * 3.5 : 0;
+  c.save();
+  c.translate(d.x, d.y);
+  c.fillStyle = 'rgba(0,0,0,0.22)';
+  c.beginPath();
+  c.ellipse(0, 0, 14, 5, 0, 0, Math.PI * 2);
+  c.fill();
+  c.translate(0, -hop);
+  c.scale(d.facing, 1);
+
+  // Wagging tail.
+  const wag = Math.sin(time * (d.bark > 0 ? 22 : 10)) * 0.35;
+  c.save();
+  c.translate(-12, -13);
+  c.rotate(-0.6 + wag);
+  c.strokeStyle = '#332820';
+  c.lineWidth = 3.2;
+  c.lineCap = 'round';
+  c.beginPath();
+  c.moveTo(0, 0);
+  c.lineTo(-8, -5);
+  c.stroke();
+  c.restore();
+
+  // Four legs.
+  c.fillStyle = '#b98249';
+  c.fillRect(-10, -8, 3.5, 8 - Math.max(0, swing) * 3);
+  c.fillRect(-5, -8, 3.5, 8 - Math.max(0, -swing) * 3);
+  c.fillRect(3, -8, 3.5, 8 - Math.max(0, -swing) * 3);
+  c.fillRect(8, -8, 3.5, 8 - Math.max(0, swing) * 3);
+
+  // Body + dark German Shepherd saddle.
+  c.fillStyle = '#c48d52';
+  rr(c, -12, -18, 24, 12, 5);
+  c.fill();
+  c.fillStyle = '#2d231c';
+  rr(c, -9, -18, 15, 6.5, 3);
+  c.fill();
+
+  // Red collar.
+  c.fillStyle = '#c9332b';
+  c.fillRect(7, -17, 3.5, 8);
+
+  // Head and dark muzzle.
+  c.fillStyle = '#c48d52';
+  c.beginPath();
+  c.arc(12, -18, 6.5, 0, Math.PI * 2);
+  c.fill();
+  c.fillStyle = '#2d231c';
+  rr(c, 14, -18, 7.5, 5, 2.5);
+  c.fill();
+  // Open mouth while barking.
+  if (d.bark > 0) {
+    c.fillStyle = '#b93b4b';
+    c.fillRect(15.5, -13.5, 5, 2.5);
+  }
+
+  // Pointy upright ears.
+  c.fillStyle = '#2d231c';
+  c.beginPath();
+  c.moveTo(8, -22);
+  c.lineTo(10, -30);
+  c.lineTo(13, -22);
+  c.fill();
+  c.beginPath();
+  c.moveTo(12, -22);
+  c.lineTo(15, -29);
+  c.lineTo(16.5, -21.5);
+  c.fill();
+
+  // Eye + nose tip.
+  c.fillStyle = '#111111';
+  c.fillRect(13.5, -20, 2, 2);
+  c.fillRect(20, -17.5, 2, 2);
+  c.restore();
+
+  if (hovered) {
+    c.strokeStyle = '#ffffff';
+    c.lineWidth = 2;
+    c.beginPath();
+    c.ellipse(d.x, d.y, 17, 6.5, 0, 0, Math.PI * 2);
+    c.stroke();
+    drawHoverTag(c, 'Commander', d.x, d.y - 36);
+  }
+}
 
 interface WomanLook {
   skin: string;
@@ -3285,6 +3437,10 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
       person(c, sim.pres, PRESIDENT, bob);
     },
   });
+  if (s.month === 1 && s.place === 'dc') {
+    standing.push({ y: sim.biden.y, draw: () => drawBiden(c, sim.biden, sim.hover === 'biden') });
+    standing.push({ y: sim.dog.y, draw: () => drawDog(c, sim.dog, sim.hover === 'dog', sim.time) });
+  }
   decorStanding(c, sim, s, standing);
   standing.sort((a, b) => a.y - b.y);
   for (const item of standing) item.draw();
@@ -3292,6 +3448,17 @@ export function drawWorld(c: Ctx, sim: Sim, s: GameState, viewW: number, viewH: 
 
   drawActivity(c, sim, s);
   drawIdle(c, sim);
+
+  // Month 1 speech bubbles for Joe Biden and Commander, drawn over everything.
+  if (s.month === 1 && s.place === 'dc') {
+    const view: Rect = { x: sim.cam.x, y: sim.cam.y, w: visibleW, h: visibleH };
+    if (sim.biden.talk > 0 && sim.biden.line !== undefined) {
+      speech(c, BIDEN_LINES[sim.biden.line], sim.biden.x, sim.biden.y - 68, Math.min(1, sim.biden.talk * 2), view);
+    }
+    if (sim.dog.bark > 0) {
+      speech(c, sim.dog.barkText, sim.dog.x, sim.dog.y - 36, Math.min(1, sim.dog.bark * 3), view);
+    }
+  }
 
   // Above-head status for the president.
   const p = sim.pres;

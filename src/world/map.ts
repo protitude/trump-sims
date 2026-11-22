@@ -294,6 +294,43 @@ export const AIDE_PACE: [Tile, Tile] = [
   [50, 20],
 ];
 
+/** Where Joe Biden starts wandering the White House hall in month 1. */
+export const BIDEN_START: Tile = [22, 19];
+
+/** Where Commander starts patrolling outside the White House in month 1. */
+export const DOG_START: Tile = [33, 24];
+
+/** True when a point in Washington is outside the White House (on the South Lawn or beyond). */
+export const isOutsideDC = (p: Point): boolean => tileAt(p)[1] >= 23;
+
+/** Picks a random walkable tile along the White House corridor, away from `from`. */
+export function hallTile(from: Point): Tile {
+  const cur = tileAt(from);
+  for (let i = 0; i < 12; i++) {
+    const x = 5 + Math.floor(Math.random() * 60);
+    const y = 18 + Math.floor(Math.random() * 4);
+    if (Math.abs(x - cur[0]) >= 5 && !isBlocked(x, y)) return [x, y];
+  }
+  return [cur[0] < 35 ? 55 : 12, 19];
+}
+
+const LAWN_SPOTS: Tile[] = [
+  [17, 24],
+  [24, 25],
+  [31, 24],
+  [38, 25],
+  [46, 24],
+  [54, 25],
+  [27, 26],
+  [49, 26],
+];
+
+/** Picks a random patrol spot on the South Lawn outside the White House. */
+export function lawnTile(from: Point): Tile {
+  const pool = LAWN_SPOTS.filter((t) => Math.hypot(tileCenter(t).x - from.x, tileCenter(t).y - from.y) > 4 * T);
+  return pool[Math.floor(Math.random() * pool.length)] ?? LAWN_SPOTS[0];
+}
+
 /** Fight night: the cage goes up on the grass between the reviewing stand and the plane. Its center, in pixels. */
 export const CAGE: Point = { x: 32.4 * T, y: 48 * T };
 /** His front-row seat, and the corner he comes around to reach it without walking through the cage. */
