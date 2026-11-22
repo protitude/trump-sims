@@ -7,8 +7,8 @@ import { TUNING, bragsAboutPhysical, dutyEffects, leakChanceAt, cokeStatus, dome
 import type { Meal } from '../game/engine.ts';
 import { MELANIA_INSULTS } from '../game/melania.ts';
 import { guestById, showOf } from '../game/guests.ts';
-import { BRAGS_PER_EGO, BRAG_EGO_MAX, addressFor, applauseEgo, bragMaterial, isSpeech } from '../game/events.ts';
-import { ELECTION_SECONDS } from './scenes.ts';
+import { BRAGS_PER_EGO, BRAG_EGO_MAX, INAUGURATION_ADDRESS, addressFor, applauseEgo, bragMaterial, isSpeech } from '../game/events.ts';
+import { ELECTION_SECONDS, INAUGURATION_SECONDS } from './scenes.ts';
 import type { DutyKind, GameState, Place } from '../game/types.ts';
 import { Blocks, Fx, Why, needCoin, needTime } from '../ui.tsx';
 import { drawWorld, hitRectPx } from './draw.ts';
@@ -584,10 +584,16 @@ export function World({ state, command, dance, onDuty, onVanity, onBribe, onDecl
     }
   }, [state.place, sim]);
 
-  // The morning after the midterms: the result plays out on television before anything else can happen.
+  // Broadcasts that play before anything else can happen: the inauguration oath and election night.
   useEffect(() => {
-    if (state.broadcast !== 'election' || state.status !== 'playing') return;
-    perform('Election night', '🗳️', ELECTION_SECONDS, () => callbacks.current.onBroadcast(), { anim: 'election' });
+    if (!state.broadcast || state.status !== 'playing') return;
+    if (state.broadcast === 'inauguration') {
+      perform('Inauguration Day', '📖', INAUGURATION_SECONDS, () => callbacks.current.onBroadcast(), {
+        screen: { kind: 'address', ...INAUGURATION_ADDRESS },
+      });
+    } else if (state.broadcast === 'election') {
+      perform('Election night', '🗳️', ELECTION_SECONDS, () => callbacks.current.onBroadcast(), { anim: 'election' });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.broadcast, state.status]);
 

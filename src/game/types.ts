@@ -155,8 +155,8 @@ export interface GameState {
   impeached?: boolean;
   /** The set pieces behind him, and what he did with each. They leave marks around the house. */
   setPieces?: Record<string, Take>;
-  /** Something the networks are about to show, which plays before anything else happens: the midterm result. */
-  broadcast?: 'election';
+  /** Something the networks are about to show, which plays before anything else happens: the inauguration oath or the midterm result. */
+  broadcast?: 'inauguration' | 'election';
   /** Bribes that leaked, waiting for the month the story runs. */
   exposures: { id: string; due: number; effects: Effects }[];
   inbox: string[];

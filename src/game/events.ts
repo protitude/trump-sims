@@ -10,7 +10,7 @@ import type { DutyCard, GameState, Take } from './types.ts';
 // ---------- The address ----------
 
 /** The backdrop the tablet puts behind him. */
-export type AddressSet = 'news' | 'chamber' | 'clinic' | 'count' | 'summit' | 'studio' | 'farewell' | 'hearing';
+export type AddressSet = 'news' | 'chamber' | 'clinic' | 'count' | 'summit' | 'studio' | 'farewell' | 'hearing' | 'oath';
 
 /** A sheet of paper held up to the camera. */
 export interface Exhibit {
@@ -40,6 +40,23 @@ export interface Address {
 }
 
 type Script = Omit<Address, 'flat' | 'year' | 'applause'>;
+
+/** Inauguration Day: hand on the Trump Bible, promising to president like nobody ever has. */
+export const INAUGURATION_ADDRESS: Address = {
+  set: 'oath',
+  chyron: 'Inauguration Day',
+  lines: [
+    "I'm going to be the best presidents. Everybody knows it.",
+    'No president has ever presidented like me.',
+    'Great Bible, by the way. The Trump Bible. Very classy.',
+  ],
+  ticker: [
+    'INAUGURATION DAY · BIGGEST CROWD IN HISTORY, PERIOD',
+    'OATH TAKEN ON LIMITED-EDITION GOLD TRUMP BIBLE',
+    'PRESIDENT PROMISES TO PRESIDENT LIKE NOBODY EVER HAS',
+  ],
+  flat: false,
+};
 
 const SOTU_FLAT: Script = {
   set: 'chamber',

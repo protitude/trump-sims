@@ -642,6 +642,7 @@ export function newGame(seed: number = Date.now()): GameState {
     deck: [],
     done: {},
     log: [],
+    broadcast: 'inauguration',
     status: 'playing',
   };
   log(s, 'Inauguration Day. Biggest crowd ever, period. Now there is apparently a job to do.', 'neutral');

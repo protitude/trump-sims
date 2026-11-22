@@ -12,6 +12,9 @@ import { REGIONS, T } from './map.ts';
 // good, the backdrops the tablet puts behind an address, and election night.
 // Like everything else, it is all canvas shapes.
 
+/** Inauguration Day: the tablet flies in, he puts his hand on the Trump Bible, and it flies off. */
+export const INAUGURATION_SECONDS = 7.1;
+
 /** Election night: the map fills in, the result is called, and he takes it the way he takes it. */
 export const ELECTION_SECONDS = 13;
 const ELECTION_SLIDE = 0.6;
@@ -372,6 +375,66 @@ export function addressBackdrop(c: Ctx, a: Address, t: number): void {
       c.fillRect(134, 130, 8, 4);
       break;
     }
+    case 'oath': {
+      // Crisp Inauguration Day sky on the Capitol steps.
+      const sky = c.createLinearGradient(0, 0, 0, H);
+      sky.addColorStop(0, '#7eb0e2');
+      sky.addColorStop(0.65, '#c8dff4');
+      sky.addColorStop(1, '#e8eef5');
+      c.fillStyle = sky;
+      c.fillRect(0, 0, W, H);
+      // The Capitol dome and columns in the background.
+      c.fillStyle = '#f2f0e8';
+      c.beginPath();
+      c.arc(218, 86, 32, Math.PI, 0);
+      c.fill();
+      c.fillRect(214, 42, 8, 14);
+      c.fillRect(194, 84, 48, 22);
+      c.fillStyle = '#d9d6cb';
+      for (let i = 0; i < 6; i++) c.fillRect(198 + i * 7.5, 86, 3, 18);
+      // Marble portico and balustrade.
+      c.fillStyle = '#ebe8de';
+      c.fillRect(11, 118, W - 22, 54);
+      c.fillStyle = '#d4d0c4';
+      c.fillRect(11, 116, W - 22, 5);
+      for (let x = 148; x < 284; x += 26) {
+        c.fillStyle = '#f5f2e9';
+        c.fillRect(x, 60, 10, 58);
+        c.fillStyle = '#d9d5c8';
+        c.fillRect(x + 7, 60, 3, 58);
+      }
+      // Red, white, and blue inaugural bunting along the railing.
+      for (let bx = 34; bx < 280; bx += 48) {
+        c.fillStyle = RED;
+        c.beginPath();
+        c.arc(bx, 121, 22, 0, Math.PI);
+        c.fill();
+        c.fillStyle = '#ffffff';
+        c.beginPath();
+        c.arc(bx, 121, 15, 0, Math.PI);
+        c.fill();
+        c.fillStyle = BLUE;
+        c.beginPath();
+        c.arc(bx, 121, 8, 0, Math.PI);
+        c.fill();
+      }
+      // American flag behind the lectern.
+      c.fillStyle = '#8b6a2b';
+      c.fillRect(128, 22, 3, 102);
+      for (let i = 0; i < 7; i++) {
+        c.fillStyle = i % 2 ? '#f3eee0' : RED;
+        c.fillRect(131, 24 + i * 5, 42, 5);
+      }
+      c.fillStyle = '#26356b';
+      c.fillRect(131, 24, 18, 20);
+      if (Math.sin(t * 6) > -0.3) {
+        c.fillStyle = RED;
+        rr(c, 234, 20, 44, 18, 4);
+        c.fill();
+        label(c, '● LIVE', 256, 29.5, 10, '#ffffff');
+      }
+      break;
+    }
     case 'news':
       break;
   }
@@ -379,6 +442,101 @@ export function addressBackdrop(c: Ctx, a: Address, t: number): void {
 
 /** Whatever he is holding up, drawn over him and under the lower third. */
 export function addressProps(c: Ctx, a: Address, t: number): void {
+  if (a.set === 'oath') {
+    const bob = Math.sin(t * 7) * 0.8;
+    // Raised oath hand on his left side.
+    c.strokeStyle = PRESIDENT.suit;
+    c.lineWidth = 13;
+    c.lineCap = 'round';
+    c.beginPath();
+    c.moveTo(54, 138);
+    c.lineTo(36, 110 + bob);
+    c.stroke();
+    c.lineCap = 'butt';
+    c.fillStyle = '#ffffff';
+    c.fillRect(29, 104 + bob, 13, 4);
+    c.fillStyle = PRESIDENT.skin;
+    rr(c, 28, 86 + bob, 15, 19, 5);
+    c.fill();
+    c.strokeStyle = 'rgba(122,42,28,0.35)';
+    c.lineWidth = 1;
+    for (let i = 1; i <= 3; i++) {
+      c.beginPath();
+      c.moveTo(28 + i * 3.6, 87 + bob);
+      c.lineTo(28 + i * 3.6, 97 + bob);
+      c.stroke();
+    }
+
+    // The Trump Bible: gilded pages, deep crimson cover, gold trim, gold lettering.
+    const bx = 154;
+    const by = 123;
+    const bw = 82;
+    const bh = 44;
+    c.fillStyle = 'rgba(0,0,0,0.3)';
+    rr(c, bx + 4, by + 5, bw, bh, 4);
+    c.fill();
+    // Thick gold-gilded page block along the right and bottom edge.
+    c.fillStyle = goldFill(c, bx, by, bw + 5, bh + 5);
+    rr(c, bx + 4, by + 4, bw, bh, 3);
+    c.fill();
+    // Deep crimson leather cover.
+    const cover = c.createLinearGradient(bx, by, bx, by + bh);
+    cover.addColorStop(0, '#781420');
+    cover.addColorStop(1, '#4a0a12');
+    c.fillStyle = cover;
+    rr(c, bx, by, bw, bh, 3);
+    c.fill();
+    // Gold-embossed border and spine trim.
+    c.strokeStyle = GOLD_LIGHT;
+    c.lineWidth = 1.6;
+    rr(c, bx + 4, by + 4, bw - 8, bh - 8, 2);
+    c.stroke();
+    c.fillStyle = GOLD_DARK;
+    c.fillRect(bx, by + 1, 6, bh - 2);
+    // Bold gold lettering, positioned to stay legible under his hand.
+    label(c, 'TRUMP', bx + 48, by + 18, 12, GOLD_LIGHT);
+    label(c, 'BIBLE', bx + 48, by + 31, 10, GOLD);
+    // Small gold bookmark ribbon peeking out the bottom.
+    c.fillStyle = GOLD;
+    c.fillRect(bx + 66, by + bh - 1, 5, 7);
+
+    // Trump's right arm reaching across and lowering his hand onto the Trump Bible.
+    const place = clamp01((t - 0.5) / 0.55);
+    const eased = 1 - (1 - place) ** 3;
+    const lift = (1 - eased) * 24;
+    const hx = 166;
+    const hy = 131 - lift + (place >= 1 ? bob * 0.6 : 0);
+
+    c.strokeStyle = PRESIDENT.suit;
+    c.lineWidth = 14;
+    c.lineCap = 'round';
+    c.beginPath();
+    c.moveTo(112, 136);
+    c.lineTo(hx - 10, hy + 2);
+    c.stroke();
+    c.lineCap = 'butt';
+    c.fillStyle = '#ffffff';
+    c.fillRect(hx - 14, hy - 5, 5, 13);
+    // Hand resting flat on the upper-left corner of the Trump Bible.
+    c.fillStyle = PRESIDENT.skin;
+    rr(c, hx - 9, hy - 6, 22, 14, 5);
+    c.fill();
+    c.strokeStyle = 'rgba(122,42,28,0.35)';
+    c.lineWidth = 1;
+    for (let i = 0; i < 3; i++) {
+      c.beginPath();
+      c.moveTo(hx + 3, hy - 3 + i * 3.5);
+      c.lineTo(hx + 12, hy - 3 + i * 3.5);
+      c.stroke();
+    }
+    // Gold sparkles once his hand lands on the Bible.
+    if (place >= 0.95) {
+      for (let i = 0; i < 3; i++) {
+        emojiAt(c, '✨', bx + 12 + hash(i + 2) * (bw - 16), by - 4 + hash(i + 7) * 14, 9, Math.sin(t * 6 + i * 2));
+      }
+    }
+    return;
+  }
   if (!a.exhibit) return;
   const up = clamp01((t - 1) / 0.35);
   if (up <= 0) return;

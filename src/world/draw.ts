@@ -2097,7 +2097,7 @@ function tablet(c: Ctx, act: Activity, viewW: number, viewH: number): void {
   if (address) addressProps(c, address, t);
 
   // The microphone he is leaning into.
-  if (present && address?.set !== 'summit') {
+  if (present && address?.set !== 'summit' && address?.set !== 'oath') {
     c.strokeStyle = '#8b909c';
     c.lineWidth = 3;
     c.beginPath();
