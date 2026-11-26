@@ -8,6 +8,7 @@ import { CALLEES, calleeAt } from './calls.ts';
 import { SUITS } from './suits.ts';
 import { MELANIA_INSULTS } from './melania.ts';
 import { applauseEgo, seasonalPost } from './events.ts';
+import { PAPER_MONTHS, file, openNewsroom, printPaper } from './paper.ts';
 import { MIDTERM_BAR, MIDTERM_MONTH, WHIMS, WHIM_FAIL_EGO, WHIM_MONTHS, activeSeasons, whimById } from './calendar.ts';
 
 // Pure game rules. Every action takes a state and returns a new one, so the
@@ -252,13 +253,29 @@ function roll(s: GameState, odds: number[]): number {
   return odds.length - 1;
 }
 
+/** How much a set of effects moved the meters, for the paper. */
+const size = (fx: Effects) => Math.abs(fx.ego ?? 0) + Math.abs(fx.stability ?? 0);
+
+/** A card's title as a headline, without the CRISIS: or OPPORTUNITY: in front. */
+const headlineOf = (card: DutyCard) => card.title.replace(/^(CRISIS|OPPORTUNITY): /, '');
+
+/** The label over a card's story, and how much bigger it is than its effects alone. */
+function deskFor(card: DutyCard): { kicker: string; bonus: number } {
+  if (card.setPiece) return { kicker: card.setPiece, bonus: 10 };
+  if (card.kind === 'crisis') return { kicker: 'Crisis', bonus: 8 };
+  if (card.because) return { kicker: 'Consequence', bonus: 5 };
+  if (card.kind === 'hybrid') return { kicker: 'Diplomacy', bonus: 4 };
+  return { kicker: card.kind === 'press' ? 'Press Room' : card.kind === 'call' ? 'On The Phone' : 'The West Wing', bonus: 0 };
+}
+
 function toneOf(fx: Effects): Tone {
   const net = (fx.ego ?? 0) + (fx.stability ?? 0);
   return net > 0 ? 'good' : net < 0 ? 'bad' : 'neutral';
 }
 
-function landChaos(s: GameState, eyebrow: string, title: string, outcome: ChaosOutcome): void {
+function landChaos(s: GameState, eyebrow: string, title: string, outcome: ChaosOutcome, kicker = 'Chaos'): void {
   apply(s, outcome.effects);
+  file(s, { weight: size(outcome.effects) + 4, kicker, headline: title, text: outcome.text, tone: toneOf(outcome.effects) });
   log(s, outcome.text, toneOf(outcome.effects));
   s.reveals.push({ eyebrow, title, text: outcome.text, effects: outcome.effects });
 }
@@ -269,7 +286,7 @@ function landBlowback(s: GameState): void {
   s.blowback = s.blowback.filter((b) => !due.includes(b));
   for (const b of due) {
     const event = chaosById(b.id);
-    landChaos(s, 'Blowback · you ignored this', event.title, event.ignore.blowback[roll(s, TUNING.blowbackOdds)]);
+    landChaos(s, 'Blowback · you ignored this', event.title, event.ignore.blowback[roll(s, TUNING.blowbackOdds)], 'Blowback');
   }
 }
 
@@ -580,6 +597,7 @@ function landExposures(s: GameState): void {
     apply(s, e.effects);
     count(s, 'exposed');
     log(s, guest.exposed, 'bad');
+    file(s, { weight: size(e.effects) + 6, kicker: 'Exclusive', headline: `${guest.title} And The Coin`, text: guest.exposed, tone: 'bad' });
     s.reveals.push({ eyebrow: 'Exposed · somebody talked', title: `${guest.title} And The Coin`, text: guest.exposed, effects: e.effects });
   }
 }
@@ -605,6 +623,13 @@ function holdVote(s: GameState): void {
     : `The articles failed by nine votes. You have called it a total exoneration, which it was not, and a landslide, which it also was not. ${record}`;
   apply(s, effects);
   log(s, text, s.impeached ? 'bad' : 'good');
+  file(s, {
+    weight: 45,
+    kicker: 'Impeachment',
+    headline: s.impeached ? 'House Impeaches The President, 221 To 212' : 'Impeachment Fails By Nine Votes',
+    text,
+    tone: s.impeached ? 'bad' : 'good',
+  });
   s.reveals.push({ eyebrow: 'The vote · a hostile House', title: s.impeached ? 'Impeached' : 'Not Impeached', text, effects });
 }
 
@@ -645,6 +670,7 @@ export function newGame(seed: number = Date.now()): GameState {
     broadcast: 'inauguration',
     status: 'playing',
   };
+  s.news = openNewsroom(s);
   log(s, 'Inauguration Day. Biggest crowd ever, period. Now there is apparently a job to do.', 'neutral');
   drawInbox(s);
   drawGuests(s);
@@ -728,6 +754,14 @@ function remember(s: GameState, card: DutyCard, take: Take): void {
 }
 
 /** The broadcast has been watched: everything else can carry on. */
+/** The paper has been read: the new year can start. */
+export function foldPaper(state: GameState): GameState {
+  if (!state.paper) return state;
+  const s = structuredClone(state);
+  delete s.paper;
+  return s;
+}
+
 export function endBroadcast(state: GameState): GameState {
   if (!state.broadcast) return state;
   const s = structuredClone(state);
@@ -754,6 +788,8 @@ export function playDuty(state: GameState, cardId: string, optionIndex: number):
   const net = (effects.stability ?? 0) + (effects.ego ?? 0);
   log(s, option.result, card.kind === 'hybrid' ? 'good' : (effects.stability ?? 0) > 0 ? 'good' : net > 0 ? 'ego' : 'bad');
   if (effects !== option.effects) log(s, 'There was a lot to point at, and you pointed at all of it. The applause ran long.', 'ego');
+  const desk = deskFor(card);
+  file(s, { weight: size(effects) + desk.bonus, kicker: desk.kicker, headline: headlineOf(card), text: option.result, tone: toneOf(effects) });
   if (card.options.length === 2) remember(s, card, optionIndex === 0 ? 'modest' : 'boast');
 
   count(s, 'duties');
@@ -771,6 +807,13 @@ const STAT_FOR_ACTION: Record<string, string> = {
   'show-post': 'post',
   'show-call': 'call',
   'show-parade': 'parade',
+};
+
+/** Vanity that makes the paper. Shows, trips and the club are counted in the numbers box instead. */
+const VANITY_DESK: Partial<Record<VanityAction['category'], { kicker: string; bonus: number }>> = {
+  build: { kicker: 'Construction', bonus: 5 },
+  rename: { kicker: 'Renamed', bonus: 4 },
+  gild: { kicker: 'Interiors', bonus: 1 },
 };
 
 export function doVanity(state: GameState, actionId: string): GameState {
@@ -804,6 +847,8 @@ export function doVanity(state: GameState, actionId: string): GameState {
     s.fight = false;
     log(s, 'The cage was up on the South Lawn when you landed. You had the front-row seat. The grass will be back by spring.', 'ego');
   }
+  const desk = VANITY_DESK[action.category];
+  if (desk) file(s, { weight: desk.bonus + Math.max(0, ego) / 2, kicker: desk.kicker, headline: action.title, text: action.result, tone: 'neutral' });
   if (withMelania) log(s, 'Melania stood beside you for the whole thing. She did not smile, and the world relaxed slightly.', 'good');
   if (bragging) log(s, 'You opened with the physical. Passed it biggly, you said: the doctor wept. The crowd chanted your blood pressure.', 'ego');
   // What he builds, names and gilds comes back, the same as what he decides.
@@ -827,6 +872,14 @@ export function endMonth(state: GameState): GameState {
     log(s, card.ignore.text, card.kind === 'hybrid' ? 'neutral' : 'bad');
     plant(s, `${id}:ignore`);
     remember(s, card, 'skipped');
+    const desk = deskFor(card);
+    file(s, {
+      weight: Math.abs(card.ignore.stability) + 3 + desk.bonus,
+      kicker: desk.kicker,
+      headline: `No Answer On ${headlineOf(card)}`,
+      text: card.ignore.text,
+      tone: card.kind === 'hybrid' ? 'neutral' : 'bad',
+    });
     if (card.kind !== 'hybrid') {
       neglected += 1;
       s.ignored += 1;
@@ -849,10 +902,12 @@ export function endMonth(state: GameState): GameState {
       s.congress = 'friendly';
       apply(s, { ego: 10 });
       log(s, 'Midterms: your party held Congress. You are taking this entirely personally, in a good way.', 'good');
+      file(s, { weight: 40, kicker: 'Midterms', headline: "President's Party Holds Congress", text: 'The map came in red enough. The President has described the result as "the biggest midterm win in history, maybe the only one."', tone: 'good' });
     } else {
       s.congress = 'hostile';
       apply(s, { ego: -6 });
       log(s, 'Midterms: you lost Congress. The new committee chairs have already ordered stationery.', 'bad');
+      file(s, { weight: 40, kicker: 'Midterms', headline: 'Voters Hand Congress To The Other Side', text: 'The new committee chairs have already ordered stationery. The President has called the result rigged, and also a win.', tone: 'bad' });
     }
   }
 
@@ -872,6 +927,12 @@ export function endMonth(state: GameState): GameState {
   settleWhim(s);
   checkEnd(s);
   if (s.status !== 'playing') return s;
+
+  // December: the paper prints the year, and the newsroom starts on the next one.
+  if (PAPER_MONTHS.includes(s.month)) {
+    s.paper = printPaper(s);
+    s.news = openNewsroom({ ...s, month: s.month + 1 });
+  }
 
   if (s.month >= TOTAL_MONTHS) {
     s.status = 'won';

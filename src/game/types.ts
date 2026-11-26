@@ -1,3 +1,5 @@
+import type { FrontPage, Newsroom } from './paper.ts';
+
 export interface Effects {
   ego?: number;
   stability?: number;
@@ -159,6 +161,10 @@ export interface GameState {
   broadcast?: 'inauguration' | 'election';
   /** Bribes that leaked, waiting for the month the story runs. */
   exposures: { id: string; due: number; effects: Effects }[];
+  /** Stories filed this year for the year-end paper, and where the year began. */
+  news?: Newsroom;
+  /** The year-end front page, waiting to be read and folded up. */
+  paper?: FrontPage;
   inbox: string[];
   deck: string[];
   /** Times each vanity action has been used. */

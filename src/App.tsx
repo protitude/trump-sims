@@ -11,6 +11,7 @@ import {
   heat,
   TUNING,
   endBroadcast,
+  foldPaper,
   endMonth,
   mood,
   newGame,
@@ -36,6 +37,8 @@ import { endingText, epilogue, legacyTitle } from './game/epilogue.ts';
 import { VOTE_MONTH } from './game/story.ts';
 import { MusicControl, useMusic } from './music.tsx';
 import { Brag } from './share.tsx';
+import { Newspaper } from './frontpage.tsx';
+import { printPaper } from './game/paper.ts';
 import type { Music } from './music.tsx';
 import { World } from './world/World.tsx';
 import type { Target } from './world/World.tsx';
@@ -157,6 +160,8 @@ function GameOver({ state, onRestart }: { state: GameState; onRestart: () => voi
             </ul>
           </>
         )}
+        <p className="eyebrow">The final edition</p>
+        <Newspaper paper={printPaper(state, true)} />
         <dl className="stats">
           {finalStats(state).map((stat) => (
             <div key={stat.label}>
@@ -212,10 +217,12 @@ function Game({ music }: { music: Music }) {
   const progress = whimProgress(state);
   // One pop-up at a time: the whim, then anything chaos has done, then new chaos.
   // Nothing pops up while the election result is still playing on the television.
+  // The year-end paper comes next, before the new year's whims.
   const live = Boolean(state.broadcast);
-  const whims = live ? [] : state.whimOffer;
-  const reveal = !live && state.whimOffer.length === 0 ? state.reveals[0] : undefined;
-  const chaos = !live && state.whimOffer.length === 0 && !reveal && state.chaos ? chaosById(state.chaos) : null;
+  const paper = live ? undefined : state.paper;
+  const whims = live || paper ? [] : state.whimOffer;
+  const reveal = !live && !paper && state.whimOffer.length === 0 ? state.reveals[0] : undefined;
+  const chaos = !live && !paper && state.whimOffer.length === 0 && !reveal && state.chaos ? chaosById(state.chaos) : null;
   const campaign = seasons.some((season) => season.id === 'campaign') ? polls(state) : null;
 
   return (
@@ -342,6 +349,14 @@ function Game({ music }: { music: Music }) {
           </span>
         )}
       </div>
+
+      {paper && (
+        <div className="overlay paper-overlay">
+          <div className="paper-sheet" role="dialog" aria-label="The year-end paper">
+            <Newspaper paper={paper} onFold={() => setState((s) => s && foldPaper(s))} />
+          </div>
+        </div>
+      )}
 
       {whims.length > 0 && (
         <div className="overlay">

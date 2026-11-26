@@ -186,6 +186,15 @@ At 4 heat or more you are impeached: −10 Ego, −6 Stability. Below that the a
 
 Every six months he takes up a whim. You are offered three and must pick one: rename three things, hold three rallies, deal with twelve visitors, end three months with a clean desk, and so on. Satisfy it before the six months run out and you collect its reward. Let it lapse and he sulks (−4 Ego). The current whim and its progress are shown in the calendar strip.
 
+### The year-end paper
+
+Every December the paper prints the year. *The National Ledger* pops up before January starts, ahead of the new whim, and leads with the biggest thing that happened. Underneath are four more stories in the order they happened, then a box of numbers for the year: both meters, start to finish, visitors seen and left waiting, things gilded and named, golf, rallies, posts, lawsuits, take-out and coin. There is also an editorial on how the year went, a correction and a weather report that follows World Stability.
+
+- **What makes the paper.** Answering a visitor makes a story, and so does leaving one waiting ("No Answer On..."). A story's size depends on how far it moved the meters; set pieces, hearings, crises and consequences are bigger. Builds, renames and gildings make it too, along with chaos results, blowback, leaked bribes, the midterms and the impeachment vote. Shows, trips and the club appear only as numbers.
+- **The last edition** runs on the ending screen. It leads with how the term ended, whether that was four years done, World War III or the bed.
+
+The paper changes nothing: no meters, no score. Stories are filed by the engine as things happen, and the paper is printed in `src/game/paper.ts`.
+
 ### Chaos
 
 At the start of any month there is a chance that something simply happens: an aide is in tears, a hurricane is heading for Florida, a relative has accepted a gift. The chance starts at 10% and climbs one point every month, so it is 22% at the end of the first year, 34% at the end of the second and 58% by the end of the term. There are never more than six of these a year, and a full term sees about fifteen.
@@ -249,6 +258,7 @@ src/
     content.ts    The original cards and every vanity project, as plain data
     story.ts      Consequence cards, what triggers them, the set pieces and the hearings
     epilogue.ts   The ending screen: the title history gives him and what it remembers
+    paper.ts      The year-end front page: the stories filed through the year, and printing them
     calendar.ts   Seasons, the midterms, and the whims
     chaos.ts      The shape of a chaos event (the events are in cards/chaos.json)
     guests.ts     The shape of a Mar-a-Lago guest (the guests are in cards/guests.json)
@@ -262,6 +272,7 @@ src/
     World.tsx     Walking, clicking, visitors, activities and the pop-up menus
   App.tsx         Title and ending screens, and the bars at the top
   music.tsx       The background music playlist and its controls
+  frontpage.tsx   The year-end paper, as drawn
   ui.tsx          Small shared pieces
 public/
   music/          The six tracks and their credits
